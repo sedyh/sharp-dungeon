@@ -15,8 +15,8 @@ namespace SharpDungeon.Game.Input {
         */
 
         private bool[] keys = new bool[256], 
-                      pressed = new bool[256], 
-                      cantPress = new bool[256];
+                       pressed = new bool[256], 
+                       cantPress = new bool[256];
 
         //Events from Display form
 
