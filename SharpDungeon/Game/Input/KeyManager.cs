@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SharpDungeon.Game.Input {
-    class KeyManager {
+    public class KeyManager {
 
         /* 
          keys => what key is down

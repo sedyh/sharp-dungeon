@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SharpDungeon.Game.Input {
-    class MouseManager {
+    public class MouseManager {
 
         public bool leftPressed { get; set; }
         public bool rightPressed { get; set; }

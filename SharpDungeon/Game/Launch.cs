@@ -8,16 +8,15 @@ using SharpDungeon.Game;
 namespace SharpDungeon {
     static class Launch {
 
-        
-
         [STAThread]
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Display d = new Display();
+            Game.Game game = new Game.Game();
 
-            Application.Run(d);
+            Application.Run(game);
         }
+
     }
 }

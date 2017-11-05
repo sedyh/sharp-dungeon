@@ -10,12 +10,12 @@ using System.Windows.Forms;
 using SharpDungeon.Game.Input;
 
 namespace SharpDungeon.Game {
-    public partial class Display : Form {
+    public partial class Game : Form {
 
-        KeyManager keyManager = new KeyManager();
-        MouseManager mouseManager = new MouseManager();
+        public KeyManager keyManager { get; set; } = new KeyManager();
+        public MouseManager mouseManager { get; set; } = new MouseManager();
 
-        public Display() {
+        public Game() {
             InitializeComponent();
 
             DoubleBuffered = true;
