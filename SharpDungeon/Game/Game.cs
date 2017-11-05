@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using SharpDungeon.Game.Input;
 
@@ -14,6 +14,10 @@ namespace SharpDungeon.Game {
 
         public KeyManager keyManager { get; set; } = new KeyManager();
         public MouseManager mouseManager { get; set; } = new MouseManager();
+
+        private Graphics g;
+        private Thread t;
+        private bool running = false;
 
         public Game() {
             InitializeComponent();

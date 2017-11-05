@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using SharpDungeon.Game.Input;
 
 namespace SharpDungeon.Game {
-    class Handler {
+    public class Handler {
 
         //Cutted classpaths
         public Game game {get; set;}
         public KeyManager keyManager { get; set; }
         public MouseManager mouseManager { get; set; }
+        public World world { get; set; }
 
         //Properities setters
         public Handler(Game game) {
