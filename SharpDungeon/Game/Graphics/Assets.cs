@@ -18,6 +18,11 @@ namespace SharpDungeon.Game.Graphics {
         public static Font themeFont;
         public static Font gameFont;
 
+        //Load textures
+
+        public static void init() {
+
+        }
 
     }
 }

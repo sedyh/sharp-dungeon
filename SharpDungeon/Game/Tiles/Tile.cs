@@ -8,7 +8,7 @@ namespace SharpDungeon.Game.Tiles {
     public abstract class Tile {
 
         public static Tile[] tiles = new Tile[256];
-        public static Tile air = new Tile(0);
+        public static Tile air;
 
         public static readonly int tileWidth = 64,
                                    tileHeight = 64;
@@ -19,6 +19,16 @@ namespace SharpDungeon.Game.Tiles {
             this.id = id;
         }
 
-        public 
+        public void tick(Handler handler) {
+
+        }
+
+        public void render(System.Drawing.Graphics g) {
+
+        }
+
+        public bool isSolid() {
+            return false;
+        }
     }
 }
