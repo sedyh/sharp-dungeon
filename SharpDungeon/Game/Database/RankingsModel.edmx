@@ -33,16 +33,13 @@
           <NavigationProperty Name="CollectedArtifacts" Relationship="RankingsModel.RankingCollectedArtifacts" FromRole="Ranking" ToRole="CollectedArtifacts" />
         </EntityType>
         <EntityType Name="CollectedArtifacts">
-          <Key>
-            <PropertyRef Name="PlayerId" />
-          </Key>
           <Property Name="PlayerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="ArtifactImage" Type="String" Nullable="false" />
           <NavigationProperty Name="Ranking" Relationship="RankingsModel.RankingCollectedArtifacts" FromRole="CollectedArtifacts" ToRole="Ranking" />
         </EntityType>
         <Association Name="RankingCollectedArtifacts">
           <End Type="RankingsModel.Ranking" Role="Ranking" Multiplicity="1" />
-          <End Type="RankingsModel.CollectedArtifacts" Role="CollectedArtifacts" Multiplicity="1" />
+          <End Type="RankingsModel.CollectedArtifacts" Role="CollectedArtifacts" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>

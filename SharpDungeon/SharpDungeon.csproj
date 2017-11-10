@@ -76,6 +76,7 @@
     <Compile Include="Game\States\GameState.cs" />
     <Compile Include="Game\States\MenuState.cs" />
     <Compile Include="Game\States\State.cs" />
+    <Compile Include="Game\Tiles\AirTile.cs" />
     <Compile Include="Game\Tiles\Tile.cs" />
     <Compile Include="Game\Tiles\TileSingleSide.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

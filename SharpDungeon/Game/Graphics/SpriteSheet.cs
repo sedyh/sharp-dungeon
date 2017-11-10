@@ -10,11 +10,12 @@ namespace SharpDungeon.Game.Graphics {
 
         private Bitmap sheet { get; set; }
 
-        public SpriteSheet(Bitmap sheet) {
+        public SpriteSheet(string path) {
+            Bitmap sheet = new Bitmap(path);
             this.sheet = sheet;
         }
         
-        public Image crop(int x, int y, int width, int height) {
+        public Bitmap crop(int x, int y, int width, int height) {
             return sheet.Clone(new Rectangle(x, y, width, height), sheet.PixelFormat);
         }
     }

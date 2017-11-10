@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,20 +16,16 @@ namespace SharpDungeon.Game.Tiles {
 
         protected readonly int id;
 
+        protected Bitmap tex;
+
         public Tile(int id) {
             this.id = id;
         }
 
-        public void tick(Handler handler) {
+        public abstract void tick(Handler handler);
 
-        }
+        public abstract void render(System.Drawing.Graphics g, int x, int y);
 
-        public void render(System.Drawing.Graphics g) {
-
-        }
-
-        public bool isSolid() {
-            return false;
-        }
+        public abstract bool isSolid();
     }
 }
