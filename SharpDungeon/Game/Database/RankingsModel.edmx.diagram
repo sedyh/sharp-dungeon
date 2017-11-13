@@ -7,7 +7,7 @@
       <Diagram DiagramId="286bb8ddbd874525a50747a8221e12c3" Name="Diagram1" >
         <EntityTypeShape EntityType="RankingsModel.Ranking" Width="1.75" PointX="2.25" PointY="1.875" />
         <EntityTypeShape EntityType="RankingsModel.CollectedArtifacts" Width="1.875" PointX="5" PointY="1.875" />
-        <AssociationConnector Association="RankingsModel.RankingCollectedArtifacts" ></AssociationConnector>
+        <AssociationConnector Association="RankingsModel.RankingCollectedArtifacts" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
