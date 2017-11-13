@@ -60,12 +60,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RankingsModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Game\Game.cs">
+    <Compile Include="Game\Display\Display.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Game\Game.Designer.cs">
-      <DependentUpon>Game.cs</DependentUpon>
+    <Compile Include="Game\Display\Display.Designer.cs">
+      <DependentUpon>Display.cs</DependentUpon>
     </Compile>
+    <Compile Include="Game\Game.cs" />
     <Compile Include="Game\Graphics\Assets.cs" />
     <Compile Include="Game\Graphics\GameCamera.cs" />
     <Compile Include="Game\Graphics\SpriteSheet.cs" />
@@ -79,8 +80,8 @@
     <Compile Include="Game\Tiles\Tile.cs" />
     <Compile Include="Game\Tiles\TileSingleSide.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Game\Game.resx">
-      <DependentUpon>Game.cs</DependentUpon>
+    <EmbeddedResource Include="Game\Display\Display.resx">
+      <DependentUpon>Display.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

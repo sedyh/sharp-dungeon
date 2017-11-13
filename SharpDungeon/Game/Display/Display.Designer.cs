@@ -1,5 +1,5 @@
-﻿namespace SharpDungeon.Game {
-    partial class Game {
+﻿namespace SharpDungeon.Game.Display {
+    partial class Display {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -23,7 +23,6 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Game));
             this.SuspendLayout();
             // 
             // Display
@@ -32,10 +31,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(784, 562);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "Display";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Display";
             this.ResumeLayout(false);
 
