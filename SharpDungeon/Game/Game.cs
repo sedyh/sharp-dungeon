@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SharpDungeon.Game.States;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SharpDungeon.Game.Display {
     public class Game {
@@ -23,6 +25,11 @@ namespace SharpDungeon.Game.Display {
 
         public Game() {
 
+            //Init display
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Display());
+
             //Init game components
             Assets.init();
             handler = new Handler(this);
@@ -32,8 +39,6 @@ namespace SharpDungeon.Game.Display {
             gameState = new GameState(handler);
             menuState = new MenuState(handler);
             State.currentState = gameState;
-
-
         }
 
         private void run() {

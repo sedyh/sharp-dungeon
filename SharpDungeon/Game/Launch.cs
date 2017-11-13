@@ -10,9 +10,7 @@ namespace SharpDungeon {
         //All threads by one process
         [STAThread]
         static void Main() {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(Game());
+            new SharpDungeon.Game.Game();
         }
 
     }
