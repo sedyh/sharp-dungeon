@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using SharpDungeon.Game.Launcher;
+using System;
 using System.Windows.Forms;
 
 namespace SharpDungeon {
@@ -10,7 +8,9 @@ namespace SharpDungeon {
         //All threads by one process
         [STAThread]
         static void Main() {
-            new SharpDungeon.Game.Game();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Launcher());
         }
 
     }

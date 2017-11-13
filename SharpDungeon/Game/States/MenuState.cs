@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpDungeon.Game.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace SharpDungeon.Game.States {
 
         }
 
-        public override void render(Graphics g) {
-           
+        public override void render(System.Drawing.Graphics g) {
+            g.DrawImage(Assets.air,0,0);
         }
     }
 }

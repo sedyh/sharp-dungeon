@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.States {
     public class GameState : State {
 
-        private World world;
+        //private World world;
 
         public GameState(Handler handler) : base(handler) {
-            world = new World(handler, "wordl");
-            handler.world = world;
+            //world = new World(handler, "world");
+            //handler.world = world;
         }
 
         public override void tick() {
 
         }
 
-        public override void render(Graphics g) {
+        public override void render(System.Drawing.Graphics g) {
 
         }
     }
