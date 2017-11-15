@@ -66,6 +66,7 @@
     <Compile Include="Game\Display\Display.Designer.cs">
       <DependentUpon>Display.cs</DependentUpon>
     </Compile>
+    <Compile Include="Game\Entities\Entity.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\Graphics\Assets.cs" />
     <Compile Include="Game\Graphics\GameCamera.cs" />

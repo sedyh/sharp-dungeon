@@ -16,7 +16,7 @@ namespace SharpDungeon.Game.States {
         }
 
         public abstract void tick();
-        public abstract void render(Graphics g);
+        public abstract void render(System.Drawing.Graphics g);
 
     }
 }

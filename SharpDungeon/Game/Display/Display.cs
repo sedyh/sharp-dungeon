@@ -10,8 +10,10 @@ using System.Windows.Forms;
 
 namespace SharpDungeon.Game.Display {
     public partial class Display : Form {
-        
-        public Display() {
+
+        private Game game;
+
+        public Display(Game game) {
 
             //Init display
             InitializeComponent();
@@ -20,22 +22,20 @@ namespace SharpDungeon.Game.Display {
             DoubleBuffered = true;
 
             //Init events
-            KeyDown += new System.Windows.Forms.KeyEventHandler(keyManager.KeyDown);
-            KeyUp += new System.Windows.Forms.KeyEventHandler(keyManager.KeyUp);
+            KeyDown += new System.Windows.Forms.KeyEventHandler(game.keyManager.KeyDown);
+            KeyUp += new System.Windows.Forms.KeyEventHandler(game.keyManager.KeyUp);
 
-            MouseDown += new System.Windows.Forms.MouseEventHandler(mouseManager.mouseDown);
-            MouseMove += new System.Windows.Forms.MouseEventHandler(mouseManager.mouseMove);
-            MouseUp += new System.Windows.Forms.MouseEventHandler(mouseManager.mouseUp);
+            MouseDown += new System.Windows.Forms.MouseEventHandler(game.mouseManager.mouseDown);
+            MouseMove += new System.Windows.Forms.MouseEventHandler(game.mouseManager.mouseMove);
+            MouseUp += new System.Windows.Forms.MouseEventHandler(game.mouseManager.mouseUp);
 
-            MouseEnter += new System.EventHandler(mouseManager.mouseEnter);
-            MouseLeave += new System.EventHandler(mouseManager.mouseLeave);
-            MouseHover += new System.EventHandler(mouseManager.mouseHover);
+            MouseEnter += new System.EventHandler(game.mouseManager.mouseEnter);
+            MouseLeave += new System.EventHandler(game.mouseManager.mouseLeave);
+            MouseHover += new System.EventHandler(game.mouseManager.mouseHover);
 
-            Paint += new System.Windows.Forms.PaintEventHandler(render);
+            Paint += new System.Windows.Forms.PaintEventHandler(game.render);
+            FormClosed += new System.Windows.Forms.FormClosedEventHandler(game.displayClosed);
 
         }
-
-        
-
     }
 }

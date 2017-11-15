@@ -13,7 +13,7 @@ namespace SharpDungeon.Game {
         public Game game {get; set;}
         public KeyManager keyManager { get; set; }
         public MouseManager mouseManager { get; set; }
-        public World world { get; set; }
+        public World.World world { get; set; }
         public GameCamera gameCamera { get; set; }
         public int width { get; set; }
         public int height { get; set; }
@@ -25,8 +25,8 @@ namespace SharpDungeon.Game {
             this.mouseManager = game.mouseManager;
             this.gameCamera = game.gameCamera;
 
-            this.width = game.Width;
-            this.height = game.Height;
+            //this.width = game.Width;
+            //this.height = game.Height;
         }
     }
 }

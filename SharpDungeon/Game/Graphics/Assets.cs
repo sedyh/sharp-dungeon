@@ -31,6 +31,8 @@ namespace SharpDungeon.Game.Graphics {
             air = tileSheet.crop(width * 6, height, width, height);
             stone = tileSheet.crop(width*4, height, width, height);
 
+            stoneWall = new Bitmap[16];
+
             stoneWall[0] = tileSheet.crop(0, 0, width, height);
             stoneWall[1] = tileSheet.crop(width, 0, width, height);
             stoneWall[2] = tileSheet.crop(width*2, 0, width, height);
@@ -44,11 +46,10 @@ namespace SharpDungeon.Game.Graphics {
             stoneWall[9] = tileSheet.crop(width*9, 0, width, height);
             stoneWall[10] = tileSheet.crop(width*10, 0, width, height);
             stoneWall[11] = tileSheet.crop(width*11, 0, width, height);
-            stoneWall[12] = tileSheet.crop(width*12, 0, width, height);
-            stoneWall[13] = tileSheet.crop(width, height, width, height);
-            stoneWall[14] = tileSheet.crop(width*2, height, width, height);
-            stoneWall[15] = tileSheet.crop(width*3, height, width, height);
-            stoneWall[16] = tileSheet.crop(width*4, height, width, height);
+            stoneWall[12] = tileSheet.crop(width, height, width, height);
+            stoneWall[13] = tileSheet.crop(width*2, height, width, height);
+            stoneWall[14] = tileSheet.crop(width*3, height, width, height);
+            stoneWall[15] = tileSheet.crop(width*4, height, width, height);
 
 
         }

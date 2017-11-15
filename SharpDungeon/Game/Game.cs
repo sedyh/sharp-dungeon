@@ -1,12 +1,18 @@
-﻿using SharpDungeon.Game.States;
+﻿using SharpDungeon.Game.Graphics;
+using SharpDungeon.Game.Input;
+using SharpDungeon.Game.States;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SharpDungeon.Game.Display {
+namespace SharpDungeon.Game {
     public class Game {
 
         public KeyManager keyManager { get; set; } = new KeyManager();
@@ -19,16 +25,21 @@ namespace SharpDungeon.Game.Display {
 
         private System.Drawing.Graphics g;
         private Handler handler;
-
         private Thread t;
         private bool running = false;
+        public Display.Display display { get; set; }
 
         public Game() {
+            start();
 
             //Init display
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Display());
+            display = new Display.Display(this);
+            Application.Run(display);
+        }
+
+        private void run() {
 
             //Init game components
             Assets.init();
@@ -38,10 +49,7 @@ namespace SharpDungeon.Game.Display {
             //Init states
             gameState = new GameState(handler);
             menuState = new MenuState(handler);
-            State.currentState = gameState;
-        }
-
-        private void run() {
+            State.currentState = menuState;
 
             int fps = 60;
             double timePerTick = 1000000000 / fps;
@@ -62,7 +70,7 @@ namespace SharpDungeon.Game.Display {
                 if (delta >= 1) {
                     //Main methods: tick() and render() / invalidate()
                     tick();
-                    Invalidate();
+                    display.Invalidate();
                     ticks++;
                     delta--;
                 }
@@ -86,14 +94,16 @@ namespace SharpDungeon.Game.Display {
                 State.currentState.tick();
         }
 
-        private void render(object sender, PaintEventArgs e) {
+        public void render(object sender, PaintEventArgs e) {
             g = e.Graphics;
             g.Clear(Color.Black);
 
             if (State.currentState != null)
                 State.currentState.render(g);
+        }
 
-            g.Dispose();
+        public void displayClosed(object sender, FormClosedEventArgs e) {
+            stop();
         }
 
         //Thread safe operations
@@ -113,7 +123,7 @@ namespace SharpDungeon.Game.Display {
                 return;
 
             running = false;
-            t.Join();
+            t.Abort();
         }
 
         //Not accurate but most easy way to get nano time
