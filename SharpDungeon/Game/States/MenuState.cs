@@ -17,6 +17,7 @@ namespace SharpDungeon.Game.States {
 
         public MenuState(Handler handler) : base(handler) {
             rnd = new Random();
+            b = new Bitmap(Assets.logo);
         }
 
         public override void tick() {
@@ -26,9 +27,7 @@ namespace SharpDungeon.Game.States {
 
         public override void render(System.Drawing.Graphics g) {
 
-            b = Assets.logo;
-
-            if (time > b.Width + 50 && time < b.Width + 60) {
+            if (time > b.Width + 50) {
                 for (int i = 0; i < 1400; i++) {
                     int x = rnd.Next(0, b.Width),
                         y = rnd.Next(0, b.Height);
@@ -38,13 +37,16 @@ namespace SharpDungeon.Game.States {
                         pointList.Add(new Point(x, y));
                     }
                 }
-                time += 4;
-            } else if (time <= b.Width + 3) {
+            }
+              
+            if (time <= b.Width + 3) {
                 time += 16;
             } else if (time > b.Width + 3 && time <= b.Width + 50) {
                 time += 4;
+            } else if(!(pointList.ToArray().Length == b.Width * b.Height)) {
+                time++;
             } else {
-                time = 0;
+                State.currentState = handler.game.gameState;
             }
 
             g.DrawImage(b,
@@ -54,11 +56,6 @@ namespace SharpDungeon.Game.States {
             g.DrawEllipse(Pens.White, (handler.game.display.Width - time) / 2,
                                       (handler.game.display.Height - time) / 2,
                                       time, time);
-
-            if (pointList.ToArray().Length == b.Width * b.Height)
-                g.DrawImage(Assets.stone,
-                            handler.game.display.Width / 2 - Assets.stone.Width / 2,
-                            handler.game.display.Height / 2 - Assets.stone.Height / 2);
 
         }
 

@@ -55,7 +55,7 @@ namespace SharpDungeon.Game.Graphics {
                 logo = tileSheet.crop(width*9, height*11, width*3, height);
 
             } catch (OutOfMemoryException) {
-                //logg: not correct coords of SpriteSheet!
+                //logg: not correct coords of SpriteSheet
             }
         }
 
