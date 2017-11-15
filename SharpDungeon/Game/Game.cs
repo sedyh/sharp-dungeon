@@ -1,4 +1,4 @@
-﻿using SharpDungeon.Game.Graphics;
+using SharpDungeon.Game.Graphics;
 using SharpDungeon.Game.Input;
 using SharpDungeon.Game.States;
 using System;
@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SharpDungeon.Game {
@@ -22,44 +23,33 @@ namespace SharpDungeon.Game {
 
         public GameCamera gameCamera { get; set; }
 
-        public int width { get; set; }
-        public int height { get; set; }
-        public string title { get; set; }
-
         private System.Drawing.Graphics g;
         private Handler handler;
-        private Display.Display display;
         private Thread t;
         private bool running = false;
+        public Display.Display display { get; set; }
 
         public Game() {
             start();
-        }
-
-        public void init() {
 
             //Init display
-            Display.Display display = new Display.Display(this);
-            display.Visible = true;
-            this.width = display.Width;
-            this.height = display.Height;
-            this.title = display.Text;
-            this.display = display;
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            display = new Display.Display(this);
+            Application.Run(display);
+        }
+
+        private void run() {
 
             //Init game components
             Assets.init();
             handler = new Handler(this);
-            //gameCamera = new GameCamera(handler, 0, 0);
+            gameCamera = new GameCamera(handler, 0, 0);
 
             //Init states
             gameState = new GameState(handler);
             menuState = new MenuState(handler);
             State.currentState = menuState;
-        }
-
-        private void run() {
-
-            init();
 
             int fps = 60;
             double timePerTick = 1000000000 / fps;
@@ -78,10 +68,9 @@ namespace SharpDungeon.Game {
 
 
                 if (delta >= 1) {
-                    //Timer update
+                    //Main methods: tick() and render() / invalidate()
                     tick();
                     display.Invalidate();
-                    display.Update();
                     ticks++;
                     delta--;
                 }
@@ -97,7 +86,7 @@ namespace SharpDungeon.Game {
 
         }
 
-        //Main methods: tick() and render()
+        //Main methods: tick() and render() / invalidate()
         private void tick() {
             keyManager.tick();
 
@@ -111,8 +100,10 @@ namespace SharpDungeon.Game {
 
             if (State.currentState != null)
                 State.currentState.render(g);
+        }
 
-            g.Dispose();
+        public void displayClosed(object sender, FormClosedEventArgs e) {
+            stop();
         }
 
         //Thread safe operations
@@ -132,11 +123,6 @@ namespace SharpDungeon.Game {
                 return;
 
             running = false;
-            t.Join();
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void exit() {
             t.Abort();
         }
 

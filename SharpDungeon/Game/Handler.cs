@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +13,7 @@ namespace SharpDungeon.Game {
         public Game game {get; set;}
         public KeyManager keyManager { get; set; }
         public MouseManager mouseManager { get; set; }
-        //public World world { get; set; }
+        public World.World world { get; set; }
         public GameCamera gameCamera { get; set; }
         public int width { get; set; }
         public int height { get; set; }

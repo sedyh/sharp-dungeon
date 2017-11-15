@@ -1,4 +1,4 @@
-﻿using SharpDungeon.Game.Tiles;
+using SharpDungeon.Game.Tiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,33 +36,33 @@ namespace SharpDungeon.Game.World {
         //        for (int y = yStart; y < yEnd; y++) {
         //            getTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
 
-                    //Тик объявлен только для видимых тайлов
-                    //Передача области 3х3 каждому тайлу
+        //            //Тик объявлен только для видимых тайлов
+        //            //Передача области 3х3 каждому тайлу
                     
-                    //if(getTile(x,y) is SmartTileSide) {
-                    //    int[] area = new int[9];
-                    //    area[0] = tiles[x - 1, y - 1];
-                    //    area[1] = tiles[x, y - 1];
-                    //    area[2] = tiles[x + 1, y - 1];
-                    //    area[3] = tiles[x - 1, y];
-                    //    area[4] = tiles[x, y];
-                    //    area[5] = tiles[x + 1, y];
-                    //    area[6] = tiles[x - 1, y + 1];
-                    //    area[7] = tiles[x, y + 1];
-                    //    area[8] = tiles[x + 1, y + 1];
-                    //    getTile(x, y).tick(area);
-                    //} else {
-                    //    getTile(x, y).tick();
-                    //}
+        //            if(getTile(x,y) is SmartTileSide) {
+        //                int[] area = new int[9];
+        //                area[0] = tiles[x - 1, y - 1];
+        //                area[1] = tiles[x, y - 1];
+        //                area[2] = tiles[x + 1, y - 1];
+        //                area[3] = tiles[x - 1, y];
+        //                area[4] = tiles[x, y];
+        //                area[5] = tiles[x + 1, y];
+        //                area[6] = tiles[x - 1, y + 1];
+        //                area[7] = tiles[x, y + 1];
+        //                area[8] = tiles[x + 1, y + 1];
+        //                getTile(x, y).tick(area);
+        //            } else {
+        //                getTile(x, y).tick();
+        //            }
         //    }
         //}
 
-            ////Выделение
-            //selection.render(g);
-            ////Предметы
-            //itemManager.render(g);
-            ////Сущности
-            //entityManager.render(g);
+        //    //Выделение
+        //    selection.render(g);
+        //    //Предметы
+        //    itemManager.render(g);
+        //    //Сущности
+        //    entityManager.render(g);
         //}
 
             

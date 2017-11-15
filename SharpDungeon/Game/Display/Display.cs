@@ -1,4 +1,3 @@
-﻿using SharpDungeon.Game.Input;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +23,7 @@ namespace SharpDungeon.Game.Display {
             //Init framebuffer
             DoubleBuffered = true;
 
-            //Init events, address to Game
+            //Init events
             KeyDown += new System.Windows.Forms.KeyEventHandler(game.keyManager.KeyDown);
             KeyUp += new System.Windows.Forms.KeyEventHandler(game.keyManager.KeyUp);
 
@@ -37,18 +36,8 @@ namespace SharpDungeon.Game.Display {
             MouseHover += new System.EventHandler(game.mouseManager.mouseHover);
 
             Paint += new System.Windows.Forms.PaintEventHandler(game.render);
-        }
+            FormClosed += new System.Windows.Forms.FormClosedEventHandler(game.displayClosed);
 
-        //Stop Game
-        private void Display_FormClosed(object sender, FormClosedEventArgs e) {
-            game.stop();
-            game.exit();
         }
-        //If Form changes size
-        private void Display_SizeChanged(object sender, EventArgs e) {
-            game.width = Width;
-            game.height = Height;
-        }
-
     }
 }

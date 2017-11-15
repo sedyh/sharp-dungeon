@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace SharpDungeon.Game.States {
         //private World world;
 
         public GameState(Handler handler) : base(handler) {
-            //world = new World(handler, "world");
+            //world = new World(handler, "wordl");
             //handler.world = world;
         }
 
