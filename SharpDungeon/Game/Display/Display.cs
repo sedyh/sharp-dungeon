@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +14,8 @@ namespace SharpDungeon.Game.Display {
         private Game game;
 
         public Display(Game game) {
+
+            this.game = game;
 
             //Init display
             InitializeComponent();

@@ -1,4 +1,4 @@
-﻿using SharpDungeon.Game.Graphics;
+using SharpDungeon.Game.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

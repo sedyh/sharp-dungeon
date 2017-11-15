@@ -1,4 +1,4 @@
-﻿using SharpDungeon.Game.Graphics;
+using SharpDungeon.Game.Graphics;
 using SharpDungeon.Game.Input;
 using SharpDungeon.Game.States;
 using System;

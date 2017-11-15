@@ -1,4 +1,4 @@
-﻿using SharpDungeon.Game.Entities;
+using SharpDungeon.Game.Entities;
 using SharpDungeon.Game.Tiles;
 using System;
 using System.Collections.Generic;
