@@ -22,6 +22,7 @@ namespace SharpDungeon.Game.Graphics {
 
         public static Bitmap air, stone;
         public static Bitmap[] stoneWall;
+        public static Bitmap logo;
 
         //Load textures
 
@@ -51,7 +52,8 @@ namespace SharpDungeon.Game.Graphics {
                 stoneWall[13] = tileSheet.crop(width * 2, height, width, height);
                 stoneWall[14] = tileSheet.crop(width * 3, height, width, height);
                 stoneWall[15] = tileSheet.crop(width * 4, height, width, height);
-              
+                logo = tileSheet.crop(width*9, height*11, width*3, height);
+
             } catch (OutOfMemoryException) {
                 //logg: not correct coords of SpriteSheet!
             }

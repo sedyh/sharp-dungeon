@@ -33,8 +33,6 @@
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.Name = "Display";
             this.Text = "Display";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Display_FormClosed);
-            this.SizeChanged += new System.EventHandler(this.Display_SizeChanged);
             this.ResumeLayout(false);
 
         }

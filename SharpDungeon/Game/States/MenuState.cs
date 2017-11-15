@@ -13,6 +13,7 @@ namespace SharpDungeon.Game.States {
         Random rnd;
         Bitmap b;
         bool pressedE;
+        int time = 0;
 
         public MenuState(Handler handler) : base(handler) {
             rnd = new Random();
@@ -25,22 +26,40 @@ namespace SharpDungeon.Game.States {
 
         public override void render(System.Drawing.Graphics g) {
 
-            b = Assets.stoneWall[0];
+            b = Assets.logo;
 
-            if (pressedE) {
+            if (time > b.Width + 50 && time < b.Width + 60) {
+                for (int i = 0; i < 1400; i++) {
+                    int x = rnd.Next(0, b.Width),
+                        y = rnd.Next(0, b.Height);
 
-                int x = rnd.Next(0, b.Width),
-                    y = rnd.Next(0, b.Height);
-
-                if (!isBlank(x, y)) {
-                    b.SetPixel(x, y, Color.FromArgb(0, 0, 0));
-                    pointList.Add(new Point(x, y));
+                    if (!isBlank(x, y)) {
+                        b.SetPixel(x, y, Color.FromArgb(0, 0, 0));
+                        pointList.Add(new Point(x, y));
+                    }
                 }
+                time += 4;
+            } else if (time <= b.Width + 3) {
+                time += 16;
+            } else if (time > b.Width + 3 && time <= b.Width + 50) {
+                time += 4;
+            } else {
+                time = 0;
             }
-                g.DrawImage(b,
-                            handler.game.display.Width / 2 - b.Width / 2,
-                            handler.game.display.Height / 2 - b.Height / 2);
-            
+
+            g.DrawImage(b,
+                        handler.game.display.Width / 2 - b.Width / 2,
+                        handler.game.display.Height / 2 - b.Height / 2);
+
+            g.DrawEllipse(Pens.White, (handler.game.display.Width - time) / 2,
+                                      (handler.game.display.Height - time) / 2,
+                                      time, time);
+
+            if (pointList.ToArray().Length == b.Width * b.Height)
+                g.DrawImage(Assets.stone,
+                            handler.game.display.Width / 2 - Assets.stone.Width / 2,
+                            handler.game.display.Height / 2 - Assets.stone.Height / 2);
+
         }
 
         private bool isBlank(int x, int y) {

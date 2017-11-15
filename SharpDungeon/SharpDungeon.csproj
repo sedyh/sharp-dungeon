@@ -75,12 +75,6 @@
     <Compile Include="Game\Input\KeyManager.cs" />
     <Compile Include="Game\Input\MouseManager.cs" />
     <Compile Include="Game\Launch.cs" />
-    <Compile Include="Launcher\Launcher.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Launcher\Launcher.Designer.cs">
-      <DependentUpon>Launcher.cs</DependentUpon>
-    </Compile>
     <Compile Include="Game\States\GameState.cs" />
     <Compile Include="Game\States\MenuState.cs" />
     <Compile Include="Game\States\State.cs" />
@@ -93,9 +87,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Game\Display\Display.resx">
       <DependentUpon>Display.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Launcher\Launcher.resx">
-      <DependentUpon>Launcher.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
