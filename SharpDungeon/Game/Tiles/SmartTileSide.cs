@@ -8,21 +8,19 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.Tiles {
     public abstract class SmartTileSide : Tile {
 
-        public SmartTileSide(Bitmap tex, int id) : base(id) {
-            this.tex = tex;
+        Bitmap[] textures;
+
+        public SmartTileSide(Bitmap[] tex, int id) : base(id) {
+            this.textures = tex;
         }
 
-        public override void tick(int[,] area) {
-            //switch(area) {
-
-            //}
+        public void tick(Handler handler, int x, int y, int[] area) {
+            base.tick(handler, x, y);
         }
 
-        public override void render(System.Drawing.Graphics g, int x, int y) {
-            g.DrawImage(tex, x, y, tileWidth, tileHeight);
+        public void render(System.Drawing.Graphics g) {
+            base.render(g);
         }
-
-        public abstract override bool isSolid();
 
     }
 }

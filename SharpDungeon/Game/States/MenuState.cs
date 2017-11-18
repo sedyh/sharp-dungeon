@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.States {
     public class MenuState : State{
 
-        List<Point> pointList = new List<Point>();
+        List<Point> blackList = new List<Point>();
         Random rnd;
         Bitmap b;
         bool pressedE;
@@ -34,7 +34,7 @@ namespace SharpDungeon.Game.States {
 
                     if (!isBlank(x, y)) {
                         b.SetPixel(x, y, Color.FromArgb(0, 0, 0));
-                        pointList.Add(new Point(x, y));
+                        blackList.Add(new Point(x, y));
                     }
                 }
             }
@@ -43,10 +43,10 @@ namespace SharpDungeon.Game.States {
                 time += 16;
             } else if (time > b.Width + 3 && time <= b.Width + 50) {
                 time += 4;
-            } else if(!(pointList.ToArray().Length == b.Width * b.Height)) {
+            } else if(!(blackList.ToArray().Length == b.Width * b.Height)) {
                 time++;
             } else {
-                State.currentState = handler.game.gameState;
+                currentState = handler.game.gameState;
             }
 
             g.DrawImage(b,
@@ -61,7 +61,7 @@ namespace SharpDungeon.Game.States {
 
         private bool isBlank(int x, int y) {
             bool ret = false;
-            foreach (Point p in pointList)
+            foreach (Point p in blackList)
                 if (p.X == x && p.Y == y)
                     ret = true;
             return ret;

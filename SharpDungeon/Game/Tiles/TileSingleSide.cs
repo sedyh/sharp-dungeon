@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpDungeon.Game;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,16 +10,16 @@ namespace SharpDungeon.Game.Tiles {
     public abstract class TileSingleSide : Tile {
 
         public TileSingleSide(Bitmap tex, int id) : base(id) {
-            this.tex = tex;
+            currentTex = tex;
         }
 
-        public override void tick(int[,] area) {}
-
-        public override void render(System.Drawing.Graphics g, int x, int y) {
-            g.DrawImage(tex, x, y, tileWidth, tileHeight);
+        public void tick(Handler handler, int x, int y, int [] area) {
+            base.tick(handler, x, y);
         }
-
-        public abstract override bool isSolid();
+    
+        public void render(System.Drawing.Graphics g) {
+            base.render(g);
+        }
 
     }
 }

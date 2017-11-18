@@ -67,6 +67,8 @@
       <DependentUpon>Display.cs</DependentUpon>
     </Compile>
     <Compile Include="Game\Entities\Entity.cs" />
+    <Compile Include="Game\Entities\Mob.cs" />
+    <Compile Include="Game\Entities\Player.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\Graphics\Assets.cs" />
     <Compile Include="Game\Graphics\GameCamera.cs" />
@@ -121,6 +123,7 @@
   <ItemGroup>
     <Content Include="Assets\chest.ico" />
     <Content Include="Assets\tilesWorld.png" />
+    <Content Include="Assets\ui.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

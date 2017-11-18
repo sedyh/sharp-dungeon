@@ -24,7 +24,7 @@ namespace SharpDungeon.Game.States {
 
         public override void tick() {
             if (time < 360)
-                time+=5;
+                time+=15;
             else
                 time = 0;
         }

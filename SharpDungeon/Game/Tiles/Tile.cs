@@ -16,15 +16,23 @@ namespace SharpDungeon.Game.Tiles {
 
         protected readonly int id;
 
-        protected Bitmap tex;
+        protected int x { get; set; }
+        protected int y { get; set; }
+
+        protected Bitmap currentTex { get; set; }
 
         public Tile(int id) {
             this.id = id;
         }
 
-        public abstract void tick(int[,] area);
+        public void tick(Handler handler, int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
 
-        public abstract void render(System.Drawing.Graphics g, int x, int y);
+        public void render(System.Drawing.Graphics g) {
+            g.DrawImage(currentTex, x, y, tileWidth, tileHeight);
+        }
 
         public abstract bool isSolid();
     }
