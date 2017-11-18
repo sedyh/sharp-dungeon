@@ -30,6 +30,7 @@ namespace SharpDungeon.Game.Graphics {
             try {
               
                 SpriteSheet tileSheet = new SpriteSheet("../../Assets/tilesWorld.png");
+
                 air = tileSheet.crop(width * 6, height, width, height);
                 stone = tileSheet.crop(width * 4, height, width, height);
 
@@ -53,6 +54,8 @@ namespace SharpDungeon.Game.Graphics {
                 stoneWall[14] = tileSheet.crop(width * 3, height, width, height);
                 stoneWall[15] = tileSheet.crop(width * 4, height, width, height);
                 logo = tileSheet.crop(width*9, height*11, width*3, height);
+
+
 
             } catch (OutOfMemoryException) {
                 //logg: not correct coords of SpriteSheet

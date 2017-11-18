@@ -13,12 +13,12 @@ namespace SharpDungeon.Game.Tiles {
             currentTex = tex;
         }
 
-        public void tick(Handler handler, int x, int y, int [] area) {
+        public override void tick(Handler handler, int x, int y) {
             base.tick(handler, x, y);
         }
     
-        public void render(System.Drawing.Graphics g) {
-            base.render(g);
+        public override void render(System.Drawing.Graphics g, int x, int y) {
+            base.render(g, x, y);
         }
 
     }

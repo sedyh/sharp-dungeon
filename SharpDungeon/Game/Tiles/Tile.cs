@@ -15,22 +15,25 @@ namespace SharpDungeon.Game.Tiles {
                                    tileHeight = 64;
 
         protected readonly int id;
+        protected Bitmap currentTex { get; set; }
+        protected Handler handler { get; set; }
 
+        //Tiles array coords
         protected int x { get; set; }
         protected int y { get; set; }
-
-        protected Bitmap currentTex { get; set; }
 
         public Tile(int id) {
             this.id = id;
         }
 
-        public void tick(Handler handler, int x, int y) {
+        public virtual void tick(Handler handler, int x, int y) {
+            this.handler = handler;
             this.x = x;
             this.y = y;
         }
 
-        public void render(System.Drawing.Graphics g) {
+        //World coords
+        public virtual void render(System.Drawing.Graphics g, int x, int y) {
             g.DrawImage(currentTex, x, y, tileWidth, tileHeight);
         }
 

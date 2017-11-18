@@ -37,19 +37,9 @@ namespace SharpDungeon.Game.World {
                     getTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
 
                     //Тик объявлен только для видимых тайлов
-                    //Передача области 3х3 каждому тайлу
+
+                    getTile(x, y).tick(handler, x, y);
                     
-                        int[] area = new int[9];
-                        area[0] = tiles[x - 1, y - 1];
-                        area[1] = tiles[x, y - 1];
-                        area[2] = tiles[x + 1, y - 1];
-                        area[3] = tiles[x - 1, y];
-                        area[4] = tiles[x, y];
-                        area[5] = tiles[x + 1, y];
-                        area[6] = tiles[x - 1, y + 1];
-                        area[7] = tiles[x, y + 1];
-                        area[8] = tiles[x + 1, y + 1];
-                        getTile(x, y).tick(area, x, y);
                 }
             }
 
@@ -76,7 +66,7 @@ namespace SharpDungeon.Game.World {
 
         private void loadWorld(String path) {
             String file = Utils.loadFileAsString(path);
-            String[] tokens = file.split("\\s+");
+            String[] tokens = file.Split("\\s+");
             width = Utils.parseInt(tokens[0]);
             height = Utils.parseInt(tokens[1]);
             spawnX = Utils.parseInt(tokens[2]);

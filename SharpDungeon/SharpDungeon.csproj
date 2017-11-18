@@ -81,7 +81,9 @@
     <Compile Include="Game\States\MenuState.cs" />
     <Compile Include="Game\States\State.cs" />
     <Compile Include="Game\Tiles\AirTile.cs" />
-    <Compile Include="Game\Tiles\SmartTileSide.cs" />
+    <Compile Include="Game\Tiles\StoneTile.cs" />
+    <Compile Include="Game\Tiles\StoneWallTile.cs" />
+    <Compile Include="Game\Tiles\TileSmartSide.cs" />
     <Compile Include="Game\Tiles\Tile.cs" />
     <Compile Include="Game\Tiles\TileSingleSide.cs" />
     <Compile Include="Game\Utils\Area.cs" />
