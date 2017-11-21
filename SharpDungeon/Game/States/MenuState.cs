@@ -21,6 +21,7 @@ namespace SharpDungeon.Game.States {
         }
 
         public override void tick() {
+
             if (handler.game.keyManager.isPressed(System.Windows.Forms.Keys.E))
                 pressedE = true;
         }

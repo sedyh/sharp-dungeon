@@ -19,7 +19,7 @@ namespace SharpDungeon.Game.Utils {
             i = width / 2;
             j = height / 2;
 
-            for(int i=0; i< )
+            
         }
     }
 }

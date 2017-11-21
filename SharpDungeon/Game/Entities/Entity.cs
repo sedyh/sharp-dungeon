@@ -47,20 +47,23 @@ namespace SharpDungeon.Game.Entities {
             }
         }
 
-        public bool checkEntityCollisions(float xOffset, float yOffset) {
-            foreach(Entity e in handler.world.entities.getEntities()) {
-                if (e.Equals(this))
-                    continue;
-                if (e.getCollisionBounds(0f, 0f).IntersectsWith(getCollisionBounds(xOffset, yOffset))) {
-                    return true;
-                }
-            }
-            return false;
-        }
+        //public bool checkEntityCollisions(float xOffset, float yOffset) {
+        //    foreach(Entity e in handler.world.entities.getEntities()) {
+        //        if (e.Equals(this))
+        //            continue;
+        //        if (e.getCollisionBounds(0f, 0f).IntersectsWith(getCollisionBounds(xOffset, yOffset))) {
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
         public Rectangle getCollisionBounds(float xOffset, float yOffset) {
             return new Rectangle((int)(x + bounds.X + xOffset), (int)(y + bounds.Y + yOffset), bounds.Width, bounds.Height);
         }
 
+        public bool isActive() {
+            return active;
+        }
     }
 }

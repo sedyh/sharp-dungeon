@@ -9,7 +9,9 @@ namespace SharpDungeon.Game.World {
     public class World {
         private Handler handler;
 
-        private int width, height;
+        public int width { get; set; }
+        public int height { get; set; }
+
         private int spawnX, spawnY;
         private int[,] tiles;
 
@@ -19,9 +21,9 @@ namespace SharpDungeon.Game.World {
 
         public void tick() {
             //Тик для тайлов объявлен ниже!
-            selection.tick();
-            itemManager.tick();
-            entityManager.tick();
+            //selection.tick();
+            //itemManager.tick();
+            //entityManager.tick();
         }
 
         public void render(System.Drawing.Graphics g) {
@@ -43,10 +45,10 @@ namespace SharpDungeon.Game.World {
                 }
             }
 
-            //Выделение
-            selection.render(g);
-            //Предметы
-            itemManager.render(g);
+            ////Выделение
+            //selection.render(g);
+            ////Предметы
+            //itemManager.render(g);
             //Сущности
             entityManager.render(g);
         }
@@ -65,27 +67,33 @@ namespace SharpDungeon.Game.World {
         }
 
         private void loadWorld(String path) {
-            String file = Utils.loadFileAsString(path);
-            String[] tokens = file.Split("\\s+");
-            width = Utils.parseInt(tokens[0]);
-            height = Utils.parseInt(tokens[1]);
-            spawnX = Utils.parseInt(tokens[2]);
-            spawnY = Utils.parseInt(tokens[3]);
+            //String file = Utils.loadFileAsString(path);
+            //String[] tokens = file.Split("\\s+");
+            //width = Utils.parseInt(tokens[0]);
+            //height = Utils.parseInt(tokens[1]);
+            //spawnX = Utils.parseInt(tokens[2]);
+            //spawnY = Utils.parseInt(tokens[3]);
 
-            tiles = new int[width, height];
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    tiles[x, y] = Utils.parseInt(tokens[(x + y * width) + 4]);
-                }
-            }
+            //tiles = new int[width, height];
+            //for (int x = 0; x < width; x++) {
+            //    for (int y = 0; y < height; y++) {
+            //        tiles[x, y] = Utils.parseInt(tokens[(x + y * width) + 4]);
+            //    }
+            //}
         }
 
         public int toWorldX(int x) {
-            return (int)((int)(Tile.tileWidth - handler.gameCamera.getxOffset() % Tile.TILE_WIDTH) + (Tile.TILE_WIDTH - (int)(Tile.TILE_WIDTH - handler.getGameCamera().getxOffset() % Tile.TILE_WIDTH) + handler.getMouseManager().getMouseX()) / Tile.TILE_WIDTH * Tile.TILE_WIDTH - Tile.TILE_WIDTH + handler.getGameCamera().getxOffset()) / Tile.TILE_WIDTH;
+            return (int)( (Tile.tileWidth - handler.gameCamera.xOffset % Tile.tileWidth) + 
+                          (Tile.tileWidth - (Tile.tileWidth - handler.gameCamera.xOffset % Tile.tileWidth) + 
+                          handler.mouseManager.mouseX) / Tile.tileWidth * Tile.tileWidth - Tile.tileWidth + 
+                          handler.gameCamera.xOffset ) / Tile.tileWidth;
         }
 
         public int toWorldY(int y) {
-            return (int)((int)(Tile.tileHeight - handler.gameCamera.getyOffset() % Tile.TILE_HEIGHT) + (Tile.TILE_HEIGHT - (int)(Tile.TILE_HEIGHT - handler.getGameCamera().getyOffset() % Tile.TILE_HEIGHT) + handler.getMouseManager().getMouseY()) / Tile.TILE_HEIGHT * Tile.TILE_HEIGHT - Tile.TILE_HEIGHT + handler.getGameCamera().getyOffset()) / Tile.TILE_HEIGHT;
+            return (int)((Tile.tileHeight - handler.gameCamera.yOffset % Tile.tileHeight) +
+                          (Tile.tileHeight - (Tile.tileHeight - handler.gameCamera.yOffset % Tile.tileHeight) +
+                          handler.mouseManager.mouseY) / Tile.tileHeight * Tile.tileHeight - Tile.tileHeight +
+                          handler.gameCamera.yOffset) / Tile.tileHeight;
         }
 
         public int toViewX(int x) {
