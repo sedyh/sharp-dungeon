@@ -3,6 +3,8 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)](https://github.com/sedyh/sharp-dungeon) 
 [![GitHub license](https://img.shields.io/github/license/sedyh/sharp-dungeon.svg)](https://github.com/sedyh/sharp-dungeon/blob/master/LICENSE)
 
+![Preview](https://i.gyazo.com/cd8ae202632f5494c31c2d072fbee2e3.gif "Preview")
+
 Poguelike game based on pixel dungeon mechanics.
  
 #### By sedyh @ 2017
