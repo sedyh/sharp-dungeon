@@ -58,6 +58,9 @@ namespace SharpDungeon.Game.States {
                                       (handler.game.display.Height - time) / 2,
                                       time, time);
 
+            if (handler.keyManager.isPressed(System.Windows.Forms.Keys.Enter))
+                State.currentState = handler.game.gameState;
+
         }
 
         private bool isBlank(int x, int y) {

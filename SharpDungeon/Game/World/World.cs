@@ -1,3 +1,4 @@
+using SharpDungeon.Game.Entities;
 using SharpDungeon.Game.Tiles;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace SharpDungeon.Game.World {
     public class World {
+
         private Handler handler;
+        private EntityManager entityManager { get; set; }
 
         public int width { get; set; }
         public int height { get; set; }
@@ -15,24 +18,49 @@ namespace SharpDungeon.Game.World {
         private int spawnX, spawnY;
         private int[,] tiles;
 
-        public World(Handler handler, String path) {
+        public World(Handler handler) {
             this.handler = handler;
+
+            width = 10;
+            height = 10;
+            spawnX = 100;
+            spawnY = 100;
+
+            tiles = new int[width, height];
+
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (x == 0)
+                        tiles[x, y] = Tile.stoneWall.getId();
+                    else if (y == 0)
+                        tiles[x, y] = Tile.stoneWall.getId();
+                    else if (x == width - 1)
+                        tiles[x, y] = Tile.stoneWall.getId();
+                    else if (y == height-1)
+                        tiles[x, y] = Tile.stoneWall.getId();
+                    else
+                        tiles[x, y] = Tile.stone.getId();
+                }
+            }
+
+            entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
+            
         }
 
         public void tick() {
             //Тик для тайлов объявлен ниже!
             //selection.tick();
             //itemManager.tick();
-            //entityManager.tick();
+            entityManager.tick();
         }
 
         public void render(System.Drawing.Graphics g) {
 
             // Чанковая прогрузка
             int xStart = (int)(Math.Max(0, handler.gameCamera.xOffset / Tile.tileWidth));
-            int xEnd = (int)(Math.Min(width, (handler.gameCamera.xOffset + handler.width) / Tile.tileWidth));
+            int xEnd = (int)(Math.Min(width, (handler.gameCamera.xOffset + handler.game.display.Width) / Tile.tileWidth));
             int yStart = (int)(Math.Max(0, handler.gameCamera.yOffset / Tile.tileHeight));
-            int yEnd = (int)(Math.Min(height, (handler.gameCamera.yOffset + handler.height) / Tile.tileHeight));
+            int yEnd = (int)(Math.Min(height, (handler.gameCamera.yOffset + handler.game.display.Height) / Tile.tileHeight));
 
             for (int x = xStart; x < xEnd; x++) {
                 for (int y = yStart; y < yEnd; y++) {
@@ -49,6 +77,7 @@ namespace SharpDungeon.Game.World {
             //selection.render(g);
             ////Предметы
             //itemManager.render(g);
+
             //Сущности
             entityManager.render(g);
         }
@@ -67,6 +96,15 @@ namespace SharpDungeon.Game.World {
         }
 
         private void loadWorld(String path) {
+
+            tiles = new int[width, height];
+
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    tiles[x, y] = Tile.stone.getId();
+                }
+            }
+
             //String file = Utils.loadFileAsString(path);
             //String[] tokens = file.Split("\\s+");
             //width = Utils.parseInt(tokens[0]);

@@ -24,9 +24,6 @@ namespace SharpDungeon.Game {
             this.keyManager = game.keyManager;
             this.mouseManager = game.mouseManager;
             this.gameCamera = game.gameCamera;
-
-            //this.width = game.Width;
-            //this.height = game.Height;
         }
     }
 }

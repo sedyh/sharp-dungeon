@@ -17,10 +17,13 @@ namespace SharpDungeon.Game.Entities {
         protected int width { get; set; }
         protected int height { get; set; }
 
-        protected int health;
+        public int health { get; set; }
         public static readonly int defaultHealth = 10;
         protected bool active = true;
-        protected Rectangle bounds { get; set; }
+        protected bool turn = false;
+
+        public static readonly int defaultWidth = 64,
+                                   defaultHeight = 64;
 
         public Entity(Handler handler, int worldX, int worldY, int width, int height) {
             this.handler = handler;
@@ -30,8 +33,8 @@ namespace SharpDungeon.Game.Entities {
             this.height = height;
 
             health = defaultHealth;
-            bounds = new Rectangle(0, 0, width, height);
         }
+        
 
         public abstract void tick();
 
@@ -47,19 +50,20 @@ namespace SharpDungeon.Game.Entities {
             }
         }
 
-        //public bool checkEntityCollisions(float xOffset, float yOffset) {
-        //    foreach(Entity e in handler.world.entities.getEntities()) {
-        //        if (e.Equals(this))
-        //            continue;
-        //        if (e.getCollisionBounds(0f, 0f).IntersectsWith(getCollisionBounds(xOffset, yOffset))) {
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
+        public float getX() {
+            return x;
+        }
 
-        public Rectangle getCollisionBounds(float xOffset, float yOffset) {
-            return new Rectangle((int)(x + bounds.X + xOffset), (int)(y + bounds.Y + yOffset), bounds.Width, bounds.Height);
+        public float getY() {
+            return y;
+        }
+
+        public float getWidth() {
+            return x;
+        }
+
+        public float getHeight() {
+            return y;
         }
 
         public bool isActive() {

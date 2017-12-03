@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpDungeon.Game.Entities {
-    class Npc {
+    public class Npc {
     }
 }

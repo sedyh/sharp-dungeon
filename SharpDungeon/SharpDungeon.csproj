@@ -72,6 +72,7 @@
     <Compile Include="Game\Entities\Npc.cs" />
     <Compile Include="Game\Entities\Player.cs" />
     <Compile Include="Game\Game.cs" />
+    <Compile Include="Game\Graphics\Animation.cs" />
     <Compile Include="Game\Graphics\Assets.cs" />
     <Compile Include="Game\Graphics\GameCamera.cs" />
     <Compile Include="Game\Graphics\SpriteSheet.cs" />
@@ -107,6 +108,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>RankingsModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="Assets\emulogic.ttf" />
     <None Include="Game\Database\RankingsModel.edmx.diagram">
       <DependentUpon>RankingsModel.edmx</DependentUpon>
     </None>
@@ -126,6 +128,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Assets\chest.ico" />
+    <Content Include="Assets\entities.png" />
     <Content Include="Assets\tilesWorld.png" />
     <Content Include="Assets\ui.png" />
   </ItemGroup>

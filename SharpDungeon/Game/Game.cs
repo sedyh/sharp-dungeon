@@ -43,8 +43,8 @@ namespace SharpDungeon.Game {
 
             //Init game components
             Assets.init();
-            handler = new Handler(this);
             gameCamera = new GameCamera(handler, 0, 0);
+            handler = new Handler(this);
 
             //Init states
             gameState = new GameState(handler);

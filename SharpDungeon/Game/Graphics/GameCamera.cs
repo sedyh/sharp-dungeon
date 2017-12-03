@@ -33,9 +33,9 @@ namespace SharpDungeon.Game.Graphics {
         }
 
         public void centerOnEntity(Entity e) {
-            //xOffset = e.getX() - handler.width / 2 + e.getWidth() / 2;
-            //yOffset = e.getY() - handler.height / 2 + e.getHeight() / 2;
-            //checkBlankSpace();
+            xOffset = e.getX() - handler.width / 2 + e.getWidth() / 2;
+            yOffset = e.getY() - handler.height / 2 + e.getHeight() / 2;
+            checkBlankSpace();
         }
 
         public void move(float xAmt, float yAmt) {
