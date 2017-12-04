@@ -21,8 +21,8 @@ namespace SharpDungeon.Game.World {
         public World(Handler handler) {
             this.handler = handler;
 
-            width = 50;
-            height = 50;
+            width = 30;
+            height = 30;
             spawnX = 100;
             spawnY = 100;
 
@@ -42,6 +42,8 @@ namespace SharpDungeon.Game.World {
                         tiles[x, y] = Tile.stone.getId();
                 }
             }
+
+
 
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
             
