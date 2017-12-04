@@ -27,6 +27,9 @@ namespace SharpDungeon.Game.Graphics {
         //Player
 
         public static Bitmap[] player;
+        public static Bitmap selection;
+
+        //UI
 
         //Load textures
 
@@ -35,6 +38,7 @@ namespace SharpDungeon.Game.Graphics {
               
                 SpriteSheet tileSheet = new SpriteSheet("../../Assets/tilesWorld.png");
                 SpriteSheet entitiesSheet = new SpriteSheet("../../Assets/entities.png");
+                SpriteSheet uiSheet = new SpriteSheet("../../Assets/ui.png");
 
                 System.Drawing.Text.PrivateFontCollection f = new System.Drawing.Text.PrivateFontCollection();
                 f.AddFontFile("../../Assets/emulogic.ttf");
@@ -65,9 +69,11 @@ namespace SharpDungeon.Game.Graphics {
                 logo = tileSheet.crop(width*9, height*11, width*3, height);
 
                 player = new Bitmap[3];
-                player[0] = entitiesSheet.crop(width*3, 0, width, height);
-                player[1] = entitiesSheet.crop(width * 3, height, width, height);
-                player[2] = entitiesSheet.crop(width * 3, height*2, width, height);
+                player[0] = entitiesSheet.crop(width*5, 0, width, height);
+                player[1] = entitiesSheet.crop(width*5, height, width, height);
+                player[2] = entitiesSheet.crop(width*5, height*2, width, height);
+
+                selection = uiSheet.crop(0, 0, width, height);
 
             } catch (OutOfMemoryException) {
                 //logg: not correct coords of SpriteSheet

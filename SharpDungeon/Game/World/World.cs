@@ -21,8 +21,8 @@ namespace SharpDungeon.Game.World {
         public World(Handler handler) {
             this.handler = handler;
 
-            width = 10;
-            height = 10;
+            width = 50;
+            height = 50;
             spawnX = 100;
             spawnY = 100;
 
@@ -36,7 +36,7 @@ namespace SharpDungeon.Game.World {
                         tiles[x, y] = Tile.stoneWall.getId();
                     else if (x == width - 1)
                         tiles[x, y] = Tile.stoneWall.getId();
-                    else if (y == height-1)
+                    else if (y == height- 1)
                         tiles[x, y] = Tile.stoneWall.getId();
                     else
                         tiles[x, y] = Tile.stone.getId();
@@ -58,17 +58,16 @@ namespace SharpDungeon.Game.World {
 
             // Чанковая прогрузка
             int xStart = (int)(Math.Max(0, handler.gameCamera.xOffset / Tile.tileWidth));
-            int xEnd = (int)(Math.Min(width, (handler.gameCamera.xOffset + handler.game.display.Width) / Tile.tileWidth));
+            int xEnd = (int)(Math.Min(width, (handler.gameCamera.xOffset + handler.game.display.Width) / Tile.tileWidth)+1);
             int yStart = (int)(Math.Max(0, handler.gameCamera.yOffset / Tile.tileHeight));
-            int yEnd = (int)(Math.Min(height, (handler.gameCamera.yOffset + handler.game.display.Height) / Tile.tileHeight));
+            int yEnd = (int)(Math.Min(height, (handler.gameCamera.yOffset + handler.game.display.Height) / Tile.tileHeight)+1);
 
             for (int x = xStart; x < xEnd; x++) {
                 for (int y = yStart; y < yEnd; y++) {
-                    getTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
-
                     //Тик объявлен только для видимых тайлов
 
                     getTile(x, y).tick(handler, x, y);
+                    getTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
                     
                 }
             }
@@ -93,6 +92,13 @@ namespace SharpDungeon.Game.World {
             if (t == null)
                 return Tile.air;
             return t;
+        }
+
+        public void setTile(int id, int x, int y) {
+            try {
+                if (x >= 0 || y >= 0 || x < width || y < height)
+                    tiles[x, y] = id;
+            } catch (IndexOutOfRangeException e) { }
         }
 
         private void loadWorld(String path) {

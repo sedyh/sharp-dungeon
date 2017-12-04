@@ -21,24 +21,23 @@ namespace SharpDungeon.Game.Tiles {
             //If right and down tiles are Stone walls
             if (handler.world.getTile(x+1, y) is StoneWallTile && handler.world.getTile(x, y+1) is StoneWallTile)
                 currentTex = textures[8];
+            //If left and down tiles are Stone walls
+            else if (handler.world.getTile(x - 1, y) is StoneWallTile && handler.world.getTile(x, y+1) is StoneWallTile)
+                currentTex = textures[7];
+            //If up and right tiles are Stone walls
+            else if (handler.world.getTile(x, y + 1) is StoneWallTile && handler.world.getTile(x + 1, y) is StoneWallTile)
+                currentTex = textures[rndNum];
+            //If left and up tiles are Stone walls
+            else if (handler.world.getTile(x - 1, y) is StoneWallTile && handler.world.getTile(x, y - 1) is StoneWallTile)
+                currentTex = textures[rndNum];
+            //If left and right
+            else if (handler.world.getTile(x - 1, y) is StoneWallTile && handler.world.getTile(x + 1, y) is StoneWallTile)
+                currentTex = textures[rndNum];
+            //If down and !right OR up
+            else if (handler.world.getTile(x, y+1) is StoneWallTile && ! (handler.world.getTile(x+1, y) is StoneWallTile) || handler.world.getTile(x, y - 1) is StoneWallTile && !(handler.world.getTile(x + 1, y) is StoneWallTile))
+                currentTex = textures[11];
             else
                 currentTex = textures[0];
-
-            ////If left and down tiles are Stone walls
-            //else if (getTile(i - 1, j) is StoneWallTile && getTile(i, j + 1) is StoneWallTile)
-            //    currentTex = textures[7];
-            ////If up and right tiles are Stone walls
-            //else if (getTile(i, j+1) is StoneWallTile && getTile(i+1, j ) is StoneWallTile)
-            //    currentTex = textures[rndNum];
-            ////If left and up tiles are Stone walls
-            //else if (getTile(i - 1, j) is StoneWallTile && getTile(i, j - 1) is StoneWallTile)
-            //    currentTex = textures[rndNum];
-            ////If left and right or up
-            //else if ((getTile(i - 1, j) is StoneWallTile && getTile(i + 1, j) is StoneWallTile) || getTile(i, j + 1) is StoneWallTile)
-            //    currentTex = textures[rndNum];
-            ////If down
-            //else if (getTile(i, j+1) is StoneWallTile)
-            //    currentTex = textures[9];
         }
 
 

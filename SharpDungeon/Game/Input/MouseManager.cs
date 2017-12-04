@@ -29,7 +29,7 @@ namespace SharpDungeon.Game.Input {
         }
         public void mouseMove(object sender, MouseEventArgs e) {
             mouseX = e.X;
-            mouseX = e.Y;
+            mouseY = e.Y;
         }
 
         public void mouseEnter(object sender, EventArgs e) {}
