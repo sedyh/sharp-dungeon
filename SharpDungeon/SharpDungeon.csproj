@@ -90,6 +90,8 @@
     <Compile Include="Game\Tiles\Tile.cs" />
     <Compile Include="Game\Tiles\TileSingleSide.cs" />
     <Compile Include="Game\Utils\Area.cs" />
+    <Compile Include="Game\Utils\WaveAlg.cs" />
+    <Compile Include="Game\World\Leaf.cs" />
     <Compile Include="Game\World\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Game\Display\Display.resx">

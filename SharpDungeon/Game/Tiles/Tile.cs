@@ -19,7 +19,7 @@ namespace SharpDungeon.Game.Tiles {
                                    tileHeight = 64;
 
         protected readonly int id;
-        protected Bitmap currentTex { get; set; }
+        public Bitmap currentTex { get; set; }
         protected Handler handler { get; set; }
 
         //Tiles array coords
