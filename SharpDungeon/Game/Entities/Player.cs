@@ -26,7 +26,8 @@ namespace SharpDungeon.Game.Entities {
         Point thisPoint, nextPoint, i, j;
 
         Random rnd = new Random();
-        Point mdPos, pos;
+        bool wasMid = false, wasMid2 = false;
+        int oldX, oldY;
 
         public Player(Handler handler, int worldX, int worldY) : base(handler, worldX, worldY, defaultWidth, defaultHeight) {
             stayTex = Assets.playerIdle[0];
@@ -43,12 +44,22 @@ namespace SharpDungeon.Game.Entities {
             if (currentAnimation != null)
                 currentAnimation.tick();
 
-            if (handler.mouseManager.mouseMid) {
-                mdPos = new Point(handler.mouseManager.mouseX - pos.X + (int)handler.gameCamera.xOffset,
-                                  handler.mouseManager.mouseY - pos.Y + (int)handler.gameCamera.yOffset);
+            if (handler.mouseManager.mouseMid && !wasMid && !wasMid2) {
+                oldX = (int)handler.gameCamera.xOffset;
+                oldY = (int)handler.gameCamera.yOffset;
+                wasMid = true;
+            } else if (wasMid && !handler.mouseManager.mouseMid && !wasMid2) {
+                handler.gameCamera.xOffset = oldX - handler.mouseManager.mouseX;
+                handler.gameCamera.yOffset = oldY - handler.mouseManager.mouseY;
+                wasMid2 = true;
+                wasMid = false;
+            } else if (wasMid2 && !handler.mouseManager.mouseMid && !wasMid) {
 
-                handler.gameCamera.xOffset += -mdPos.X + handler.mouseManager.mouseX;
-                handler.gameCamera.yOffset += -mdPos.Y + handler.mouseManager.mouseY ;
+                handler.gameCamera.xOffset -= oldX - handler.mouseManager.mouseX;
+                handler.gameCamera.yOffset -= oldY - handler.mouseManager.mouseY;
+
+                wasMid = false;
+                wasMid2 = false;
             }
 
             if (handler.keyManager.isDown(Keys.Right))
@@ -175,7 +186,7 @@ namespace SharpDungeon.Game.Entities {
                 for (int i = 0; i < handler.world.width; i++)
                     g.FillRectangle(handler.world.getTile(j, i).isSolid() ? Assets.minMapSolid : handler.world.getTile(j, i) != Tile.air ? Assets.minMapBack : Brushes.Black, 20 + j * 8, 20 + i * 8, 8, 8);
 
-            //TextRenderer.DrawText(g, handler.mouseManager.moving.ToString(), Assets.gameFont, new Point(0, 0), Color.Red);
+            TextRenderer.DrawText(g, wasMid.ToString() + "\n" + wasMid2.ToString(), Assets.gameFont, new Point(0, 0), Color.White);
         }
 
         private void renderSelection(System.Drawing.Graphics g) {
