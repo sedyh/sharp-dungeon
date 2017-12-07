@@ -26,10 +26,17 @@ namespace SharpDungeon.Game.Graphics {
 
         //Player
 
-        public static Bitmap[] player;
+        public static Bitmap[] playerIdle, playerWalkLeft, playerWalkRight, playerAttackLeft, playerAttackRight;
+        public static Bitmap[] slimeIdle, slimeWalk, slimeAttack;
+
         public static Bitmap selection;
 
         //UI
+
+        //Brushes
+
+        public static Brush minMapSolid = new SolidBrush(Color.FromArgb(110, 121, 145));
+        public static Brush minMapBack = new SolidBrush(Color.FromArgb(175, 175, 175));
 
         //Load textures
 
@@ -44,7 +51,7 @@ namespace SharpDungeon.Game.Graphics {
                 f.AddFontFile("../../Assets/emulogic.ttf");
                 themeFont = new Font(f.Families[0], 10);
 
-                air = tileSheet.crop(width * 4, height * 2, width, height);
+                air = tileSheet.crop(width * 5, height * 2, width, height);
                 stone = tileSheet.crop(width * 3, height * 2, width, height);
 
                 stoneWall = new Bitmap[24];
@@ -78,10 +85,33 @@ namespace SharpDungeon.Game.Graphics {
 
                 logo = tileSheet.crop(width*9, height*11, width*3, height);
 
-                player = new Bitmap[3];
-                player[0] = entitiesSheet.crop(width*5, 0, width, height);
-                player[1] = entitiesSheet.crop(width*5, height, width, height);
-                player[2] = entitiesSheet.crop(width*5, height*2, width, height);
+                playerWalkRight = new Bitmap[3];
+                playerWalkRight[0] = entitiesSheet.crop(0, 0, width, height);
+                playerWalkRight[1] = entitiesSheet.crop(0, height, width, height);
+                playerWalkRight[2] = entitiesSheet.crop(0, height * 2, width, height);
+
+                playerWalkLeft = new Bitmap[3];
+                playerWalkLeft[0] = entitiesSheet.crop(width * 1, 0, width, height);
+                playerWalkLeft[1] = entitiesSheet.crop(width * 1, height, width, height);
+                playerWalkLeft[2] = entitiesSheet.crop(width * 1, height * 2, width, height);
+
+                playerAttackRight = new Bitmap[3];
+                playerAttackRight[0] = entitiesSheet.crop(width * 2, 0, width, height);
+                playerAttackRight[1] = entitiesSheet.crop(width * 2, height, width, height);
+                playerAttackRight[2] = entitiesSheet.crop(width * 2, height * 2, width, height);
+
+                playerAttackLeft = new Bitmap[3];
+                playerAttackLeft[0] = entitiesSheet.crop(width * 3, 0, width, height);
+                playerAttackLeft[1] = entitiesSheet.crop(width * 3, height, width, height);
+                playerAttackLeft[2] = entitiesSheet.crop(width * 3, height * 2, width, height);
+
+                playerIdle = new Bitmap[6];
+                playerIdle[0] = entitiesSheet.crop(width * 4, 0, width, height);
+                playerIdle[1] = entitiesSheet.crop(width * 4, height, width, height);
+                playerIdle[2] = entitiesSheet.crop(width * 4, height * 2, width, height);
+                playerIdle[3] = entitiesSheet.crop(width * 5, 0, width, height);
+                playerIdle[4] = entitiesSheet.crop(width * 5, height, width, height);
+                playerIdle[5] = entitiesSheet.crop(width * 5, height * 2, width, height);
 
                 selection = uiSheet.crop(0, 0, width, height);
 

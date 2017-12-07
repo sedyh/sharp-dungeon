@@ -30,6 +30,7 @@ namespace SharpDungeon.Game.Display {
             MouseDown += new System.Windows.Forms.MouseEventHandler(game.mouseManager.mouseDown);
             MouseMove += new System.Windows.Forms.MouseEventHandler(game.mouseManager.mouseMove);
             MouseUp += new System.Windows.Forms.MouseEventHandler(game.mouseManager.mouseUp);
+            MouseWheel += new MouseEventHandler(game.mouseManager.mouseWheel);
 
             MouseEnter += new System.EventHandler(game.mouseManager.mouseEnter);
             MouseLeave += new System.EventHandler(game.mouseManager.mouseLeave);

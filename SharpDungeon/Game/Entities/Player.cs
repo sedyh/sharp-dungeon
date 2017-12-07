@@ -11,6 +11,9 @@ using System.Windows.Forms;
 
 namespace SharpDungeon.Game.Entities {
     public class Player : Entity {
+        
+        Animation currentAnimation;
+        Bitmap stayTex;
 
         Animation idle;
 
@@ -22,8 +25,13 @@ namespace SharpDungeon.Game.Entities {
         WaveAlg path;
         Point thisPoint, nextPoint, i, j;
 
+        Random rnd = new Random();
+        Point mdPos, pos;
+
         public Player(Handler handler, int worldX, int worldY) : base(handler, worldX, worldY, defaultWidth, defaultHeight) {
-            idle = new Animation(100, Assets.player);
+            stayTex = Assets.playerIdle[0];
+            idle = new Animation(540, Assets.playerIdle);
+            currentAnimation = idle;
         }
        
         public override void die() {
@@ -31,7 +39,17 @@ namespace SharpDungeon.Game.Entities {
         }
 
         public override void tick() {
-            idle.tick();
+
+            if (currentAnimation != null)
+                currentAnimation.tick();
+
+            if (handler.mouseManager.mouseMid) {
+                mdPos = new Point(handler.mouseManager.mouseX - pos.X + (int)handler.gameCamera.xOffset,
+                                  handler.mouseManager.mouseY - pos.Y + (int)handler.gameCamera.yOffset);
+
+                handler.gameCamera.xOffset += -mdPos.X + handler.mouseManager.mouseX;
+                handler.gameCamera.yOffset += -mdPos.Y + handler.mouseManager.mouseY ;
+            }
 
             if (handler.keyManager.isDown(Keys.Right))
                 handler.gameCamera.xOffset += 10;
@@ -53,6 +71,7 @@ namespace SharpDungeon.Game.Entities {
                                       handler.world.toWorldY(handler.mouseManager.mouseY));
 
             if (handler.keyManager.isPressed(Keys.T)) {
+
                 path = new WaveAlg(handler.world.width, handler.world.height);
 
                 for(int j=0; j< handler.world.height; j++)
@@ -70,6 +89,14 @@ namespace SharpDungeon.Game.Entities {
             }
 
             if (direction != null) {
+                if ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)) {
+                    currentAnimation = new Animation(100, Assets.playerWalkLeft);
+                    stayTex = Assets.playerWalkLeft[0];
+                } else {
+                    currentAnimation = new Animation(100, Assets.playerWalkRight);
+                    stayTex = Assets.playerWalkRight[0];
+                }
+
                 if (directionStep < direction.ToArray().Length-1) {
 
                     x = direction[directionStep].X*Tile.tileWidth;
@@ -78,12 +105,16 @@ namespace SharpDungeon.Game.Entities {
                 } else {
                     directionStep = 0;
                     direction = null;
+                    currentAnimation = idle;
                 }
             }
-                
+                    
+            }
+
+
             
 
-        }
+        
          
         //private List<Point> buildDirection(int startX, int startY, int targetX, int targetY) {
 
@@ -132,9 +163,19 @@ namespace SharpDungeon.Game.Entities {
         //}
 
         public override void render(System.Drawing.Graphics g) {
-            g.DrawImage(idle.getCurrentFrame(), (int) (x - handler.gameCamera.xOffset), (int) (y - handler.gameCamera.yOffset), width, height );
+            if (currentAnimation != null)
+                g.DrawImage(currentAnimation.getCurrentFrame(), (int) (x - handler.gameCamera.xOffset), (int) (y - handler.gameCamera.yOffset), width, height);
+            else
+                g.DrawImage(stayTex, (int)(x - handler.gameCamera.xOffset), (int)(y - handler.gameCamera.yOffset), width, height);
 
             renderSelection(g);
+
+            g.FillRectangle(Brushes.White, 15, 15, handler.world.width * 8 + 10, handler.world.height * 8 + 10);
+            for (int j = 0; j < handler.world.height; j++)
+                for (int i = 0; i < handler.world.width; i++)
+                    g.FillRectangle(handler.world.getTile(j, i).isSolid() ? Assets.minMapSolid : handler.world.getTile(j, i) != Tile.air ? Assets.minMapBack : Brushes.Black, 20 + j * 8, 20 + i * 8, 8, 8);
+
+            //TextRenderer.DrawText(g, handler.mouseManager.moving.ToString(), Assets.gameFont, new Point(0, 0), Color.Red);
         }
 
         private void renderSelection(System.Drawing.Graphics g) {
@@ -154,7 +195,7 @@ namespace SharpDungeon.Game.Entities {
                                           (offsY + ((Tile.tileHeight - offsY + handler.mouseManager.mouseY) / Tile.tileHeight) * Tile.tileHeight) - Tile.tileHeight,
                                           Tile.tileWidth,
                                           Tile.tileHeight);
-
+            
         }
 
         //public bool collisionWithTile(int wo) {

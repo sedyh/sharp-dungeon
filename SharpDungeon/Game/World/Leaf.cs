@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.World {
     public class Leaf {
 
-        public static readonly int minSize = 6;
+        public static readonly int minSize = 5;
 
         public int x { get; set; }
         public int y { get; set; }
@@ -117,10 +117,10 @@ namespace SharpDungeon.Game.World {
         public void createHall(Rectangle l, Rectangle r) {
             halls = new List<Rectangle>();
 
-            Point p1 = new Point(rnd.Next(l.Left, l.Right), rnd.Next(l.Top, l.Bottom));
-            Point p2 = new Point(rnd.Next(r.Left, r.Right), rnd.Next(r.Top, r.Bottom));
-            //Point p1 = new Point(rnd.Next(l.Left + 1, l.Right - 2), rnd.Next(l.Top + 1, l.Bottom - 2));
-            //Point p2 = new Point(rnd.Next(r.Left + 1, r.Right - 2), rnd.Next(r.Top + 1, r.Bottom - 2));
+            //Point p1 = new Point(rnd.Next(l.Left, l.Right), rnd.Next(l.Top, l.Bottom));
+            //Point p2 = new Point(rnd.Next(r.Left, r.Right), rnd.Next(r.Top, r.Bottom));
+            Point p1 = new Point(rnd.Next(l.Left + 1, l.Right - 2), rnd.Next(l.Top + 1, l.Bottom - 2));
+            Point p2 = new Point(rnd.Next(r.Left + 1, r.Right - 2), rnd.Next(r.Top + 1, r.Bottom - 2));
 
             int w = p2.X - p1.X;
             int h = p2.Y - p1.Y;

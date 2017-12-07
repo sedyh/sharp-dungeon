@@ -1,4 +1,5 @@
 using SharpDungeon.Game.Entities;
+using SharpDungeon.Game.Graphics;
 using SharpDungeon.Game.Tiles;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace SharpDungeon.Game.World {
         private int spawnX, spawnY;
         private int[,] tiles;
 
+        List<Leaf> leafs = new List<Leaf>();
         Random rnd;
 
         public World(Handler handler) {
@@ -32,25 +34,24 @@ namespace SharpDungeon.Game.World {
             tiles = new int[width, height];
             rnd = new Random();
 
-            //for (int x = 0; x < width; x++) {
-            //    for (int y = 0; y < height; y++) {
-            //        if (x == 0)
-            //            tiles[x, y] = Tile.stoneWall.getId();
-            //        else if (y == 0)
-            //            tiles[x, y] = Tile.stoneWall.getId();
-            //        else if (x == width - 1)
-            //            tiles[x, y] = Tile.stoneWall.getId();
-            //        else if (y == height - 1)
-            //            tiles[x, y] = Tile.stoneWall.getId();
-            //        else
-            //            tiles[x, y] = Tile.stone.getId();
-            //    }
-            //}
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (x == 0)
+                        tiles[x, y] = Tile.stoneWall.getId();
+                    else if (y == 0)
+                        tiles[x, y] = Tile.stoneWall.getId();
+                    else if (x == width - 1)
+                        tiles[x, y] = Tile.stoneWall.getId();
+                    else if (y == height - 1)
+                        tiles[x, y] = Tile.stoneWall.getId();
+                    else
+                        tiles[x, y] = Tile.stone.getId();
+                }
+            }
 
-            int maxSize = 2000;
-            List<Leaf> leafs = new List<Leaf>();
+            int maxSize = width;
 
-            Leaf root = new Leaf(0, 0, width, height);
+            Leaf root = new Leaf(0, 0, 30, 30);
             leafs.Add(root);
 
             bool didSplit = true;
@@ -84,18 +85,18 @@ namespace SharpDungeon.Game.World {
 
             foreach (Leaf leaf in leafs) {
                 //render rooms
-                for (int x = leaf.getRoom().X; x < leaf.getRoom().Width; x++) {
-                    for (int y = leaf.getRoom().Y; y < leaf.getRoom().Height; y++) {
-                        tiles[x, y] = Tile.stone.getId();
-                    }
-                }
+                for(int j = leaf.getRoom().Y; j< leaf.getRoom().Height; j++)
+                    for(int i=leaf.getRoom().X; i< leaf.getRoom().Width; i++)
+                        tiles[j, i] = Tile.stone.getId();
 
-                //for (int x = leaf.ha.X; x < leaf.getRoom().Width; x++) {
-                //    for (int y = leaf.getRoom().Y; y < leaf.getRoom().Height; y++) {
-                //        tiles[x, y] = Tile.stone.getId();
-                //    }
-                //}
+                if (leaf.halls != null)
+                    foreach (Rectangle hall in leaf.halls) {
+                        //for (int j = hall.Y; j < hall.Height; j++)
+                        //    for (int i = hall.X; i < hall.Width; i++)
+                        //        tiles[j, i] = Tile.stone.getId();
+                    }
             }
+
 
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
 
@@ -121,21 +122,30 @@ namespace SharpDungeon.Game.World {
                     //Тик объявлен только для видимых тайлов
                     getTile(x, y).tick(handler, x, y);
                     getTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
-
                 }
             }
 
 
-            for (int i = 1; i < 50; i++) {
-                for (int j = 1; i < 50; i++) {
-                    getTile(i, j).tick(handler, i, j);
-                    g.DrawImage(getTile(i, j).currentTex, i * 6, j * 6, 6, 6);
-                }
-            }
+
+            
             ////Выделение
             //selection.render(g);
             ////Предметы
             //itemManager.render(g);
+
+            foreach (Leaf leaf in leafs) {
+                //render rooms
+                for (int j = leaf.getRoom().Y; j < leaf.getRoom().Height; j++)
+                    for (int i = leaf.getRoom().X; i < leaf.getRoom().Width; i++)
+                        g.FillRectangle(Brushes.Red, new Rectangle(j*12,i*12,12,12));
+                g.FillRectangle(Brushes.Blue, leaf.getRoom());
+                if (leaf.halls != null)
+                    foreach (Rectangle hall in leaf.halls) {
+                        //for (int j = hall.Y; j < hall.Height; j++)
+                        //    for (int i = hall.X; i < hall.Width; i++)
+                        //        tiles[j, i] = Tile.stone.getId();
+                    }
+            }
 
             //Сущности
             entityManager.render(g);
