@@ -11,16 +11,17 @@ namespace SharpDungeon.Game.Entities {
 
         protected Handler handler;
 
-        protected float x { get; set; }
-        protected float y { get; set; }
+        public float x { get; protected set; }
+        public float y { get; protected set; }
 
-        protected int width { get; set; }
-        protected int height { get; set; }
+        public int width { get; protected set; }
+        public int height { get; protected set; }
 
         public int health { get; set; }
-        public static readonly int defaultHealth = 10;
         protected bool active = true;
         protected bool turn = false;
+
+        public static readonly int defaultHealth = 10;
 
         public static readonly int defaultWidth = 64,
                                    defaultHeight = 64;
@@ -48,22 +49,6 @@ namespace SharpDungeon.Game.Entities {
                 active = false;
                 die();
             }
-        }
-
-        public float getX() {
-            return x;
-        }
-
-        public float getY() {
-            return y;
-        }
-
-        public float getWidth() {
-            return x;
-        }
-
-        public float getHeight() {
-            return y;
         }
 
         public bool isActive() {

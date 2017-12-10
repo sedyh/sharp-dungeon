@@ -18,6 +18,21 @@ namespace SharpDungeon.Game.Input {
 
         public int wheel { get; set; }
 
+        public bool move { get; set; }
+
+        private int oldMouseX, oldMouseY;
+
+        public void tick() {
+            if (oldMouseX != mouseX &&
+                oldMouseY != mouseY)
+                move = true;
+            else
+                move = false;
+
+            oldMouseX = mouseX;
+            oldMouseY = mouseY;
+        }
+
         public void mouseDown(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Left)
                 leftPressed = true;
@@ -26,6 +41,7 @@ namespace SharpDungeon.Game.Input {
             else if (e.Button == MouseButtons.Middle)
                 mouseMid = true;
         }
+
         public void mouseUp(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Left)
                 leftPressed = false;
@@ -34,10 +50,12 @@ namespace SharpDungeon.Game.Input {
             else if (e.Button == MouseButtons.Middle)
                 mouseMid = false;
         }
+
         public void mouseMove(object sender, MouseEventArgs e) {
             mouseX = e.X;
             mouseY = e.Y;
         }
+
         public void mouseWheel(object sender, MouseEventArgs e) {
             wheel += e.Delta / 120;
         }

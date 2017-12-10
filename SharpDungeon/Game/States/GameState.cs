@@ -10,11 +10,10 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.States {
     public class GameState : State {
 
-        private World.World world;
+        public World.World world { get; set; }
 
         public GameState(Handler handler) : base(handler) {
             world = new World.World(handler);
-            handler.world = world;
         }
 
         public override void tick() {

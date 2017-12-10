@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -20,6 +21,7 @@ namespace SharpDungeon.Game {
 
         public GameState gameState { get; set; }
         public MenuState menuState { get; set; }
+        public LoadState loadState { get; set; }
 
         public GameCamera gameCamera { get; set; }
 
@@ -43,13 +45,14 @@ namespace SharpDungeon.Game {
 
             //Init game components
             Assets.init();
-            gameCamera = new GameCamera(handler, 0, 0);
             handler = new Handler(this);
+            gameCamera = new GameCamera(handler, 0, 0);
 
             //Init states
-            gameState = new GameState(handler);
+            loadState = new LoadState(handler);
             menuState = new MenuState(handler);
-            State.currentState = menuState;
+            gameState = new GameState(handler);
+            State.currentState = loadState;
 
             int fps = 60;
             double timePerTick = 1000000000 / fps;
@@ -89,6 +92,7 @@ namespace SharpDungeon.Game {
         //Main methods: tick() and render() / invalidate()
         private void tick() {
             keyManager.tick();
+            mouseManager.tick();
 
             if (State.currentState != null)
                 State.currentState.tick();
@@ -97,6 +101,7 @@ namespace SharpDungeon.Game {
         public void render(object sender, PaintEventArgs e) {
             g = e.Graphics;
             g.Clear(Color.Black);
+            g.InterpolationMode = InterpolationMode.NearestNeighbor;
 
             if (State.currentState != null)
                 State.currentState.render(g);

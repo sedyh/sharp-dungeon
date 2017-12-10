@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SharpDungeon.Game.Graphics {
     public class Assets {
@@ -15,8 +16,7 @@ namespace SharpDungeon.Game.Graphics {
 
         //Fonts
 
-        public static Font themeFont;
-        public static Font gameFont;
+        public static Font themeFont, themeFontBig;
 
         //Tiles
 
@@ -33,6 +33,9 @@ namespace SharpDungeon.Game.Graphics {
 
         //UI
 
+        public static Bitmap background, backgroundLoading;
+        public static Bitmap waitCur;
+
         //Brushes
 
         public static Brush minMapSolid = new SolidBrush(Color.FromArgb(110, 121, 145));
@@ -46,6 +49,9 @@ namespace SharpDungeon.Game.Graphics {
                 SpriteSheet tileSheet = new SpriteSheet("../../Assets/tilesWorld.png");
                 SpriteSheet entitiesSheet = new SpriteSheet("../../Assets/entities.png");
                 SpriteSheet uiSheet = new SpriteSheet("../../Assets/ui.png");
+
+                background = new Bitmap("../../Assets/background.png");
+                backgroundLoading = new Bitmap("../../Assets/backgroundLoading.png");
 
                 System.Drawing.Text.PrivateFontCollection f = new System.Drawing.Text.PrivateFontCollection();
                 f.AddFontFile("../../Assets/emulogic.ttf");

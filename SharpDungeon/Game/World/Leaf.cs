@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.World {
     public class Leaf {
 
-        public static readonly int minSize = 5;
+        public static readonly int minSize = 8;
 
         public int x { get; set; }
         public int y { get; set; }
@@ -58,7 +58,7 @@ namespace SharpDungeon.Game.World {
 
             int split = rnd.Next(minSize, max);
 
-            if(splitH) {
+            if (splitH) {
                 leftChild = new Leaf(x, y, width, split);
                 rightChild = new Leaf(x, y + split, width, height - split);
             } else {
@@ -70,7 +70,7 @@ namespace SharpDungeon.Game.World {
             return true;
 
         }
-        
+
         public void createRooms() {
             if (leftChild != null || rightChild != null) {
                 if (leftChild != null)
@@ -82,30 +82,31 @@ namespace SharpDungeon.Game.World {
                     createHall(leftChild.getRoom(), rightChild.getRoom());
 
             } else {
-                Point roomSize = new Point(rnd.Next(3, width - 2), rnd.Next(3, height - 2));
-                Point roomPos = new Point(rnd.Next(1, width-roomSize.X-1), rnd.Next(1, height-roomSize.Y-1));
+                    Point roomSize = new Point(rnd.Next(3, width - 2), rnd.Next(3, height - 2));
+                    Point roomPos = new Point(rnd.Next(1, width - roomSize.X - 1), rnd.Next(1, height - roomSize.Y - 1));
 
-                room = new Rectangle(x + roomPos.X, y + roomPos.Y, roomSize.X, roomSize.Y);
+                    room = new Rectangle(x + roomPos.X, y + roomPos.Y, roomSize.X, roomSize.Y);
+                
             }
         }
 
         public Rectangle getRoom() {
-            if (!room.Equals(new Rectangle(0, 0, 0, 0))) {
+            if (room != null) {
                 return room;
             } else {
-                Rectangle lRoom = new Rectangle(0, 0, 0, 0), 
+                Rectangle lRoom = new Rectangle(0, 0, 0, 0),
                           rRoom = new Rectangle(0, 0, 0, 0);
 
-                if (!leftChild.Equals(new Rectangle(0, 0, 0, 0)))
+                if (leftChild != null)
                     lRoom = leftChild.getRoom();
-                if (!rightChild.Equals(new Rectangle(0, 0, 0, 0)))
+                if (rightChild != null)
                     rRoom = rightChild.getRoom();
 
-                if (lRoom.Equals(new Rectangle(0, 0, 0, 0)) && rRoom.Equals(new Rectangle(0, 0, 0, 0)))
+                if (lRoom == null && rRoom == null)
                     return new Rectangle(0, 0, 0, 0);
-                else if (rRoom.Equals(new Rectangle(0, 0, 0, 0)))
+                else if (rRoom == null)
                     return lRoom;
-                else if (lRoom.Equals(new Rectangle(0, 0, 0, 0)))
+                else if (lRoom == null)
                     return rRoom;
                 else if (rnd.NextDouble() >= 0.5)
                     return lRoom;
@@ -117,16 +118,16 @@ namespace SharpDungeon.Game.World {
         public void createHall(Rectangle l, Rectangle r) {
             halls = new List<Rectangle>();
 
-            //Point p1 = new Point(rnd.Next(l.Left, l.Right), rnd.Next(l.Top, l.Bottom));
-            //Point p2 = new Point(rnd.Next(r.Left, r.Right), rnd.Next(r.Top, r.Bottom));
-            Point p1 = new Point(rnd.Next(l.Left + 1, l.Right - 2), rnd.Next(l.Top + 1, l.Bottom - 2));
-            Point p2 = new Point(rnd.Next(r.Left + 1, r.Right - 2), rnd.Next(r.Top + 1, r.Bottom - 2));
+            Point p1 = new Point(rnd.Next(l.Left, l.Right), rnd.Next(l.Top, l.Bottom));
+            Point p2 = new Point(rnd.Next(r.Left, r.Right), rnd.Next(r.Top, r.Bottom));
+            //Point p1 = new Point(rnd.Next(l.Left + 1, l.Right - 2), rnd.Next(l.Top + 1, l.Bottom - 2));
+            //Point p2 = new Point(rnd.Next(r.Left + 1, r.Right - 2), rnd.Next(r.Top + 1, r.Bottom - 2));
 
             int w = p2.X - p1.X;
             int h = p2.Y - p1.Y;
 
-            if(w < 0) {
-                if(h<0) {
+            if (w < 0) {
+                if (h < 0) {
                     if (rnd.NextDouble() >= 0.5) {
                         halls.Add(new Rectangle(p2.X, p1.Y, Math.Abs(w), 1));
                         halls.Add(new Rectangle(p2.X, p2.Y, 1, Math.Abs(h)));
@@ -134,7 +135,7 @@ namespace SharpDungeon.Game.World {
                         halls.Add(new Rectangle(p2.X, p2.Y, Math.Abs(w), 1));
                         halls.Add(new Rectangle(p1.X, p2.Y, 1, Math.Abs(h)));
                     }
-                } else if (h>0) {
+                } else if (h > 0) {
                     if (rnd.NextDouble() >= 0.5) {
                         halls.Add(new Rectangle(p2.X, p1.Y, Math.Abs(w), 1));
                         halls.Add(new Rectangle(p2.X, p1.Y, 1, Math.Abs(h)));
@@ -145,7 +146,7 @@ namespace SharpDungeon.Game.World {
                 } else {
                     halls.Add(new Rectangle(p2.X, p2.Y, Math.Abs(w), 1));
                 }
-            } else if(w>0) {
+            } else if (w > 0) {
                 if (h < 0) {
                     if (rnd.NextDouble() >= 0.5) {
                         halls.Add(new Rectangle(p1.X, p2.Y, Math.Abs(w), 1));
@@ -166,10 +167,11 @@ namespace SharpDungeon.Game.World {
                     halls.Add(new Rectangle(p1.X, p1.Y, Math.Abs(w), 1));
                 }
             } else {
-                if(h < 0)
+                if (h < 0)
                     halls.Add(new Rectangle(p2.X, p2.Y, 1, Math.Abs(h)));
                 else if (h > 0)
                     halls.Add(new Rectangle(p1.X, p1.Y, 1, Math.Abs(h)));
+
             }
         }
     }

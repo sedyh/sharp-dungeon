@@ -12,7 +12,7 @@ using System.Windows.Forms;
 namespace SharpDungeon.Game.Entities {
     public class Player : Entity {
         
-        Animation currentAnimation;
+        Animation currentAnimation, walkLeft, walkRight;
         Bitmap stayTex;
 
         Animation idle;
@@ -24,15 +24,24 @@ namespace SharpDungeon.Game.Entities {
         int directionStep;
         WaveAlg path;
         Point thisPoint, nextPoint, i, j;
+        int thisX, thisY, speed=32, dirStepX=0, dirStepY = 0;
 
         Random rnd = new Random();
         bool wasMid = false, wasMid2 = false;
-        int oldX, oldY;
+        int oldX, oldY, oldMouseX, oldMouseY;
 
         public Player(Handler handler, int worldX, int worldY) : base(handler, worldX, worldY, defaultWidth, defaultHeight) {
             stayTex = Assets.playerIdle[0];
+
             idle = new Animation(540, Assets.playerIdle);
+            walkLeft = new Animation(100, Assets.playerWalkLeft);
+            walkRight = new Animation(100, Assets.playerWalkRight);
+
             currentAnimation = idle;
+            thisX = (int)x;
+            thisY = (int)y;
+
+            handler.game.gameCamera.centerOnEntity(this);
         }
        
         public override void die() {
@@ -40,27 +49,12 @@ namespace SharpDungeon.Game.Entities {
         }
 
         public override void tick() {
-
-            if (currentAnimation != null)
-                currentAnimation.tick();
-
-            if (handler.mouseManager.mouseMid && !wasMid && !wasMid2) {
-                oldX = (int)handler.gameCamera.xOffset;
-                oldY = (int)handler.gameCamera.yOffset;
-                wasMid = true;
-            } else if (wasMid && !handler.mouseManager.mouseMid && !wasMid2) {
-                handler.gameCamera.xOffset = oldX - handler.mouseManager.mouseX;
-                handler.gameCamera.yOffset = oldY - handler.mouseManager.mouseY;
-                wasMid2 = true;
-                wasMid = false;
-            } else if (wasMid2 && !handler.mouseManager.mouseMid && !wasMid) {
-
-                handler.gameCamera.xOffset -= oldX - handler.mouseManager.mouseX;
-                handler.gameCamera.yOffset -= oldY - handler.mouseManager.mouseY;
-
-                wasMid = false;
-                wasMid2 = false;
-            }
+            
+            currentAnimation.tick();
+            handler.gameCamera.checkScroll();
+            
+            if(handler.keyManager.isDown(Keys.Space))
+                handler.game.gameCamera.centerOnEntity(this);
 
             if (handler.keyManager.isDown(Keys.Right))
                 handler.gameCamera.xOffset += 10;
@@ -82,37 +76,51 @@ namespace SharpDungeon.Game.Entities {
                                       handler.world.toWorldY(handler.mouseManager.mouseY));
 
             if (handler.keyManager.isPressed(Keys.T)) {
+                    path = new WaveAlg(handler.world.width, handler.world.height);
 
-                path = new WaveAlg(handler.world.width, handler.world.height);
+                    for (int j = 0; j < handler.world.height; j++)
+                        for (int i = 0; i < handler.world.width; i++)
+                            if (handler.world.getTile(j, i).isSolid())
+                                path.block(j, i);
 
-                for(int j=0; j< handler.world.height; j++)
-                    for(int i=0; i< handler.world.width; i++)
-                        if(handler.world.getTile(j, i).isSolid())
-                            path.block(j, i);
+                    path.findPath((int)x / Tile.tileWidth,
+                                  (int)y / Tile.tileHeight,
+                                  handler.world.toWorldX(handler.mouseManager.mouseX),
+                                  handler.world.toWorldY(handler.mouseManager.mouseY));
 
-                path.findPath((int)x / Tile.tileWidth,
-                              (int)y / Tile.tileHeight, 
-                              handler.world.toWorldX(handler.mouseManager.mouseX),
-                              handler.world.toWorldY(handler.mouseManager.mouseY));
-
-                direction = path.toPointList();
-                directionStep = 0;
+                    direction = path.toPointList();
+                    directionStep = 0;
+                
             }
 
             if (direction != null) {
                 if ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)) {
-                    currentAnimation = new Animation(100, Assets.playerWalkLeft);
+                    currentAnimation = walkLeft;
                     stayTex = Assets.playerWalkLeft[0];
                 } else {
-                    currentAnimation = new Animation(100, Assets.playerWalkRight);
+                    currentAnimation = walkRight;
                     stayTex = Assets.playerWalkRight[0];
                 }
 
-                if (directionStep < direction.ToArray().Length-1) {
+                if (directionStep < direction.ToArray().Length) {
 
-                    x = direction[directionStep].X*Tile.tileWidth;
-                    y = direction[directionStep].Y*Tile.tileHeight;
-                    directionStep++;
+                    if (x < direction[directionStep].X * Tile.tileWidth)
+                        x+=speed;
+                    else if (x > direction[directionStep].X * Tile.tileWidth)
+                        x-=speed;
+
+                    if (y < direction[directionStep].Y * Tile.tileHeight)
+                        y+=speed;
+                    else if (y > direction[directionStep].Y * Tile.tileHeight)
+                        y-=speed;
+
+                    dirStepX = direction[directionStep].X * Tile.tileWidth;
+                    dirStepY = direction[directionStep].Y * Tile.tileHeight;
+
+                    if (x == direction[directionStep].X* Tile.tileWidth &&
+                        y == direction[directionStep].Y * Tile.tileHeight) {
+                        directionStep++;
+                    }
                 } else {
                     directionStep = 0;
                     direction = null;
@@ -121,57 +129,6 @@ namespace SharpDungeon.Game.Entities {
             }
                     
             }
-
-
-            
-
-        
-         
-        //private List<Point> buildDirection(int startX, int startY, int targetX, int targetY) {
-
-
-        //    int[,] map = new int[handler.world.height, handler.world.width];
-
-        //    for (int j = 0; j < handler.world.height; j++)
-        //        for (int i = 0; i < handler.world.width; i++)
-        //            map[j, i] = handler.world.getTile(j, i).isSolid() ? 1 : 0; 
-                    
-        //    bool add = true;
-        //    int[,] cMap = new int[handler.world.height, handler.world.width];
-        //    int x, y, step = 0;
-        //    for (int j = 0; j < handler.world.height; j++)
-        //        for (int i = 0; i< handler.world.width; i++) {
-        //            if (map[j, i] == 1)
-        //                cMap[j, i] = -2;//индикатор стены
-        //            else
-        //                cMap[j, i] = -1;//индикатор еще не ступали сюда
-        //        }
-        //    cMap[targetY, targetX] = 0;//Начинаем с финиша
-        //    while (add == true) {
-        //        add = false;
-        //        for (y = 0; y < handler.world.height; y++)
-        //            for (x = 0; x < handler.world.width; x++) {
-        //                if (cMap[x, y] == step) {
-        //                    //Ставим значение шага+1 в соседние ячейки (если они проходимы)
-        //                    if (y - 1 >= 0 && cMap[x - 1, y] != -2 && cMap[x - 1, y] == -1)
-        //                        cMap[x - 1, y] = step + 1;
-        //                    if (x - 1 >= 0 && cMap[x, y - 1] != -2 && cMap[x, y - 1] == -1)
-        //                        cMap[x, y - 1] = step + 1;
-        //                    if (y + 1 < handler.world.width && cMap[x + 1, y] != -2 && cMap[x + 1, y] == -1)
-        //                        cMap[x + 1, y] = step + 1;
-        //                    if (x + 1 < handler.world.height && cMap[x, y + 1] != -2 && cMap[x, y + 1] == -1)
-        //                        cMap[x, y + 1] = step + 1;
-        //                }
-        //            }
-        //        step++;
-        //        add = true;
-        //        if (cMap[startY, startX] != -1)//решение найдено
-        //            add = false;
-        //        if (step > handler.world.width * handler.world.height)//решение не найдено
-        //            add = false;
-        //    }
-
-        //}
 
         public override void render(System.Drawing.Graphics g) {
             if (currentAnimation != null)
@@ -186,7 +143,7 @@ namespace SharpDungeon.Game.Entities {
                 for (int i = 0; i < handler.world.width; i++)
                     g.FillRectangle(handler.world.getTile(j, i).isSolid() ? Assets.minMapSolid : handler.world.getTile(j, i) != Tile.air ? Assets.minMapBack : Brushes.Black, 20 + j * 8, 20 + i * 8, 8, 8);
 
-            TextRenderer.DrawText(g, wasMid.ToString() + "\n" + wasMid2.ToString(), Assets.gameFont, new Point(0, 0), Color.White);
+            TextRenderer.DrawText(g, $"offsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
         }
 
         private void renderSelection(System.Drawing.Graphics g) {
@@ -194,7 +151,7 @@ namespace SharpDungeon.Game.Entities {
             int arSize = 64;
             ar.Width = arSize;
             ar.Height = arSize;
-
+            
             //Убрать потом ...
 
             offsX = (int)(Tile.tileWidth - handler.gameCamera.xOffset % Tile.tileWidth);
@@ -206,11 +163,8 @@ namespace SharpDungeon.Game.Entities {
                                           (offsY + ((Tile.tileHeight - offsY + handler.mouseManager.mouseY) / Tile.tileHeight) * Tile.tileHeight) - Tile.tileHeight,
                                           Tile.tileWidth,
                                           Tile.tileHeight);
-            
+
         }
 
-        //public bool collisionWithTile(int wo) {
-
-        //}
     }
 }

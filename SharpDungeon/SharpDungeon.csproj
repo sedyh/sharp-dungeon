@@ -33,8 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>chest.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
@@ -81,6 +80,7 @@
     <Compile Include="Game\Input\MouseManager.cs" />
     <Compile Include="Game\Launch.cs" />
     <Compile Include="Game\States\GameState.cs" />
+    <Compile Include="Game\States\LoadState.cs" />
     <Compile Include="Game\States\MenuState.cs" />
     <Compile Include="Game\States\State.cs" />
     <Compile Include="Game\Tiles\AirTile.cs" />
@@ -90,6 +90,8 @@
     <Compile Include="Game\Tiles\Tile.cs" />
     <Compile Include="Game\Tiles\TileSingleSide.cs" />
     <Compile Include="Game\Utils\Area.cs" />
+    <Compile Include="Game\Utils\DotNetRandom.cs" />
+    <Compile Include="Game\Utils\IRandom.cs" />
     <Compile Include="Game\Utils\WaveAlg.cs" />
     <Compile Include="Game\World\Leaf.cs" />
     <Compile Include="Game\World\World.cs" />
@@ -127,12 +129,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Game\UI\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\chest.ico" />
     <Content Include="Assets\entities.png" />
     <Content Include="Assets\tilesWorld.png" />
     <Content Include="Assets\ui.png" />
+    <Content Include="chest.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

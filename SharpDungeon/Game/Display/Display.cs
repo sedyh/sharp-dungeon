@@ -1,9 +1,13 @@
+using SharpDungeon.Game.Graphics;
+using SharpDungeon.Game.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,6 +27,10 @@ namespace SharpDungeon.Game.Display {
             //Init framebuffer
             DoubleBuffered = true;
 
+            //Change cur
+
+            //Cursor.Hide();
+
             //Init events
             KeyDown += new System.Windows.Forms.KeyEventHandler(game.keyManager.KeyDown);
             KeyUp += new System.Windows.Forms.KeyEventHandler(game.keyManager.KeyUp);
@@ -32,13 +40,14 @@ namespace SharpDungeon.Game.Display {
             MouseUp += new System.Windows.Forms.MouseEventHandler(game.mouseManager.mouseUp);
             MouseWheel += new MouseEventHandler(game.mouseManager.mouseWheel);
 
-            MouseEnter += new System.EventHandler(game.mouseManager.mouseEnter);
-            MouseLeave += new System.EventHandler(game.mouseManager.mouseLeave);
-            MouseHover += new System.EventHandler(game.mouseManager.mouseHover);
+            this.MouseEnter += new System.EventHandler(game.mouseManager.mouseEnter);
+            this.MouseLeave += new System.EventHandler(game.mouseManager.mouseLeave);
+            this.MouseHover += new System.EventHandler(game.mouseManager.mouseHover);
 
             Paint += new System.Windows.Forms.PaintEventHandler(game.render);
             FormClosed += new System.Windows.Forms.FormClosedEventHandler(game.displayClosed);
 
         }
+          
     }
 }

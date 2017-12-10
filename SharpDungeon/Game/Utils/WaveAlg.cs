@@ -41,10 +41,8 @@ namespace SharpDungeon.Game.Utils {
         }
 
         public void findPath(int x, int y, int nx, int ny) {
-            if (map[y, x] == wall || map[ny, nx] == wall) {
-                Console.WriteLine("Вы выбрали препятствие");
+            if (map[y, x] == wall || map[ny, nx] == wall)
                 return;
-            }
 
             //волновой алгоритм поиска пути (заполнение значений достижимости) начиная от конца пути
             int[,] cloneMap = (int[,])map.Clone();
@@ -102,6 +100,8 @@ namespace SharpDungeon.Game.Utils {
             wave.ForEach(delegate (Point i) {
                 map[i.y, i.x] = 0;
             });
+
+            wave.Add(new Point(nx, ny));
         }
 
         struct Point {
