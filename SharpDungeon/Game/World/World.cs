@@ -144,13 +144,16 @@ namespace SharpDungeon.Game.World {
 
             for(int i=1; i<rooms.ToArray().Length; i+=2) {
 
-                int startX = rnd.Next(rooms[i-1].Width/2-3, rooms[i-1].Width /2+3),
-                    startY = rnd.Next(rooms[i-1].Height /2-3, rooms[i-1].Height /2+3);
+                //int randX = ,
+                //    randY = ;
 
-                int endX = rnd.Next(rooms[i].Width / 2 - 3, rooms[i].Width / 2 + 3),
-                    endY = rnd.Next(rooms[i].Height / 2 - 3, rooms[i].Height / 2 + 3);
+                int startX = rnd.Next(rooms[i-1].Width/2, rooms[i-1].Width /2),
+                    startY = rnd.Next(rooms[i-1].Height /2, rooms[i-1].Height /2);
 
-                hall = new Rectangle(startX, startY, endX, endY);
+                int endX = rnd.Next(rooms[i].Width / 2, rooms[i].Width / 2),
+                    endY = rnd.Next(rooms[i].Height / 2, rooms[i].Height / 2);
+
+                hall = new Rectangle(startX, startY, startX+endX, startY+endY);
                 halls.Add(hall);
 
             }
@@ -164,7 +167,7 @@ namespace SharpDungeon.Game.World {
             }
 
             foreach (Rectangle r in halls)
-                drawTile(Tile.stoneWall.getId(), r.X, r.Y, r.Width, r.Height);
+                drawTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
 
             //for(int i = 0; i < width;)
 
