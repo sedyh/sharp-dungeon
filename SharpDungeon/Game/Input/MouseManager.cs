@@ -12,12 +12,9 @@ namespace SharpDungeon.Game.Input {
         public bool leftPressed { get; set; }
         public bool rightPressed { get; set; }
         public bool mouseMid { get; set; }
-
         public int mouseX { get; set; }
         public int mouseY { get; set; }
-
         public int wheel { get; set; }
-
         public bool move { get; set; }
 
         private int oldMouseX, oldMouseY;

@@ -114,8 +114,8 @@ namespace SharpDungeon.Game.World {
             List<Rectangle> cells = new List<Rectangle>();
             Rectangle cell;
 
-            for (int x = 0; x < width; x+=roomSize+1) {
-                for (int y = 0; y < height; y+=roomSize+1) {
+            for (int x = 1; x < width; x+=roomSize+1) {
+                for (int y = 1; y < height; y+=roomSize+1) {
                     if (x + roomSize < width && y + roomSize < height) {
                         cell = new Rectangle(x, y, x + roomSize, y + roomSize);
                         cells.Add(cell);
@@ -138,41 +138,98 @@ namespace SharpDungeon.Game.World {
             rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length-1));
             rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length-1));
 
-            List<Rectangle> halls = new List<Rectangle>();
-            Rectangle hall;
+            //List<Rectangle> halls = new List<Rectangle>();
+            //Rectangle hall;
 
-            for (int i = 1; i < cells.ToArray().Length; i ++) {
+            //for (int i = 1; i < cells.ToArray().Length; i ++) {
 
-                //int randX = ,
-                //    randY = ;
+            //    //int randX = ,
+            //    //    randY = ;
+
+            //    int startX = rnd.Next(cells[i - 1].Width / 2, cells[i - 1].Width / 2),
+            //        startY = rnd.Next(cells[i - 1].Height / 2, cells[i - 1].Height / 2);
+
+            //    int endX = rnd.Next(cells[i].Width / 2, cells[i].Width / 2),
+            //        endY = rnd.Next(cells[i].Height / 2, cells[i].Height / 2);
+
+            //    hall = new Rectangle(startX, startY, startX + endX, startY + endY);
+            //    halls.Add(hall);
+
+            //}
+
+            List<Rectangle> tunells = new List<Rectangle>();
+            Rectangle tunell;
+
+            for (int i = 1; i < rooms.ToArray().Length; i++) {
                 
-                int startX = rnd.Next(cells[i - 1].Width / 2, cells[i - 1].Width / 2),
-                    startY = rnd.Next(cells[i - 1].Height / 2, cells[i - 1].Height / 2);
 
-                int endX = rnd.Next(cells[i].Width / 2, cells[i].Width / 2),
-                    endY = rnd.Next(cells[i].Height / 2, cells[i].Height / 2);
+                int prevX = rooms[i - 1].Top,
+                    prevY = rooms[i - 1].Left;
 
-                hall = new Rectangle(startX, startY, startX + endX, startY + endY);
-                halls.Add(hall);
+                int currX = rooms[i].Top,
+                    currY = rooms[i].Left;
 
-            }
+                if(rnd.Next(1, 2) == 1) {
+                    CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, prevY);
+                    
+                    CreateVerticalTunnel(Tile.stone.getId(), prevY, currY, currX);
+                } else {
+                    CreateVerticalTunnel(Tile.stone.getId(), prevY, currY, prevX);
+                    
+                    CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, currY);
+                }
 
-
-            foreach (Rectangle r in halls) {
-                fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
-                drawTile(Tile.stoneWall.getId(), r.X-1, r.Y-1, r.Width+1, r.Height+1);
-                drawTile(Tile.stoneWall.getId(), r.X+1, r.Y+1, r.Width - 1, r.Height - 1);
             }
 
             foreach (Rectangle r in rooms) {
                 fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
-                drawTile(Tile.stoneWall.getId(), r.X - 1, r.Y - 1, r.Width + 1, r.Height + 1);
             }
 
-            //for(int i = 0; i < width;)
+            foreach (Rectangle r in rooms) {
+                fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
+            }
+
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++)
+                    try {
+                        if (getTile(y-2, x) is StoneTile && getTile(y-1, x) is AirTile)
+                            tiles[y-1, x] = Tile.stoneWall.getId();
+                        if (getTile(y, x-2) is StoneTile && getTile(y, x-1) is AirTile)
+                            tiles[y, x-1] = Tile.stoneWall.getId();
+                        if (getTile(y, x + 2) is StoneTile && getTile(y, x + 1) is AirTile)
+                            tiles[y, x + 1] = Tile.stoneWall.getId();
+                        if (getTile(y + 2, x) is StoneTile && getTile(y + 1, x) is AirTile)
+                            tiles[y + 1, x] = Tile.stoneWall.getId();
+                    } catch (IndexOutOfRangeException e) { }
+
+            //foreach (Rectangle r in tunells) {
+            //    drawTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
+            //    drawTile(Tile.stoneWall.getId(), r.X - 1, r.Y - 1, r.Width + 1, r.Height + 1);
+            //    drawTile(Tile.stoneWall.getId(), r.X + 1, r.Y + 1, r.Width - 1, r.Height - 1);
+            //}
+
+            Rectangle rect = rooms[rnd.Next(0, rooms.ToArray().Length - 1)];
 
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
 
+        }
+
+        // Carve a tunnel out of the map parallel to the x-axis
+        private void CreateHorizontalTunnel(int id, int xStart, int xEnd, int yPosition) {
+            for (int x = Math.Min(xStart, xEnd); x <= Math.Max(xStart, xEnd); x++) {
+                try {
+                    tiles[x, yPosition] = id;
+                } catch (IndexOutOfRangeException e) { }
+            }
+        }
+
+        // Carve a tunnel out of the map parallel to the y-axis
+        private void CreateVerticalTunnel(int id, int yStart, int yEnd, int xPosition) {
+            for (int y = Math.Min(yStart, yEnd); y <= Math.Max(yStart, yEnd); y++) {
+                try {
+                    tiles[xPosition, y] = id;
+                } catch (IndexOutOfRangeException e) { }
+            }
         }
 
         public void tick() {

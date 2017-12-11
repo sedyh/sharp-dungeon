@@ -89,6 +89,8 @@
     <Compile Include="Game\Tiles\TileSmartSide.cs" />
     <Compile Include="Game\Tiles\Tile.cs" />
     <Compile Include="Game\Tiles\TileSingleSide.cs" />
+    <Compile Include="Game\UI\UIButton.cs" />
+    <Compile Include="Game\UI\UIManager.cs" />
     <Compile Include="Game\UI\UIObject.cs" />
     <Compile Include="Game\Utils\Area.cs" />
     <Compile Include="Game\Utils\DotNetRandom.cs" />

@@ -34,7 +34,7 @@ namespace SharpDungeon.Game.Graphics {
         //UI
 
         public static Bitmap background, backgroundLoading;
-        public static Bitmap waitCur;
+        public static Bitmap[] newGameButton, loadSeedButton, optionsButton, exitButton;
 
         //Brushes
 
@@ -55,7 +55,7 @@ namespace SharpDungeon.Game.Graphics {
                 
                 f.AddFontFile("../../Assets/emulogic.ttf");
                 themeFont = new Font(f.Families[0], 10);
-                themeFontBig = new Font(f.Families[0], 38);
+                themeFontBig = new Font(f.Families[0], 20);
 
                 air = tileSheet.crop(width * 5, height * 2, width, height);
                 stone = tileSheet.crop(width * 3, height * 2, width, height);
@@ -120,6 +120,14 @@ namespace SharpDungeon.Game.Graphics {
                 playerIdle[5] = entitiesSheet.crop(width * 5, height * 2, width, height);
 
                 selection = uiSheet.crop(0, 0, width, height);
+
+                newGameButton = new Bitmap[2];
+                newGameButton[0] = uiSheet.crop(0, height, width*3, height);
+                newGameButton[1] = uiSheet.crop(0, height * 2, width * 3, height);
+
+                loadSeedButton = new Bitmap[2];
+                loadSeedButton[0] = uiSheet.crop(0, height * 3, width * 3, height);
+                loadSeedButton[1] = uiSheet.crop(0, height * 4, width * 3, height);
 
             } catch (OutOfMemoryException) {
                 //logg: not correct coords of SpriteSheet
