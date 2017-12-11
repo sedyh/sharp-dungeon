@@ -138,12 +138,33 @@ namespace SharpDungeon.Game.World {
             rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length-1));
             rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length-1));
 
+            List<Rectangle> halls = new List<Rectangle>();
+            Rectangle hall;
+            List<Rectangle> blackListHalls = new List<Rectangle>();
+
+            for(int i=1; i<rooms.ToArray().Length; i+=2) {
+
+                int startX = rnd.Next(rooms[i-1].Width/2-3, rooms[i-1].Width /2+3),
+                    startY = rnd.Next(rooms[i-1].Height /2-3, rooms[i-1].Height /2+3);
+
+                int endX = rnd.Next(rooms[i].Width / 2 - 3, rooms[i].Width / 2 + 3),
+                    endY = rnd.Next(rooms[i].Height / 2 - 3, rooms[i].Height / 2 + 3);
+
+                hall = new Rectangle(startX, startY, endX, endY);
+                halls.Add(hall);
+
+            }
+
             //foreach (Rectangle c in cells)
             //    fillTile(Tile.stoneWall.getId(), c.X, c.Y, c.Width, c.Height);
 
-            foreach (Rectangle r in rooms)
+            foreach (Rectangle r in rooms) {
                 fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
+                drawTile(Tile.stoneWall.getId(), r.X - 1, r.Y - 1, r.Width + 1, r.Height + 1);
+            }
 
+            foreach (Rectangle r in halls)
+                drawTile(Tile.stoneWall.getId(), r.X, r.Y, r.Width, r.Height);
 
             //for(int i = 0; i < width;)
 
@@ -229,6 +250,27 @@ namespace SharpDungeon.Game.World {
                     try {
                             tiles[j, i] = id;
                     } catch (IndexOutOfRangeException e) { }
+        }
+
+        public void drawTile(int id, int x, int y, int fillWidth, int fillHeight) {
+            for (int j = y; j < fillHeight; j++)
+                for (int i = x; i < fillWidth; i++)
+                    if (j == y)
+                        try {
+                            tiles[j, i] = id;
+                        } catch (IndexOutOfRangeException e) { }
+                    else if (i == x)
+                        try {
+                            tiles[j, i] = id;
+                        } catch (IndexOutOfRangeException e) { }
+                    else if (j == fillHeight-1)
+                        try {
+                            tiles[j, i] = id;
+                        } catch (IndexOutOfRangeException e) { }
+                    else if (i == fillWidth-1)
+                        try {
+                            tiles[j, i] = id;
+                        } catch (IndexOutOfRangeException e) { }
         }
 
         private void loadWorld(String path) {
