@@ -51,7 +51,7 @@ namespace SharpDungeon.Game.Entities {
         public override void tick() {
             
             currentAnimation.tick();
-            handler.gameCamera.checkScroll();
+            handler.gameCamera.centerOnEntity(this);
             
             if(handler.keyManager.isDown(Keys.Space))
                 handler.game.gameCamera.centerOnEntity(this);

@@ -140,34 +140,34 @@ namespace SharpDungeon.Game.World {
 
             List<Rectangle> halls = new List<Rectangle>();
             Rectangle hall;
-            List<Rectangle> blackListHalls = new List<Rectangle>();
 
-            for(int i=1; i<rooms.ToArray().Length; i+=2) {
+            for (int i = 1; i < cells.ToArray().Length; i ++) {
 
                 //int randX = ,
                 //    randY = ;
+                
+                int startX = rnd.Next(cells[i - 1].Width / 2, cells[i - 1].Width / 2),
+                    startY = rnd.Next(cells[i - 1].Height / 2, cells[i - 1].Height / 2);
 
-                int startX = rnd.Next(rooms[i-1].Width/2, rooms[i-1].Width /2),
-                    startY = rnd.Next(rooms[i-1].Height /2, rooms[i-1].Height /2);
+                int endX = rnd.Next(cells[i].Width / 2, cells[i].Width / 2),
+                    endY = rnd.Next(cells[i].Height / 2, cells[i].Height / 2);
 
-                int endX = rnd.Next(rooms[i].Width / 2, rooms[i].Width / 2),
-                    endY = rnd.Next(rooms[i].Height / 2, rooms[i].Height / 2);
-
-                hall = new Rectangle(startX, startY, startX+endX, startY+endY);
+                hall = new Rectangle(startX, startY, startX + endX, startY + endY);
                 halls.Add(hall);
 
             }
 
-            //foreach (Rectangle c in cells)
-            //    fillTile(Tile.stoneWall.getId(), c.X, c.Y, c.Width, c.Height);
+
+            foreach (Rectangle r in halls) {
+                fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
+                drawTile(Tile.stoneWall.getId(), r.X-1, r.Y-1, r.Width+1, r.Height+1);
+                drawTile(Tile.stoneWall.getId(), r.X+1, r.Y+1, r.Width - 1, r.Height - 1);
+            }
 
             foreach (Rectangle r in rooms) {
                 fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
                 drawTile(Tile.stoneWall.getId(), r.X - 1, r.Y - 1, r.Width + 1, r.Height + 1);
             }
-
-            foreach (Rectangle r in halls)
-                drawTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
 
             //for(int i = 0; i < width;)
 
