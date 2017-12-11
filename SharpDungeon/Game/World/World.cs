@@ -138,8 +138,8 @@ namespace SharpDungeon.Game.World {
             rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length-1));
             rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length-1));
 
-            foreach (Rectangle c in cells)
-                fillTile(Tile.stoneWall.getId(), c.X, c.Y, c.Width, c.Height);
+            //foreach (Rectangle c in cells)
+            //    fillTile(Tile.stoneWall.getId(), c.X, c.Y, c.Width, c.Height);
 
             foreach (Rectangle r in rooms)
                 fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);

@@ -15,7 +15,7 @@ namespace SharpDungeon.Game.Graphics {
                                     height = 64;
 
         //Fonts
-
+        private static System.Drawing.Text.PrivateFontCollection f = new System.Drawing.Text.PrivateFontCollection();
         public static Font themeFont, themeFontBig;
 
         //Tiles
@@ -52,10 +52,10 @@ namespace SharpDungeon.Game.Graphics {
 
                 background = new Bitmap("../../Assets/background.png");
                 backgroundLoading = new Bitmap("../../Assets/backgroundLoading.png");
-
-                System.Drawing.Text.PrivateFontCollection f = new System.Drawing.Text.PrivateFontCollection();
+                
                 f.AddFontFile("../../Assets/emulogic.ttf");
                 themeFont = new Font(f.Families[0], 10);
+                themeFontBig = new Font(f.Families[0], 38);
 
                 air = tileSheet.crop(width * 5, height * 2, width, height);
                 stone = tileSheet.crop(width * 3, height * 2, width, height);

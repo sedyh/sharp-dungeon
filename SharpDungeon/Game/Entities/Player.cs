@@ -139,6 +139,7 @@ namespace SharpDungeon.Game.Entities {
             renderSelection(g);
 
             g.FillRectangle(Brushes.White, 15, 15, handler.world.width * 8 + 10, handler.world.height * 8 + 10);
+
             for (int j = 0; j < handler.world.height; j++)
                 for (int i = 0; i < handler.world.width; i++)
                     g.FillRectangle(handler.world.getTile(j, i).isSolid() ? Assets.minMapSolid : handler.world.getTile(j, i) != Tile.air ? Assets.minMapBack : Brushes.Black, 20 + j * 8, 20 + i * 8, 8, 8);

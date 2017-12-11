@@ -23,7 +23,7 @@ namespace SharpDungeon.Game.States {
         public override void render(System.Drawing.Graphics g) {
 
             g.DrawImage(Assets.background, 0, 0, handler.width, handler.height);
-            //TextRenderer.DrawText(g, "Menu", Assets.themeFont, new Point(20, handler.height/2-500), Color.White);
+            TextRenderer.DrawText(g, "Menu", Assets.themeFontBig, new Point(20, handler.height / 2 - 500), Color.White);
 
 
         }

@@ -101,7 +101,7 @@ namespace SharpDungeon.Game.Utils {
                 map[i.y, i.x] = 0;
             });
 
-            wave.Add(new Point(nx, ny));
+            //wave.Add(new Point(nx, ny));
         }
 
         struct Point {
