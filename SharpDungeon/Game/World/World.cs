@@ -170,19 +170,15 @@ namespace SharpDungeon.Game.World {
                     currY = rooms[i].Left;
 
                 if(rnd.Next(1, 2) == 1) {
-                    CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, prevY);
+                    CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, prevY+1);
                     
-                    CreateVerticalTunnel(Tile.stone.getId(), prevY, currY, currX);
+                    CreateVerticalTunnel(Tile.stone.getId(), prevY+1, currY, currX+1);
                 } else {
-                    CreateVerticalTunnel(Tile.stone.getId(), prevY, currY, prevX);
+                    CreateVerticalTunnel(Tile.stone.getId(), prevY, currY+1, prevX+1);
                     
-                    CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, currY);
+                    CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, currY+1);
                 }
 
-            }
-
-            foreach (Rectangle r in rooms) {
-                fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
             }
 
             foreach (Rectangle r in rooms) {
@@ -202,13 +198,24 @@ namespace SharpDungeon.Game.World {
                             tiles[y + 1, x] = Tile.stoneWall.getId();
                     } catch (IndexOutOfRangeException e) { }
 
-            //foreach (Rectangle r in tunells) {
-            //    drawTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
-            //    drawTile(Tile.stoneWall.getId(), r.X - 1, r.Y - 1, r.Width + 1, r.Height + 1);
-            //    drawTile(Tile.stoneWall.getId(), r.X + 1, r.Y + 1, r.Width - 1, r.Height - 1);
-            //}
+
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++)
+                    try {
+                        if (getTile(y - 1, x) is StoneWallTile && getTile(y, x - 1) is StoneWallTile && getTile(y-1, x-1) is StoneTile  && getTile(y, x) is AirTile)
+                            tiles[y, x] = Tile.stoneWall.getId();
+                        if (getTile(y - 1, x) is StoneWallTile && getTile(y, x + 1) is StoneWallTile && getTile(y-1, x+1) is StoneTile && getTile(y, x) is AirTile)
+                            tiles[y, x] = Tile.stoneWall.getId();
+                        if (getTile(y + 1, x) is StoneWallTile && getTile(y, x + 1) is StoneWallTile && getTile(y + 1, x + 1) is StoneTile && getTile(y, x) is AirTile)
+                            tiles[y, x] = Tile.stoneWall.getId();
+                        if (getTile(y + 1, x) is StoneWallTile && getTile(y, x - 1) is StoneWallTile && getTile(y + 1, x - 1) is StoneTile && getTile(y, x) is AirTile)
+                            tiles[y, x] = Tile.stoneWall.getId();
+                    } catch (IndexOutOfRangeException e) { }
+            
 
             Rectangle rect = rooms[rnd.Next(0, rooms.ToArray().Length - 1)];
+            spawnX = 64*15-64;
+            spawnY = 64*15-64;
 
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
 
