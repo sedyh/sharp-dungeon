@@ -135,8 +135,8 @@ namespace SharpDungeon.Game.World {
                 rooms.Add(room);
             }
 
-            rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length - 1));
-            rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length - 1));
+            rooms.RemoveAt(rnd.Next(0, rooms.Count-1));
+            rooms.RemoveAt(rnd.Next(0, rooms.Count - 1));
 
             for (int i = 1; i < rooms.ToArray().Length; i++) {
 
@@ -227,9 +227,11 @@ namespace SharpDungeon.Game.World {
                             getTile(y + 1, x + 1) is StoneTile)
                                 tiles[y, x] = Tile.door.getId();
                     } catch (IndexOutOfRangeException e) { }
-
-            spawnX = 64 * 5;
-            spawnY = 64 * 5;
+            
+            Rectangle re;
+            re = rooms[rnd.Next(0, rooms.Count - 1)];
+            spawnX = re.Left*64+64;
+            spawnY = re.Top*64+128;
 
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
 

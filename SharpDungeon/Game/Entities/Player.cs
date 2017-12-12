@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SharpDungeon.Game.Entities {
     public class Player : Entity {
-        
+
         Animation currentAnimation, walkLeft, walkRight;
         Bitmap stayTex;
 
@@ -27,7 +27,7 @@ namespace SharpDungeon.Game.Entities {
         int directionStep;
         WaveAlg path;
         Point thisPoint, nextPoint, i, j;
-        int thisX, thisY, speed=32, dirStepX=0, dirStepY = 0;
+        int thisX, thisY, speed = 32, dirStepX = 0, dirStepY = 0;
 
         Random rnd = new Random();
         bool wasMid = false, wasMid2 = false;
@@ -46,50 +46,48 @@ namespace SharpDungeon.Game.Entities {
 
             handler.game.gameCamera.centerOnEntity(this);
         }
-       
+
         public override void die() {
-            
+
         }
 
         public override void tick() {
-            
+
             currentAnimation.tick();
             handler.gameCamera.centerOnEntity(this);
 
-            if (handler.mouseManager.leftPressed && 
+            if (handler.mouseManager.leftPressed &&
                 handler.world.toWorldX(handler.mouseManager.mouseX) > 0 &&
                 handler.world.toWorldY(handler.mouseManager.mouseY) > 0) {
+                
 
-                if (handler.world.getTile(handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY))
-                   is DoorTile) {
-                    doorExist = true;
-                    doorX = handler.world.toWorldX(handler.mouseManager.mouseX);
-                    doorY = handler.world.toWorldY(handler.mouseManager.mouseY);
-                } else {
-                    doorExist = false;
-                }
-                    
-                    path = new WaveAlg(handler.world.width, handler.world.height);
+                path = new WaveAlg(handler.world.width, handler.world.height);
 
                 for (int j = 0; j < handler.world.height; j++)
                     for (int i = 0; i < handler.world.width; i++)
-                        if (!doorExist) {
+                        if (handler.world.getTile(handler.world.toWorldX(handler.mouseManager.mouseX), 
+                            handler.world.toWorldY(handler.mouseManager.mouseY))
+                            is DoorTile) {
+
+                            if (!(handler.world.getTile(j, i) is DoorTile) && handler.world.getTile(j, i).isSolid())
+                                path.block(j, i);
+
+                        } else {
+
+
                             if (handler.world.getTile(j, i).isSolid())
                                 path.block(j, i);
-                        } else {
-                            if (!(handler.world.getTile(j, i) is OpenDoorTile))
-                                if(handler.world.getTile(j, i).isSolid())
-                                    path.block(j, i);
+
                         }
 
-                                path.findPath((int)x / Tile.tileWidth,
-                                              (int)y / Tile.tileHeight,
-                                              handler.world.toWorldX(handler.mouseManager.mouseX),
-                                              handler.world.toWorldY(handler.mouseManager.mouseY));
+                path.findPath((int)x / Tile.tileWidth,
+                              (int)y / Tile.tileHeight,
+                              handler.world.toWorldX(handler.mouseManager.mouseX),
+                              handler.world.toWorldY(handler.mouseManager.mouseY));
 
-                    direction = path.toPointList();
-                    directionStep = 0;
-                
+                direction = path.toPointList();
+                directionStep = 0;
+
             }
 
             if (direction != null) {
@@ -104,39 +102,43 @@ namespace SharpDungeon.Game.Entities {
                 if (directionStep < direction.ToArray().Length) {
 
                     if (x < direction[directionStep].X * Tile.tileWidth)
-                        x+=speed;
+                        x += speed;
                     else if (x > direction[directionStep].X * Tile.tileWidth)
-                        x-=speed;
+                        x -= speed;
 
                     if (y < direction[directionStep].Y * Tile.tileHeight)
-                        y+=speed;
+                        y += speed;
                     else if (y > direction[directionStep].Y * Tile.tileHeight)
-                        y-=speed;
+                        y -= speed;
 
                     dirStepX = direction[directionStep].X * Tile.tileWidth;
                     dirStepY = direction[directionStep].Y * Tile.tileHeight;
 
-                    if (x == direction[directionStep].X* Tile.tileWidth &&
+                    if (x == direction[directionStep].X * Tile.tileWidth &&
                         y == direction[directionStep].Y * Tile.tileHeight) {
+
+                        if (handler.world.getTile((int)(x/Tile.tileWidth),
+                                                  (int)(y/Tile.tileWidth))
+                                                  is DoorTile)
+                            handler.world.setTile(Tile.openDoor.getId(), (int)(x / Tile.tileWidth), (int)(y / Tile.tileWidth));
 
                         directionStep++;
                     }
 
                 } else {
-                    if(doorExist)
-                            handler.world.setTile(Tile.openDoor.getId(), doorX, doorY);
+
 
                     directionStep = 0;
                     direction = null;
                     currentAnimation = idle;
                 }
             }
-                    
-            }
+
+        }
 
         public override void render(System.Drawing.Graphics g) {
             if (currentAnimation != null)
-                g.DrawImage(currentAnimation.getCurrentFrame(), (int) (x - handler.gameCamera.xOffset), (int) (y - handler.gameCamera.yOffset), width, height);
+                g.DrawImage(currentAnimation.getCurrentFrame(), (int)(x - handler.gameCamera.xOffset), (int)(y - handler.gameCamera.yOffset), width, height);
             else
                 g.DrawImage(stayTex, (int)(x - handler.gameCamera.xOffset), (int)(y - handler.gameCamera.yOffset), width, height);
 
@@ -158,7 +160,7 @@ namespace SharpDungeon.Game.Entities {
                     else if (tile is StoneTile)
                         b = Assets.minMapBack;
 
-                        g.FillRectangle(b, 20 + j * 8, 20 + i * 8, 8, 8);
+                    g.FillRectangle(b, 20 + j * 8, 20 + i * 8, 8, 8);
                 }
             }
             TextRenderer.DrawText(g, $"offsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
@@ -169,7 +171,7 @@ namespace SharpDungeon.Game.Entities {
             int arSize = 64;
             ar.Width = arSize;
             ar.Height = arSize;
-            
+
             //Убрать потом ...
 
             offsX = (int)(Tile.tileWidth - handler.gameCamera.xOffset % Tile.tileWidth);
