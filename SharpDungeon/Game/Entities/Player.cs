@@ -56,6 +56,9 @@ namespace SharpDungeon.Game.Entities {
             currentAnimation.tick();
             handler.gameCamera.centerOnEntity(this);
 
+            if (handler.mouseManager.rightPressed)
+                handler.world.setTile(Tile.shadowGate.getId(), handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY));
+
             if (handler.mouseManager.leftPressed &&
                 handler.world.toWorldX(handler.mouseManager.mouseX) > 0 &&
                 handler.world.toWorldY(handler.mouseManager.mouseY) > 0) {

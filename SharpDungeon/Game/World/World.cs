@@ -135,7 +135,7 @@ namespace SharpDungeon.Game.World {
                 rooms.Add(room);
             }
 
-            rooms.RemoveAt(rnd.Next(0, rooms.Count-1));
+            rooms.RemoveAt(rnd.Next(0, rooms.Count - 1));
             rooms.RemoveAt(rnd.Next(0, rooms.Count - 1));
 
             for (int i = 1; i < rooms.ToArray().Length; i++) {
@@ -227,7 +227,11 @@ namespace SharpDungeon.Game.World {
                             getTile(y + 1, x + 1) is StoneTile)
                                 tiles[y, x] = Tile.door.getId();
                     } catch (IndexOutOfRangeException e) { }
-            
+
+            Rectangle ree;
+            ree = rooms[rnd.Next(0, rooms.Count - 1)];
+            setTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+1);
+
             Rectangle re;
             re = rooms[rnd.Next(0, rooms.Count - 1)];
             spawnX = re.Left*64+64;

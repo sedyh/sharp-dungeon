@@ -20,8 +20,19 @@ namespace SharpDungeon.Game.Graphics {
 
         //Tiles
 
-        public static Bitmap air, stone;
-        public static Bitmap[] stoneWall, door;
+        public static Bitmap air, stone, planks, upStairs, downStairs;
+        public static Bitmap[] stoneWall, door, shadowGate;
+
+        //Items
+
+        public static Bitmap[] itemShadow;
+        public static Bitmap redRupy, greenRupy, purpleRupy;
+        public static Bitmap fireKnob, lightingKnob, poisonKnob;
+        public static Bitmap key, shadowKey;
+        public static Bitmap brownTrash1, brownThrash2, brownTrash3, brownTrash4,
+                             blueTrash1, blueTrash2, blueTrash3, blueTrash4,
+                             redTrash1, redTrash2, redTrash3, redTrash4;
+
 
         //Player
 
@@ -52,6 +63,7 @@ namespace SharpDungeon.Game.Graphics {
                 SpriteSheet tileSheet = new SpriteSheet("../../Assets/tilesWorld.png");
                 SpriteSheet entitiesSheet = new SpriteSheet("../../Assets/entities.png");
                 SpriteSheet uiSheet = new SpriteSheet("../../Assets/ui.png");
+                SpriteSheet itemsSheet = new SpriteSheet("../../Assets/items.png");
 
                 background = new Bitmap("../../Assets/background.png");
                 backgroundLoading = new Bitmap("../../Assets/backgroundLoading.png");
@@ -60,8 +72,8 @@ namespace SharpDungeon.Game.Graphics {
                 themeFont = new Font(f.Families[0], 10);
                 themeFontBig = new Font(f.Families[0], 20);
 
-                air = tileSheet.crop(width * 5, height * 2, width, height);
-                stone = tileSheet.crop(width * 3, height * 2, width, height);
+                air = tileSheet.crop(width * 6, height * 2, width, height);
+                stone = tileSheet.crop(width * 4, height * 2, width, height);
 
                 stoneWall = new Bitmap[24];
 
@@ -91,6 +103,29 @@ namespace SharpDungeon.Game.Graphics {
                 stoneWall[21] = tileSheet.crop(width * 9, height, width, height);
                 stoneWall[22] = tileSheet.crop(width * 10, height, width, height);
                 stoneWall[23] = tileSheet.crop(width * 11, height, width, height);
+
+                shadowGate = new Bitmap[19];
+                shadowGate[0] = tileSheet.crop(width * 11, height*3, width, height);
+
+                shadowGate[1] = tileSheet.crop(0, height * 4, width, height);
+                shadowGate[2] = tileSheet.crop(width, height * 4, width, height);
+                shadowGate[3] = tileSheet.crop(width * 2, height * 4, width, height);
+                shadowGate[4] = tileSheet.crop(width * 3, height * 4, width, height);
+                shadowGate[5] = tileSheet.crop(width * 4, height * 4, width, height);
+                shadowGate[6] = tileSheet.crop(width * 5, height * 4, width, height);
+                shadowGate[7] = tileSheet.crop(width * 6, height * 4, width, height);
+                shadowGate[8] = tileSheet.crop(width * 7, height * 4, width, height);
+                shadowGate[9] = tileSheet.crop(width * 8, height * 4, width, height);
+                shadowGate[10] = tileSheet.crop(width * 9, height * 4, width, height);
+                shadowGate[11] = tileSheet.crop(width * 10, height * 4, width, height);
+                shadowGate[12] = tileSheet.crop(width * 11, height * 4, width, height);
+
+                shadowGate[13] = tileSheet.crop(0, height * 5, width, height);
+                shadowGate[14] = tileSheet.crop(width, height * 5, width, height);
+                shadowGate[15] = tileSheet.crop(width * 2, height * 5, width, height);
+                shadowGate[16] = tileSheet.crop(width * 3, height * 5, width, height);
+                shadowGate[17] = tileSheet.crop(width * 4, height * 5, width, height);
+                shadowGate[18] = tileSheet.crop(width * 5, height * 5, width, height);
 
                 door = new Bitmap[4];
                 door[0] = tileSheet.crop(0, height * 2, width, height);

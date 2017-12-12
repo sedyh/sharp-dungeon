@@ -16,6 +16,8 @@ namespace SharpDungeon.Game.Tiles {
         public static Tile stone = new StoneTile(2);
         public static Tile door = new DoorTile(3);
         public static Tile openDoor = new OpenDoorTile(4);
+        public static Tile planks = new PlanksTile(5);
+        public static Tile shadowGate = new ShadowGateTile(6);
 
         public static readonly int tileWidth = 64,
                                    tileHeight = 64;
