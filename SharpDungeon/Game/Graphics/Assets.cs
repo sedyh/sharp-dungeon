@@ -21,8 +21,7 @@ namespace SharpDungeon.Game.Graphics {
         //Tiles
 
         public static Bitmap air, stone;
-        public static Bitmap[] stoneWall;
-        public static Bitmap logo;
+        public static Bitmap[] stoneWall, door;
 
         //Player
 
@@ -33,6 +32,7 @@ namespace SharpDungeon.Game.Graphics {
 
         //UI
 
+        public static Bitmap logo;
         public static Bitmap background, backgroundLoading;
         public static Bitmap[] newGameButton, loadSeedButton, optionsButton, exitButton;
 
@@ -40,6 +40,9 @@ namespace SharpDungeon.Game.Graphics {
 
         public static Brush minMapSolid = new SolidBrush(Color.FromArgb(110, 121, 145));
         public static Brush minMapBack = new SolidBrush(Color.FromArgb(175, 175, 175));
+        public static Brush minMapBlack = new SolidBrush(Color.FromArgb(0, 0, 0));
+        public static Brush minMapDoor = new SolidBrush(Color.FromArgb(122, 104, 86));
+        public static Brush minMapOpenDoor = new SolidBrush(Color.FromArgb(142, 130, 119));
 
         //Load textures
 
@@ -88,6 +91,12 @@ namespace SharpDungeon.Game.Graphics {
                 stoneWall[21] = tileSheet.crop(width * 9, height, width, height);
                 stoneWall[22] = tileSheet.crop(width * 10, height, width, height);
                 stoneWall[23] = tileSheet.crop(width * 11, height, width, height);
+
+                door = new Bitmap[4];
+                door[0] = tileSheet.crop(0, height * 2, width, height);
+                door[1] = tileSheet.crop(0, height * 3, width, height);
+                door[2] = tileSheet.crop(width, height * 2, width, height);
+                door[3] = tileSheet.crop(width, height * 3, width, height);
 
                 logo = tileSheet.crop(width*9, height*11, width*3, height);
 

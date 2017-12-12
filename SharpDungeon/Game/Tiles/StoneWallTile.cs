@@ -9,10 +9,7 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.Tiles {
     public class StoneWallTile : TileSmartSide {
 
-        int rndNum;
-
         public StoneWallTile(int id) : base(Assets.stoneWall, id) {
-            rndNum = rnd.Next(6);
         }
 
         public override void tick(Handler handler, int x, int y) {

@@ -20,6 +20,9 @@ namespace SharpDungeon.Game.Entities {
         int offsX;
         int offsY;
 
+        bool doorExist = false;
+        int doorX, doorY;
+
         List<Point> direction = null;
         int directionStep;
         WaveAlg path;
@@ -52,41 +55,37 @@ namespace SharpDungeon.Game.Entities {
             
             currentAnimation.tick();
             handler.gameCamera.centerOnEntity(this);
-            
-            if(handler.keyManager.isDown(Keys.Space))
-                handler.game.gameCamera.centerOnEntity(this);
 
-            if (handler.keyManager.isDown(Keys.Right))
-                handler.gameCamera.xOffset += 10;
-            else if (handler.keyManager.isDown(Keys.Left))
-                handler.gameCamera.xOffset -= 10;
+            if (handler.mouseManager.leftPressed && 
+                handler.world.toWorldX(handler.mouseManager.mouseX) > 0 &&
+                handler.world.toWorldY(handler.mouseManager.mouseY) > 0) {
 
-            if (handler.keyManager.isDown(Keys.Up))
-                handler.gameCamera.yOffset -= 10;
-            else if (handler.keyManager.isDown(Keys.Down))
-                handler.gameCamera.yOffset += 10;
-
-            if (handler.mouseManager.leftPressed)
-                handler.world.setTile(Tile.stone.getId(), 
-                                      handler.world.toWorldX(handler.mouseManager.mouseX),
-                                      handler.world.toWorldY(handler.mouseManager.mouseY));
-            else if (handler.mouseManager.rightPressed)
-                handler.world.setTile(Tile.stoneWall.getId(),
-                                      handler.world.toWorldX(handler.mouseManager.mouseX),
-                                      handler.world.toWorldY(handler.mouseManager.mouseY));
-
-            if (handler.keyManager.isPressed(Keys.T)) {
+                if (handler.world.getTile(handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY))
+                   is DoorTile) {
+                    doorExist = true;
+                    doorX = handler.world.toWorldX(handler.mouseManager.mouseX);
+                    doorY = handler.world.toWorldY(handler.mouseManager.mouseY);
+                } else {
+                    doorExist = false;
+                }
+                    
                     path = new WaveAlg(handler.world.width, handler.world.height);
 
-                    for (int j = 0; j < handler.world.height; j++)
-                        for (int i = 0; i < handler.world.width; i++)
+                for (int j = 0; j < handler.world.height; j++)
+                    for (int i = 0; i < handler.world.width; i++)
+                        if (!doorExist) {
                             if (handler.world.getTile(j, i).isSolid())
                                 path.block(j, i);
+                        } else {
+                            if (!(handler.world.getTile(j, i) is OpenDoorTile))
+                                if(handler.world.getTile(j, i).isSolid())
+                                    path.block(j, i);
+                        }
 
-                    path.findPath((int)x / Tile.tileWidth,
-                                  (int)y / Tile.tileHeight,
-                                  handler.world.toWorldX(handler.mouseManager.mouseX),
-                                  handler.world.toWorldY(handler.mouseManager.mouseY));
+                                path.findPath((int)x / Tile.tileWidth,
+                                              (int)y / Tile.tileHeight,
+                                              handler.world.toWorldX(handler.mouseManager.mouseX),
+                                              handler.world.toWorldY(handler.mouseManager.mouseY));
 
                     direction = path.toPointList();
                     directionStep = 0;
@@ -119,9 +118,14 @@ namespace SharpDungeon.Game.Entities {
 
                     if (x == direction[directionStep].X* Tile.tileWidth &&
                         y == direction[directionStep].Y * Tile.tileHeight) {
+
                         directionStep++;
                     }
+
                 } else {
+                    if(doorExist)
+                            handler.world.setTile(Tile.openDoor.getId(), doorX, doorY);
+
                     directionStep = 0;
                     direction = null;
                     currentAnimation = idle;
@@ -140,10 +144,23 @@ namespace SharpDungeon.Game.Entities {
 
             g.FillRectangle(Brushes.White, 15, 15, handler.world.width * 8 + 10, handler.world.height * 8 + 10);
 
-            for (int j = 0; j < handler.world.height; j++)
-                for (int i = 0; i < handler.world.width; i++)
-                    g.FillRectangle(handler.world.getTile(j, i).isSolid() ? Assets.minMapSolid : handler.world.getTile(j, i) != Tile.air ? Assets.minMapBack : Brushes.Black, 20 + j * 8, 20 + i * 8, 8, 8);
+            for (int j = 0; j < handler.world.height; j++) {
+                for (int i = 0; i < handler.world.width; i++) {
+                    Tile tile = handler.world.getTile(j, i);
+                    Brush b = Assets.minMapBlack;
 
+                    if (tile.isSolid() && tile is DoorTile)
+                        b = Assets.minMapDoor;
+                    else if (tile is OpenDoorTile)
+                        b = Assets.minMapBack;
+                    else if (tile.isSolid())
+                        b = Assets.minMapSolid;
+                    else if (tile is StoneTile)
+                        b = Assets.minMapBack;
+
+                        g.FillRectangle(b, 20 + j * 8, 20 + i * 8, 8, 8);
+                }
+            }
             TextRenderer.DrawText(g, $"offsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
         }
 

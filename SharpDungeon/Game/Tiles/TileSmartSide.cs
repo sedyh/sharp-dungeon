@@ -9,13 +9,10 @@ namespace SharpDungeon.Game.Tiles {
     public abstract class TileSmartSide : Tile {
 
         protected Bitmap[] textures;
-        protected Random rnd;
 
         public TileSmartSide(Bitmap[] tex, int id) : base(id) {
             this.textures = tex;
             currentTex = textures[0];
-
-            this.rnd = new Random();
         }
 
         public override void tick(Handler handler, int x, int y) {

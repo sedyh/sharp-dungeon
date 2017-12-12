@@ -114,8 +114,8 @@ namespace SharpDungeon.Game.World {
             List<Rectangle> cells = new List<Rectangle>();
             Rectangle cell;
 
-            for (int x = 1; x < width; x+=roomSize+1) {
-                for (int y = 1; y < height; y+=roomSize+1) {
+            for (int x = 1; x < width; x += roomSize + 1) {
+                for (int y = 1; y < height; y += roomSize + 1) {
                     if (x + roomSize < width && y + roomSize < height) {
                         cell = new Rectangle(x, y, x + roomSize, y + roomSize);
                         cells.Add(cell);
@@ -128,40 +128,18 @@ namespace SharpDungeon.Game.World {
 
             foreach (Rectangle c in cells) {
 
-                int nwidth = rnd.Next(5, roomSize-1),
-                    nheight = rnd.Next(5, roomSize-1);
+                int nwidth = rnd.Next(5, roomSize - 1),
+                    nheight = rnd.Next(5, roomSize - 1);
 
-                room = new Rectangle(c.X+rnd.Next(1, roomSize/3), c.Y +rnd.Next(1, roomSize/3), c.X + nwidth, c.Y + nheight);
+                room = new Rectangle(c.X + rnd.Next(1, roomSize / 3), c.Y + rnd.Next(1, roomSize / 3), c.X + nwidth, c.Y + nheight);
                 rooms.Add(room);
             }
 
-            rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length-1));
-            rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length-1));
-
-            //List<Rectangle> halls = new List<Rectangle>();
-            //Rectangle hall;
-
-            //for (int i = 1; i < cells.ToArray().Length; i ++) {
-
-            //    //int randX = ,
-            //    //    randY = ;
-
-            //    int startX = rnd.Next(cells[i - 1].Width / 2, cells[i - 1].Width / 2),
-            //        startY = rnd.Next(cells[i - 1].Height / 2, cells[i - 1].Height / 2);
-
-            //    int endX = rnd.Next(cells[i].Width / 2, cells[i].Width / 2),
-            //        endY = rnd.Next(cells[i].Height / 2, cells[i].Height / 2);
-
-            //    hall = new Rectangle(startX, startY, startX + endX, startY + endY);
-            //    halls.Add(hall);
-
-            //}
-
-            List<Rectangle> tunells = new List<Rectangle>();
-            Rectangle tunell;
+            rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length - 1));
+            rooms.RemoveAt(rnd.Next(0, rooms.ToArray().Length - 1));
 
             for (int i = 1; i < rooms.ToArray().Length; i++) {
-                
+
 
                 int prevX = rooms[i - 1].Top,
                     prevY = rooms[i - 1].Left;
@@ -169,14 +147,14 @@ namespace SharpDungeon.Game.World {
                 int currX = rooms[i].Top,
                     currY = rooms[i].Left;
 
-                if(rnd.Next(1, 2) == 1) {
-                    CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, prevY+1);
-                    
-                    CreateVerticalTunnel(Tile.stone.getId(), prevY+1, currY, currX+1);
+                if (rnd.Next(1, 2) == 1) {
+                    CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, prevY + 1);
+
+                    CreateVerticalTunnel(Tile.stone.getId(), prevY + 1, currY, currX + 1);
                 } else {
-                    CreateVerticalTunnel(Tile.stone.getId(), prevY, currY+1, prevX+1);
-                    
-                    CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, currY+1);
+                    CreateVerticalTunnel(Tile.stone.getId(), prevY, currY + 1, prevX + 1);
+
+                    CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, currY + 1);
                 }
 
             }
@@ -188,10 +166,10 @@ namespace SharpDungeon.Game.World {
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                     try {
-                        if (getTile(y-2, x) is StoneTile && getTile(y-1, x) is AirTile)
-                            tiles[y-1, x] = Tile.stoneWall.getId();
-                        if (getTile(y, x-2) is StoneTile && getTile(y, x-1) is AirTile)
-                            tiles[y, x-1] = Tile.stoneWall.getId();
+                        if (getTile(y - 2, x) is StoneTile && getTile(y - 1, x) is AirTile)
+                            tiles[y - 1, x] = Tile.stoneWall.getId();
+                        if (getTile(y, x - 2) is StoneTile && getTile(y, x - 1) is AirTile)
+                            tiles[y, x - 1] = Tile.stoneWall.getId();
                         if (getTile(y, x + 2) is StoneTile && getTile(y, x + 1) is AirTile)
                             tiles[y, x + 1] = Tile.stoneWall.getId();
                         if (getTile(y + 2, x) is StoneTile && getTile(y + 1, x) is AirTile)
@@ -202,20 +180,56 @@ namespace SharpDungeon.Game.World {
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                     try {
-                        if (getTile(y - 1, x) is StoneWallTile && getTile(y, x - 1) is StoneWallTile && getTile(y-1, x-1) is StoneTile  && getTile(y, x) is AirTile)
+                        if (getTile(y - 1, x) is StoneWallTile && getTile(y, x - 1) is StoneWallTile && getTile(y - 1, x - 1) is StoneTile && getTile(y, x) is AirTile)
                             tiles[y, x] = Tile.stoneWall.getId();
-                        if (getTile(y - 1, x) is StoneWallTile && getTile(y, x + 1) is StoneWallTile && getTile(y-1, x+1) is StoneTile && getTile(y, x) is AirTile)
+                        if (getTile(y - 1, x) is StoneWallTile && getTile(y, x + 1) is StoneWallTile && getTile(y - 1, x + 1) is StoneTile && getTile(y, x) is AirTile)
                             tiles[y, x] = Tile.stoneWall.getId();
                         if (getTile(y + 1, x) is StoneWallTile && getTile(y, x + 1) is StoneWallTile && getTile(y + 1, x + 1) is StoneTile && getTile(y, x) is AirTile)
                             tiles[y, x] = Tile.stoneWall.getId();
                         if (getTile(y + 1, x) is StoneWallTile && getTile(y, x - 1) is StoneWallTile && getTile(y + 1, x - 1) is StoneTile && getTile(y, x) is AirTile)
                             tiles[y, x] = Tile.stoneWall.getId();
                     } catch (IndexOutOfRangeException e) { }
-            
 
-            Rectangle rect = rooms[rnd.Next(0, rooms.ToArray().Length - 1)];
-            spawnX = 64*15-64;
-            spawnY = 64*15-64;
+
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++)
+                    try {
+                        if (getTile(y - 1, x) is StoneWallTile &&
+                            getTile(y + 1, x) is StoneWallTile &&
+                            getTile(y, x + 1) is StoneTile &&
+                            getTile(y, x) is StoneTile &&
+                            getTile(y, x - 1) is StoneTile &&
+                            getTile(y - 1, x - 1) is StoneTile &&
+                            getTile(y + 1, x - 1) is StoneTile)
+                                tiles[y, x] = Tile.door.getId();
+                        else if (getTile(y, x - 1) is StoneWallTile &&
+                            getTile(y, x + 1) is StoneWallTile &&
+                            getTile(y + 1, x) is StoneTile &&
+                            getTile(y, x) is StoneTile &&
+                            getTile(y - 1, x) is StoneTile &&
+                            getTile(y - 1, x - 1) is StoneTile &&
+                            getTile(y - 1, x + 1) is StoneTile)
+                                tiles[y, x] = Tile.door.getId();
+                        else if (getTile(y, x - 1) is StoneWallTile &&
+                            getTile(y, x + 1) is StoneWallTile &&
+                            getTile(y + 1, x) is StoneTile &&
+                            getTile(y, x) is StoneTile &&
+                            getTile(y - 1, x) is StoneTile &&
+                            getTile(y + 1, x - 1) is StoneTile &&
+                            getTile(y + 1, x + 1) is StoneTile)
+                                tiles[y, x] = Tile.door.getId();
+                        else if (getTile(y, x - 1) is StoneWallTile &&
+                            getTile(y, x + 1) is StoneWallTile &&
+                            getTile(y + 1, x) is StoneTile &&
+                            getTile(y, x) is StoneTile &&
+                            getTile(y - 1, x) is StoneTile &&
+                            getTile(y - 1, x + 1) is StoneTile &&
+                            getTile(y + 1, x + 1) is StoneTile)
+                                tiles[y, x] = Tile.door.getId();
+                    } catch (IndexOutOfRangeException e) { }
+
+            spawnX = 64 * 5;
+            spawnY = 64 * 5;
 
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
 
@@ -262,31 +276,8 @@ namespace SharpDungeon.Game.World {
                 }
             }
 
-
-
-            
-            ////Выделение
-            //selection.render(g);
             ////Предметы
             //itemManager.render(g);
-
-            //foreach (Leaf leaf in leafs) {
-            //    fillTile(Tile.air.getId(), leaf.getRoom().X, leaf.getRoom().Y, leaf.getRoom().Width, leaf.getRoom().Height);
-            //    g.FillRectangle(Brushes.Red, leaf.getRoom().X, leaf.getRoom().Y+500, leaf.getRoom().Width, leaf.getRoom().Height);
-            //    //render rooms
-            //    //for (int j = leaf.getRoom().Y; j < leaf.getRoom().Height; j++)
-            //    //    for (int i = leaf.getRoom().X; i < leaf.getRoom().Width; i++)
-            //    //        g.FillRectangle(Brushes.Red, new Rectangle(2*j,2*i+500,2,2));
-            //    if (leaf.halls != null)
-            //        foreach (Rectangle hall in leaf.halls) {
-            //            fillTile(Tile.air.getId(), hall.X, hall.Y, hall.Width, hall.Height);
-            //            g.FillRectangle(Brushes.Red, hall.X, hall.Y + 500, hall.Width, hall.Height);
-            //            //for (int j = hall.Y; j < hall.Height; j++)
-            //            //    for (int i = hall.X; i < hall.Width; i++)
-            //            //        tiles[j, i] = Tile.stone.getId();
-            //        }
-            //}
-
             //Сущности
             entityManager.render(g);
         }
@@ -312,10 +303,10 @@ namespace SharpDungeon.Game.World {
         }
 
         public void fillTile(int id, int x, int y, int fillWidth, int fillHeight) {
-            for(int j=y; j<fillHeight; j++)
-                for(int i=x; i<fillWidth; i++)
+            for (int j = y; j < fillHeight; j++)
+                for (int i = x; i < fillWidth; i++)
                     try {
-                            tiles[j, i] = id;
+                        tiles[j, i] = id;
                     } catch (IndexOutOfRangeException e) { }
         }
 
@@ -325,16 +316,13 @@ namespace SharpDungeon.Game.World {
                     if (j == y)
                         try {
                             tiles[j, i] = id;
-                        } catch (IndexOutOfRangeException e) { }
-                    else if (i == x)
+                        } catch (IndexOutOfRangeException e) { } else if (i == x)
                         try {
                             tiles[j, i] = id;
-                        } catch (IndexOutOfRangeException e) { }
-                    else if (j == fillHeight-1)
+                        } catch (IndexOutOfRangeException e) { } else if (j == fillHeight - 1)
                         try {
                             tiles[j, i] = id;
-                        } catch (IndexOutOfRangeException e) { }
-                    else if (i == fillWidth-1)
+                        } catch (IndexOutOfRangeException e) { } else if (i == fillWidth - 1)
                         try {
                             tiles[j, i] = id;
                         } catch (IndexOutOfRangeException e) { }
@@ -367,16 +355,16 @@ namespace SharpDungeon.Game.World {
 
         public int toWorldX(int x) {
             return (int)((Tile.tileWidth - handler.gameCamera.xOffset % Tile.tileWidth) +
-                          (Tile.tileWidth - (Tile.tileWidth - handler.gameCamera.xOffset % Tile.tileWidth) +
-                          handler.mouseManager.mouseX) / Tile.tileWidth * Tile.tileWidth - Tile.tileWidth +
-                          handler.gameCamera.xOffset) / Tile.tileWidth;
+                         (Tile.tileWidth - (Tile.tileWidth - handler.gameCamera.xOffset % Tile.tileWidth) +
+                        handler.mouseManager.mouseX) / Tile.tileWidth * Tile.tileWidth - Tile.tileWidth +
+                        handler.gameCamera.xOffset) / Tile.tileWidth;
         }
 
         public int toWorldY(int y) {
             return (int)((Tile.tileHeight - handler.gameCamera.yOffset % Tile.tileHeight) +
-                          (Tile.tileHeight - (Tile.tileHeight - handler.gameCamera.yOffset % Tile.tileHeight) +
-                          handler.mouseManager.mouseY) / Tile.tileHeight * Tile.tileHeight - Tile.tileHeight +
-                          handler.gameCamera.yOffset) / Tile.tileHeight;
+                         (Tile.tileHeight - (Tile.tileHeight - handler.gameCamera.yOffset % Tile.tileHeight) +
+                         handler.mouseManager.mouseY) / Tile.tileHeight * Tile.tileHeight - Tile.tileHeight +
+                         handler.gameCamera.yOffset) / Tile.tileHeight;
         }
 
         public int toViewX(int x) {
