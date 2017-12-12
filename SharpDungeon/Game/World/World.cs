@@ -13,7 +13,7 @@ namespace SharpDungeon.Game.World {
     public class World {
 
         private Handler handler;
-        private EntityManager entityManager { get; set; }
+        public EntityManager entityManager { get; set; }
 
         public int width { get; set; }
         public int height { get; set; }
@@ -229,13 +229,13 @@ namespace SharpDungeon.Game.World {
                     } catch (IndexOutOfRangeException e) { }
 
             Rectangle ree;
-            ree = rooms[rnd.Next(0, rooms.Count - 1)];
+            ree = rooms.ElementAt(rnd.Next(0, rooms.Count - 1));
             setTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+1);
 
             Rectangle re;
-            re = rooms[rnd.Next(0, rooms.Count - 1)];
-            spawnX = re.Left*64+64;
-            spawnY = re.Top*64+128;
+            re = rooms.ElementAt(rnd.Next(0, rooms.Count - 1));
+            spawnX = (int)(re.Left*64 + 64 - handler.gameCamera.xOffset);
+            spawnY = (int)(re.Top*64 + 64 - handler.gameCamera.yOffset);
 
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
 
@@ -260,6 +260,7 @@ namespace SharpDungeon.Game.World {
         }
 
         public void tick() {
+
             //Тик для тайлов объявлен ниже!
             //selection.tick();
             //itemManager.tick();
