@@ -5,6 +5,7 @@ using SharpDungeon.Game.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -229,13 +230,21 @@ namespace SharpDungeon.Game.World {
                     } catch (IndexOutOfRangeException e) { }
 
             Rectangle ree;
-            ree = rooms.ElementAt(rnd.Next(0, rooms.Count - 1));
-            setTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+1);
+            ree = rooms.ElementAt(rooms.Count - 1);
+            setTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+2);
+
+            StreamWriter f = new StreamWriter("file.txt");
+            StringBuilder sb = new StringBuilder();
 
             Rectangle re;
-            re = rooms.ElementAt(rnd.Next(0, rooms.Count - 1));
-            spawnX = (int)(re.Left*64 + 64 - handler.gameCamera.xOffset);
-            spawnY = (int)(re.Top*64 + 64 - handler.gameCamera.yOffset);
+            re = rooms.ElementAt(3);
+            sb.Append($"reLeftBefore = {re.Left}\nreTopBefore = {re.Top}\nxOffBefore = {handler.gameCamera.xOffset}\n yOffBefore = {handler.gameCamera.yOffset}\n\n\n");
+            spawnX = (int)(re.X*64 + 64 - handler.gameCamera.xOffset);
+            spawnY = (int)(re.Y*64 + 128 - handler.gameCamera.yOffset);
+
+            sb.Append($"reLeft = {re.Left}\nreTop = {re.Top}\n xOff = {handler.gameCamera.xOffset}\n yOff = {handler.gameCamera.yOffset}\nreLeft*64+64 - xOff = {re.Left * 64 + 64 - handler.gameCamera.xOffset}\nint = {(int)(re.Left * 64 + 64 - handler.gameCamera.xOffset)}\n reTop * 64 + 128 - yOff = {re.Top * 64 + 128 - handler.gameCamera.yOffset}\nint = {(int)(re.Top * 64 + 128 - handler.gameCamera.yOffset)}");
+            f.WriteLine(sb.ToString());
+            f.Close();
 
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
 
