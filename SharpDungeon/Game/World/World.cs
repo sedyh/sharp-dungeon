@@ -261,6 +261,8 @@ namespace SharpDungeon.Game.World {
                             itemManager.addItem(Item.items[rnd.Next(0, 2)].createNew(x*Tile.tileWidth, y*Tile.tileHeight));
             }
 
+            entityManager.addEntity(new Slime(handler, (int)(re.Left*Tile.tileWidth - handler.gameCamera.xOffset), (int)((re.Top+1)*Tile.tileHeight - handler.gameCamera.yOffset)));
+
         }
 
         // Carve a tunnel out of the map parallel to the x-axis

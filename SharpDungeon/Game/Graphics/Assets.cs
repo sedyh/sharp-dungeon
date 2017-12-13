@@ -32,14 +32,15 @@ namespace SharpDungeon.Game.Graphics {
         public static Bitmap brownTrash1, brownTrash2, brownTrash3, brownTrash4,
                              blueTrash1, blueTrash2, blueTrash3, blueTrash4,
                              redTrash1, redTrash2, redTrash3, redTrash4;
-
-
+        
         //Player
 
         public static Bitmap[] playerIdle, playerWalkLeft, playerWalkRight, playerAttackLeft, playerAttackRight;
-        public static Bitmap[] slimeIdle, slimeWalk, slimeAttackLeft, slimeAttackRight;
-
         public static Bitmap selection;
+
+        //Entities
+
+        public static Bitmap[] slimeIdleWalk, slimeAttackLeft, slimeAttackRight;
 
         //UI
 
@@ -216,6 +217,31 @@ namespace SharpDungeon.Game.Graphics {
                 redTrash2 = itemsSheet.crop(width * 5, height * 2, width, height);
                 redTrash3 = itemsSheet.crop(width * 6, height * 2, width, height);
                 redTrash4 = itemsSheet.crop(width * 7, height * 2, width, height);
+
+                slimeIdleWalk = new Bitmap[3];
+                slimeIdleWalk[0] = entitiesSheet.crop(width * 6, 0, width, height);
+                slimeIdleWalk[1] = entitiesSheet.crop(width * 6, height, width, height);
+                slimeIdleWalk[2] = entitiesSheet.crop(width * 6, height * 2, width, height);
+
+                slimeAttackLeft = new Bitmap[8];
+                slimeAttackLeft[0] = entitiesSheet.crop(width * 7, 0, width, height);
+                slimeAttackLeft[1] = entitiesSheet.crop(width * 7, height, width, height);
+                slimeAttackLeft[2] = entitiesSheet.crop(width * 7, height * 2, width, height);
+                slimeAttackLeft[3] = entitiesSheet.crop(width * 8, 0, width, height);
+                slimeAttackLeft[4] = entitiesSheet.crop(width * 8, height, width, height);
+                slimeAttackLeft[5] = entitiesSheet.crop(width * 8, height * 2, width, height);
+                slimeAttackLeft[6] = entitiesSheet.crop(width * 8, height, width, height);
+                slimeAttackLeft[7] = entitiesSheet.crop(width * 8, 0, width, height);
+
+                slimeAttackRight = new Bitmap[8];
+                slimeAttackRight[0] = entitiesSheet.crop(width * 7, 0, width, height);
+                slimeAttackRight[1] = entitiesSheet.crop(width * 7, height, width, height);
+                slimeAttackRight[2] = entitiesSheet.crop(width * 7, height * 2, width, height);
+                slimeAttackRight[3] = entitiesSheet.crop(width * 9, 0, width, height);
+                slimeAttackRight[4] = entitiesSheet.crop(width * 9, height, width, height);
+                slimeAttackRight[5] = entitiesSheet.crop(width * 9, height * 2, width, height);
+                slimeAttackRight[6] = entitiesSheet.crop(width * 9, height, width, height);
+                slimeAttackRight[7] = entitiesSheet.crop(width * 9, 0, width, height);
 
                 itemShadow = new Bitmap[6];
                 itemShadow[0] = itemsSheet.crop(0, 0, width, height);
