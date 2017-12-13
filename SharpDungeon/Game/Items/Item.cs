@@ -57,31 +57,32 @@ namespace SharpDungeon.Game.Items {
             this.name = name;
             this.id = id;
             count = 1;
-            itemShadow = new Animation(300, Assets.itemShadow);
+            itemShadow = new Animation(250, Assets.itemShadow);
 
             items[id] = this;
         }
 
         public void tick() {
-            if (handler.world.entityManager.player.x == x && handler.world.entityManager.player.y == y)
+            if (handler.world.entityManager.player.x == x && handler.world.entityManager.player.y == y) {
                 pickedUp = true;
+                handler.world.entityManager.player.inventory.addItem(this);
+            }
 
             itemShadow.tick();
 
             if (grad < 360)
-                grad++;
+                grad+=4;
             else
                 grad = 0;
 
-            yOff = (int)(Math.Sin((Math.PI * grad * 5 / 180.0)) * 15);
-            //inventory here, see github page!
+            yOff = (int)(Math.Sin((Math.PI * grad * 3 / 180.0)) * 15);
         }
 
         public void render(System.Drawing.Graphics g) {
             if (handler == null)
                 return;
-            g.DrawImage(itemShadow.getCurrentFrame(), (int)(x - handler.gameCamera.xOffset), (int)(y - handler.gameCamera.yOffset)+Tile.tileHeight/3);
-            g.DrawImage(texture, (int)(x-handler.gameCamera.xOffset), (int)(y-handler.gameCamera.yOffset)+yOff, itemWidth, itemHeight);
+            g.DrawImage(itemShadow.getCurrentFrame(), (int)(x - handler.gameCamera.xOffset), (int)(y - handler.gameCamera.yOffset));
+            g.DrawImage(texture, (int)(x-handler.gameCamera.xOffset), (int)(y-handler.gameCamera.yOffset)+yOff-5, itemWidth, itemHeight);
         }
 
         public Item createNew(int count) {

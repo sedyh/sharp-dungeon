@@ -1,13 +1,12 @@
 ﻿using SharpDungeon.Game.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpDungeon.Game.Tiles {
-    public class ShadowGateTile : TileSingleSide {
+    public class EtherGateTile : TileSingleSide {
 
         Animation an;
         //Random rnd;
@@ -16,8 +15,8 @@ namespace SharpDungeon.Game.Tiles {
         //int posX=-1, posY=-1;
         //int time = 0;
 
-        public ShadowGateTile(int id) : base(Assets.shadowGate[0], id) {
-            an = new Animation(10, Assets.shadowGate);
+        public EtherGateTile(int id) : base(Assets.etherGate[0], id) {
+            an = new Animation(10, Assets.etherGate);
             //rnd = new Random();
         }
 
@@ -52,18 +51,5 @@ namespace SharpDungeon.Game.Tiles {
             return false;
         }
 
-        //public void splitn(int x1, int y1, int x2, int y2, List<int> arr, int cnt) {
-
-        //    --cnt;
-
-        //    int xMiddle = (int)(x1 + x2) / 2 + rnd.Next(-10, 10);
-        //    int yMiddle = (int)(y1 + y2) / 2 + rnd.Next(-10, 10);
-
-        //    if (cnt > 0) splitn(x1, y1, xMiddle, yMiddle, arr, cnt);
-        //    arr.Add(xMiddle);
-        //    arr.Add(yMiddle);
-        //    if (cnt > 0) splitn(xMiddle, yMiddle, x2, y2, arr, cnt);
-
-        //}
     }
 }

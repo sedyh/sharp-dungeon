@@ -21,7 +21,7 @@ namespace SharpDungeon.Game.Graphics {
         //Tiles
 
         public static Bitmap air, stone, planks, upStairs, downStairs;
-        public static Bitmap[] stoneWall, door, shadowGate;
+        public static Bitmap[] stoneWall, door, shadowGate, etherGate;
 
         //Items
 
@@ -37,7 +37,7 @@ namespace SharpDungeon.Game.Graphics {
         //Player
 
         public static Bitmap[] playerIdle, playerWalkLeft, playerWalkRight, playerAttackLeft, playerAttackRight;
-        public static Bitmap[] slimeIdle, slimeWalk, slimeAttack;
+        public static Bitmap[] slimeIdle, slimeWalk, slimeAttackLeft, slimeAttackRight;
 
         public static Bitmap selection;
 
@@ -46,6 +46,9 @@ namespace SharpDungeon.Game.Graphics {
         public static Bitmap logo;
         public static Bitmap background, backgroundLoading;
         public static Bitmap[] newGameButton, loadSeedButton, optionsButton, exitButton;
+        public static Brush uiFore = new SolidBrush(Color.FromArgb(128, 128, 128));
+        public static Brush uiCent = new SolidBrush(Color.FromArgb(86, 86, 86));
+        public static Brush uiBack = new SolidBrush(Color.FromArgb(63, 63, 63));
 
         //Brushes
 
@@ -54,6 +57,8 @@ namespace SharpDungeon.Game.Graphics {
         public static Brush minMapBlack = new SolidBrush(Color.FromArgb(0, 0, 0));
         public static Brush minMapDoor = new SolidBrush(Color.FromArgb(122, 104, 86));
         public static Brush minMapOpenDoor = new SolidBrush(Color.FromArgb(142, 130, 119));
+        public static Brush minMapShadow = new SolidBrush(Color.FromArgb(153, 61, 137));
+        public static Brush minMapEther = new SolidBrush(Color.FromArgb(204, 155, 71));
 
         //Load textures
 
@@ -126,6 +131,29 @@ namespace SharpDungeon.Game.Graphics {
                 shadowGate[16] = tileSheet.crop(width * 3, height * 5, width, height);
                 shadowGate[17] = tileSheet.crop(width * 4, height * 5, width, height);
                 shadowGate[18] = tileSheet.crop(width * 5, height * 5, width, height);
+
+                etherGate = new Bitmap[19];
+                etherGate[0] = tileSheet.crop(width * 11, height * 5, width, height);
+
+                etherGate[1] = tileSheet.crop(0, height * 6, width, height);
+                etherGate[2] = tileSheet.crop(width, height * 6, width, height);
+                etherGate[3] = tileSheet.crop(width * 2, height * 6, width, height);
+                etherGate[4] = tileSheet.crop(width * 3, height * 6, width, height);
+                etherGate[5] = tileSheet.crop(width * 4, height * 6, width, height);
+                etherGate[6] = tileSheet.crop(width * 5, height * 6, width, height);
+                etherGate[7] = tileSheet.crop(width * 6, height * 6, width, height);
+                etherGate[8] = tileSheet.crop(width * 7, height * 6, width, height);
+                etherGate[9] = tileSheet.crop(width * 8, height * 6, width, height);
+                etherGate[10] = tileSheet.crop(width * 9, height * 6, width, height);
+                etherGate[11] = tileSheet.crop(width * 10, height * 6, width, height);
+                etherGate[12] = tileSheet.crop(width * 11, height * 6, width, height);
+
+                etherGate[13] = tileSheet.crop(0, height * 7, width, height);
+                etherGate[14] = tileSheet.crop(width, height * 7, width, height);
+                etherGate[15] = tileSheet.crop(width * 2, height * 7, width, height);
+                etherGate[16] = tileSheet.crop(width * 3, height * 7, width, height);
+                etherGate[17] = tileSheet.crop(width * 4, height * 7, width, height);
+                etherGate[18] = tileSheet.crop(width * 5, height * 7, width, height);
 
                 door = new Bitmap[4];
                 door[0] = tileSheet.crop(0, height * 2, width, height);

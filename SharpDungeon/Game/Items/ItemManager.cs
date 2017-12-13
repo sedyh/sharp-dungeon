@@ -15,10 +15,16 @@ namespace SharpDungeon.Game.Items {
         }
         public void tick() {
 
-            IEnumerator<Item> it = items.GetEnumerator();
+            //IEnumerator<Item> it = items.GetEnumerator();
 
-            while (it.MoveNext()) {
-                Item i = it.Current;
+            //while (it.MoveNext()) {
+            //    Item i = it.Current;
+            //    i.tick();
+            //    if (i.pickedUp)
+            //        items.Remove(i);
+            //}
+
+            foreach(Item i in items.ToList()) {
                 i.tick();
                 if (i.pickedUp)
                     items.Remove(i);

@@ -14,7 +14,7 @@ namespace SharpDungeon.Game.Tiles {
         }
 
         public override bool isSolid() {
-            return false;
+            return true;
         }
 
     }

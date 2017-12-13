@@ -15,6 +15,7 @@ namespace SharpDungeon.Game.Entities {
 
         Animation currentAnimation, walkLeft, walkRight;
         Bitmap stayTex;
+        public Inventory inventory { get; set; }
 
         Animation idle;
 
@@ -45,6 +46,7 @@ namespace SharpDungeon.Game.Entities {
             thisX = (int)x;
             thisY = (int)y;
 
+            inventory = new Inventory(handler);
             handler.game.gameCamera.centerOnEntity(this);
         }
 
@@ -56,6 +58,7 @@ namespace SharpDungeon.Game.Entities {
 
             currentAnimation.tick();
             handler.gameCamera.centerOnEntity(this);
+            inventory.tick();
 
                 //handler.world.setTile(Tile.shadowGate.getId(), 
                 //    handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY));
@@ -148,7 +151,8 @@ namespace SharpDungeon.Game.Entities {
 
             renderSelection(g);
 
-            g.FillRectangle(Brushes.White, 15, 15, handler.world.width * 8 + 10, handler.world.height * 8 + 10);
+            g.FillRectangle(Assets.uiFore, 5+10, 5+10, handler.world.width * 8 + 10, handler.world.height * 8 + 10);
+            g.FillRectangle(Assets.uiCent, 5+12, 5+12, handler.world.width * 8 + 8, handler.world.height * 8 + 8);
 
             for (int j = 0; j < handler.world.height; j++) {
                 for (int i = 0; i < handler.world.width; i++) {
@@ -159,6 +163,12 @@ namespace SharpDungeon.Game.Entities {
                         b = Assets.minMapDoor;
                     else if (tile is OpenDoorTile)
                         b = Assets.minMapBack;
+                    else if (tile is AirTile)
+                        b = Assets.minMapBlack;
+                    else if (tile is ShadowGateTile)
+                        b = Assets.minMapShadow;
+                    else if (tile is EtherGateTile)
+                        b = Assets.minMapEther;
                     else if (tile.isSolid())
                         b = Assets.minMapSolid;
                     else if (tile is StoneTile)
@@ -168,6 +178,8 @@ namespace SharpDungeon.Game.Entities {
                 }
             }
             TextRenderer.DrawText(g, $"offsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
+
+            inventory.render(g);
         }
 
         private void renderSelection(System.Drawing.Graphics g) {
@@ -189,7 +201,7 @@ namespace SharpDungeon.Game.Entities {
                                           Tile.tileHeight);
 
             if (handler.mouseManager.rightPressed)
-                handler.world.itemManager.addItem(Item.redTrash1.createNew(handler.world.toWorldX(handler.mouseManager.mouseX)*Tile.tileWidth, 
+                handler.world.itemManager.addItem(Item.shadowKey.createNew(handler.world.toWorldX(handler.mouseManager.mouseX)*Tile.tileWidth, 
                                                                          handler.world.toWorldY(handler.mouseManager.mouseY)*Tile.tileHeight));
         }
 

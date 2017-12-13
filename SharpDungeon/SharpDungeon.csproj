@@ -70,6 +70,7 @@
     <Compile Include="Game\Entities\Mob.cs" />
     <Compile Include="Game\Entities\Npc.cs" />
     <Compile Include="Game\Entities\Player.cs" />
+    <Compile Include="Game\Entities\Slime.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\Graphics\Animation.cs" />
     <Compile Include="Game\Graphics\Assets.cs" />
@@ -87,7 +88,10 @@
     <Compile Include="Game\States\MenuState.cs" />
     <Compile Include="Game\States\State.cs" />
     <Compile Include="Game\Tiles\AirTile.cs" />
+    <Compile Include="Game\Tiles\CraftingTable.cs" />
     <Compile Include="Game\Tiles\DoorTile.cs" />
+    <Compile Include="Game\Tiles\DownStairsTile.cs" />
+    <Compile Include="Game\Tiles\EtherGateTile.cs" />
     <Compile Include="Game\Tiles\OpenDoorTile.cs" />
     <Compile Include="Game\Tiles\PlanksTile.cs" />
     <Compile Include="Game\Tiles\ShadowGateTile.cs" />
@@ -96,6 +100,7 @@
     <Compile Include="Game\Tiles\TileSmartSide.cs" />
     <Compile Include="Game\Tiles\Tile.cs" />
     <Compile Include="Game\Tiles\TileSingleSide.cs" />
+    <Compile Include="Game\Tiles\UpStairsTile.cs" />
     <Compile Include="Game\UI\UIButton.cs" />
     <Compile Include="Game\UI\UIManager.cs" />
     <Compile Include="Game\UI\UIObject.cs" />

@@ -235,21 +235,31 @@ namespace SharpDungeon.Game.World {
             ree = rooms.ElementAt(rooms.Count - 1);
             setTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+2);
 
-            StreamWriter f = new StreamWriter("file.txt");
-            StringBuilder sb = new StringBuilder();
+            //StreamWriter f = new StreamWriter("file.txt");
+            //StringBuilder sb = new StringBuilder();
 
             Rectangle re;
             re = rooms.ElementAt(3);
             //sb.Append($"reLeftBefore = {re.Left}\nreTopBefore = {re.Top}\nxOffBefore = {handler.gameCamera.xOffset}\n yOffBefore = {handler.gameCamera.yOffset}\n\n\n");
             spawnX = (int)(re.X*64 + 64 - handler.gameCamera.xOffset);
             spawnY = (int)(re.Y*64 + 128 - handler.gameCamera.yOffset);
+            setTile(Tile.etherGate.getId(), re.Left + 1, re.Top + 2);
 
             //sb.Append($"reLeft = {re.Left}\nreTop = {re.Top}\n xOff = {handler.gameCamera.xOffset}\n yOff = {handler.gameCamera.yOffset}\nreLeft*64+64 - xOff = {re.Left * 64 + 64 - handler.gameCamera.xOffset}\nint = {(int)(re.Left * 64 + 64 - handler.gameCamera.xOffset)}\n reTop * 64 + 128 - yOff = {re.Top * 64 + 128 - handler.gameCamera.yOffset}\nint = {(int)(re.Top * 64 + 128 - handler.gameCamera.yOffset)}");
             //f.WriteLine(sb.ToString());
             //f.Close();
 
+
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
             itemManager = new ItemManager(handler);
+
+
+            foreach (Rectangle r in rooms.ToList()) {
+                for (int x = r.X; x < r.Width-1; x++)
+                    for (int y = r.Y; y < r.Height-1; y++)
+                        if(rnd.Next(1, 10) == 1 && !getTile(x, y).isSolid())
+                            itemManager.addItem(Item.items[rnd.Next(0, 2)].createNew(x*Tile.tileWidth, y*Tile.tileHeight));
+            }
 
         }
 

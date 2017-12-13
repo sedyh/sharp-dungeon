@@ -23,7 +23,7 @@ namespace SharpDungeon.Game.Entities {
         }
 
         public void tick() {
-            foreach(Entity e in entities) {
+            foreach(Entity e in entities.ToList()) {
                 e.tick();
                 if (!e.isActive())
                     entities.Remove(e);
