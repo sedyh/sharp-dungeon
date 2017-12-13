@@ -1,5 +1,6 @@
 using SharpDungeon.Game.Entities;
 using SharpDungeon.Game.Graphics;
+using SharpDungeon.Game.Items;
 using SharpDungeon.Game.Tiles;
 using SharpDungeon.Game.Utils;
 using System;
@@ -15,6 +16,7 @@ namespace SharpDungeon.Game.World {
 
         private Handler handler;
         public EntityManager entityManager { get; set; }
+        public ItemManager itemManager { get; set; }
 
         public int width { get; set; }
         public int height { get; set; }
@@ -238,15 +240,16 @@ namespace SharpDungeon.Game.World {
 
             Rectangle re;
             re = rooms.ElementAt(3);
-            sb.Append($"reLeftBefore = {re.Left}\nreTopBefore = {re.Top}\nxOffBefore = {handler.gameCamera.xOffset}\n yOffBefore = {handler.gameCamera.yOffset}\n\n\n");
+            //sb.Append($"reLeftBefore = {re.Left}\nreTopBefore = {re.Top}\nxOffBefore = {handler.gameCamera.xOffset}\n yOffBefore = {handler.gameCamera.yOffset}\n\n\n");
             spawnX = (int)(re.X*64 + 64 - handler.gameCamera.xOffset);
             spawnY = (int)(re.Y*64 + 128 - handler.gameCamera.yOffset);
 
-            sb.Append($"reLeft = {re.Left}\nreTop = {re.Top}\n xOff = {handler.gameCamera.xOffset}\n yOff = {handler.gameCamera.yOffset}\nreLeft*64+64 - xOff = {re.Left * 64 + 64 - handler.gameCamera.xOffset}\nint = {(int)(re.Left * 64 + 64 - handler.gameCamera.xOffset)}\n reTop * 64 + 128 - yOff = {re.Top * 64 + 128 - handler.gameCamera.yOffset}\nint = {(int)(re.Top * 64 + 128 - handler.gameCamera.yOffset)}");
-            f.WriteLine(sb.ToString());
-            f.Close();
+            //sb.Append($"reLeft = {re.Left}\nreTop = {re.Top}\n xOff = {handler.gameCamera.xOffset}\n yOff = {handler.gameCamera.yOffset}\nreLeft*64+64 - xOff = {re.Left * 64 + 64 - handler.gameCamera.xOffset}\nint = {(int)(re.Left * 64 + 64 - handler.gameCamera.xOffset)}\n reTop * 64 + 128 - yOff = {re.Top * 64 + 128 - handler.gameCamera.yOffset}\nint = {(int)(re.Top * 64 + 128 - handler.gameCamera.yOffset)}");
+            //f.WriteLine(sb.ToString());
+            //f.Close();
 
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
+            itemManager = new ItemManager(handler);
 
         }
 
@@ -272,7 +275,7 @@ namespace SharpDungeon.Game.World {
 
             //Тик для тайлов объявлен ниже!
             //selection.tick();
-            //itemManager.tick();
+            itemManager.tick();
             entityManager.tick();
         }
 
@@ -293,7 +296,7 @@ namespace SharpDungeon.Game.World {
             }
 
             ////Предметы
-            //itemManager.render(g);
+            itemManager.render(g);
             //Сущности
             entityManager.render(g);
         }

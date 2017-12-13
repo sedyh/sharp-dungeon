@@ -1,4 +1,5 @@
 ﻿using SharpDungeon.Game.Graphics;
+using SharpDungeon.Game.Items;
 using SharpDungeon.Game.Tiles;
 using SharpDungeon.Game.Utils;
 using System;
@@ -56,8 +57,8 @@ namespace SharpDungeon.Game.Entities {
             currentAnimation.tick();
             handler.gameCamera.centerOnEntity(this);
 
-            if (handler.mouseManager.rightPressed)
-                handler.world.setTile(Tile.shadowGate.getId(), handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY));
+                //handler.world.setTile(Tile.shadowGate.getId(), 
+                //    handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY));
 
             if (handler.mouseManager.leftPressed &&
                 handler.world.toWorldX(handler.mouseManager.mouseX) > 0 &&
@@ -187,6 +188,9 @@ namespace SharpDungeon.Game.Entities {
                                           Tile.tileWidth,
                                           Tile.tileHeight);
 
+            if (handler.mouseManager.rightPressed)
+                handler.world.itemManager.addItem(Item.redTrash1.createNew(handler.world.toWorldX(handler.mouseManager.mouseX)*Tile.tileWidth, 
+                                                                         handler.world.toWorldY(handler.mouseManager.mouseY)*Tile.tileHeight));
         }
 
     }

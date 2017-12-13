@@ -29,7 +29,7 @@ namespace SharpDungeon.Game.Graphics {
         public static Bitmap redRupy, greenRupy, purpleRupy;
         public static Bitmap fireKnob, lightingKnob, poisonKnob;
         public static Bitmap key, shadowKey;
-        public static Bitmap brownTrash1, brownThrash2, brownTrash3, brownTrash4,
+        public static Bitmap brownTrash1, brownTrash2, brownTrash3, brownTrash4,
                              blueTrash1, blueTrash2, blueTrash3, blueTrash4,
                              redTrash1, redTrash2, redTrash3, redTrash4;
 
@@ -162,6 +162,40 @@ namespace SharpDungeon.Game.Graphics {
                 playerIdle[3] = entitiesSheet.crop(width * 5, 0, width, height);
                 playerIdle[4] = entitiesSheet.crop(width * 5, height, width, height);
                 playerIdle[5] = entitiesSheet.crop(width * 5, height * 2, width, height);
+
+                redRupy = itemsSheet.crop(0, height, width, height);
+                greenRupy = itemsSheet.crop(width, height, width, height);
+                purpleRupy = itemsSheet.crop(width * 2, height, width, height);
+
+                fireKnob = itemsSheet.crop(0, height * 2, width, height);
+                lightingKnob = itemsSheet.crop(width, height * 2, width, height);
+                poisonKnob = itemsSheet.crop(width*2, height * 2, width, height);
+
+                key = itemsSheet.crop(width * 3, height, width, height);
+                shadowKey = itemsSheet.crop(width * 3, height * 2, width, height);
+
+                brownTrash1 = itemsSheet.crop(width * 4, 0 , width, height);
+                brownTrash2 = itemsSheet.crop(width * 5, 0, width, height);
+                brownTrash3 = itemsSheet.crop(width * 6, 0, width, height);
+                brownTrash4 = itemsSheet.crop(width * 7, 0, width, height);
+
+                blueTrash1 = itemsSheet.crop(width * 4, height, width, height);
+                blueTrash2 = itemsSheet.crop(width * 5, height, width, height);
+                blueTrash3 = itemsSheet.crop(width * 6, height, width, height);
+                blueTrash4 = itemsSheet.crop(width * 7, height, width, height);
+
+                redTrash1 = itemsSheet.crop(width * 4, height * 2, width, height);
+                redTrash2 = itemsSheet.crop(width * 5, height * 2, width, height);
+                redTrash3 = itemsSheet.crop(width * 6, height * 2, width, height);
+                redTrash4 = itemsSheet.crop(width * 7, height * 2, width, height);
+
+                itemShadow = new Bitmap[6];
+                itemShadow[0] = itemsSheet.crop(0, 0, width, height);
+                itemShadow[1] = itemsSheet.crop(width, 0, width, height);
+                itemShadow[2] = itemsSheet.crop(width*2, 0, width, height);
+                itemShadow[3] = itemsSheet.crop(width*3, 0, width, height);
+                itemShadow[4] = itemsSheet.crop(width*2, 0, width, height);
+                itemShadow[5] = itemsSheet.crop(width, 0, width, height);
 
                 selection = uiSheet.crop(0, 0, width, height);
 

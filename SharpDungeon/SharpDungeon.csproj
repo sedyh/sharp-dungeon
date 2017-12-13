@@ -78,7 +78,9 @@
     <Compile Include="Game\Handler.cs" />
     <Compile Include="Game\Input\KeyManager.cs" />
     <Compile Include="Game\Input\MouseManager.cs" />
+    <Compile Include="Game\Items\Inventory.cs" />
     <Compile Include="Game\Items\Item.cs" />
+    <Compile Include="Game\Items\ItemManager.cs" />
     <Compile Include="Game\Launch.cs" />
     <Compile Include="Game\States\GameState.cs" />
     <Compile Include="Game\States\LoadState.cs" />
