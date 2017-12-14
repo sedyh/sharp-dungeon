@@ -57,7 +57,7 @@ namespace SharpDungeon.Game.Items {
             this.name = name;
             this.id = id;
             count = 1;
-            itemShadow = new Animation(250, Assets.itemShadow);
+            itemShadow = new Animation(260, Assets.itemShadow);
 
             items[id] = this;
         }

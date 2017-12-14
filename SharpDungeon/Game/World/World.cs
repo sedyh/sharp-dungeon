@@ -163,7 +163,8 @@ namespace SharpDungeon.Game.World {
             }
 
             foreach (Rectangle r in rooms) {
-                fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
+                    fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
+                    
             }
 
             for (int y = 0; y < height; y++)
@@ -231,6 +232,11 @@ namespace SharpDungeon.Game.World {
                                 tiles[y, x] = Tile.door.getId();
                     } catch (IndexOutOfRangeException e) { }
 
+            //int planksRoom = rnd.Next(0, rooms.Count - 1);
+            //foreach(Rectangle r in rooms)
+            //    if(r == rooms.ElementAt(planksRoom))
+            //        fillTile(Tile.planks.getId(), r.X, r.Y, r.Width, r.Height);
+
             Rectangle ree;
             ree = rooms.ElementAt(rooms.Count - 1);
             setTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+2);
@@ -241,9 +247,24 @@ namespace SharpDungeon.Game.World {
             Rectangle re;
             re = rooms.ElementAt(3);
             //sb.Append($"reLeftBefore = {re.Left}\nreTopBefore = {re.Top}\nxOffBefore = {handler.gameCamera.xOffset}\n yOffBefore = {handler.gameCamera.yOffset}\n\n\n");
-            spawnX = (int)(re.X*64 + 64 - handler.gameCamera.xOffset);
-            spawnY = (int)(re.Y*64 + 128 - handler.gameCamera.yOffset);
+            spawnX = (int)(re.X* Tile.tileWidth + 64 - handler.gameCamera.xOffset);
+            spawnY = (int)(re.Y* Tile.tileHeight + 128 - handler.gameCamera.yOffset);
             setTile(Tile.etherGate.getId(), re.Left + 1, re.Top + 2);
+
+            Rectangle reee;
+            reee = rooms.ElementAt(2);
+            if (!getTile(reee.Left + 1, reee.Top + 2).isSolid() &&
+               !getTile(reee.Left + 1 - 1, reee.Top + 2 - 1).isSolid() &&
+               !getTile(reee.Left + 1, reee.Top + 2 - 1).isSolid() &&
+               !getTile(reee.Left + 1 + 1, reee.Top + 2 - 1).isSolid() &&
+               !getTile(reee.Left + 1, reee.Top + 2 + 1).isSolid() &&
+               !getTile(reee.Left + 1, reee.Top + 2 - 2).isSolid()) {
+                setTile(Tile.craftingTableCore.getId(), reee.Left + 1, reee.Top + 2);
+                setTile(Tile.craftingTableCell.getId(), reee.Left + 1 - 1, reee.Top + 2 - 1);
+                setTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 - 1);
+                setTile(Tile.craftingTableCell.getId(), reee.Left + 1 + 1, reee.Top + 2 - 1);
+                setTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 + 1);
+            }
 
             //sb.Append($"reLeft = {re.Left}\nreTop = {re.Top}\n xOff = {handler.gameCamera.xOffset}\n yOff = {handler.gameCamera.yOffset}\nreLeft*64+64 - xOff = {re.Left * 64 + 64 - handler.gameCamera.xOffset}\nint = {(int)(re.Left * 64 + 64 - handler.gameCamera.xOffset)}\n reTop * 64 + 128 - yOff = {re.Top * 64 + 128 - handler.gameCamera.yOffset}\nint = {(int)(re.Top * 64 + 128 - handler.gameCamera.yOffset)}");
             //f.WriteLine(sb.ToString());
@@ -253,6 +274,7 @@ namespace SharpDungeon.Game.World {
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
             itemManager = new ItemManager(handler);
 
+            //entityManager.addEntity(new Slime(handler, (int)(re.X * Tile.tileWidth), (int)(re.Y * Tile.tileHeight)));
 
             foreach (Rectangle r in rooms.ToList()) {
                 for (int x = r.X; x < r.Width-1; x++)
@@ -261,7 +283,12 @@ namespace SharpDungeon.Game.World {
                             itemManager.addItem(Item.items[rnd.Next(0, 2)].createNew(x*Tile.tileWidth, y*Tile.tileHeight));
             }
 
-            entityManager.addEntity(new Slime(handler, (int)(re.Left*Tile.tileWidth - handler.gameCamera.xOffset), (int)((re.Top+1)*Tile.tileHeight - handler.gameCamera.yOffset)));
+            foreach (Rectangle r in rooms.ToList()) {
+                for (int x = r.X; x < r.Width - 1; x++)
+                    for (int y = r.Y; y < r.Height - 1; y++)
+                        if (rnd.Next(1, 10) == 1 && !getTile(x, y).isSolid())
+                            entityManager.addEntity(new Slime(handler, x * Tile.tileWidth, y * Tile.tileHeight));
+            }
 
         }
 

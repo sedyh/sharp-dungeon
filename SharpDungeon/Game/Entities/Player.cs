@@ -31,6 +31,8 @@ namespace SharpDungeon.Game.Entities {
         Point thisPoint, nextPoint, i, j;
         int thisX, thisY, speed = 32, dirStepX = 0, dirStepY = 0;
 
+        public int level = 1, xp = 0, world = 0, attack = 5;
+
         Random rnd = new Random();
         bool wasMid = false, wasMid2 = false;
         int oldX, oldY, oldMouseX, oldMouseY;
@@ -149,10 +151,36 @@ namespace SharpDungeon.Game.Entities {
             else
                 g.DrawImage(stayTex, (int)(x - handler.gameCamera.xOffset), (int)(y - handler.gameCamera.yOffset), width, height);
 
-            renderSelection(g);
+            renderUI(g);
+            inventory.render(g);
 
-            g.FillRectangle(Assets.uiFore, 5+10, 5+10, handler.world.width * 8 + 10, handler.world.height * 8 + 10);
-            g.FillRectangle(Assets.uiCent, 5+12, 5+12, handler.world.width * 8 + 8, handler.world.height * 8 + 8);
+            TextRenderer.DrawText(g, $"offsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
+
+        }
+
+        private void renderUI(System.Drawing.Graphics g) {
+
+            // Selection 
+            Rectangle ar = new Rectangle();
+            int arSize = 64;
+            ar.Width = arSize;
+            ar.Height = arSize;
+
+            offsX = (int)(Tile.tileWidth - handler.gameCamera.xOffset % Tile.tileWidth);
+            offsY = (int)(Tile.tileHeight - handler.gameCamera.yOffset % Tile.tileHeight);
+
+            g.DrawImage(Assets.selection, (offsX + ((Tile.tileWidth - offsX + handler.mouseManager.mouseX) / Tile.tileWidth) * Tile.tileWidth) - Tile.tileWidth,
+                                          (offsY + ((Tile.tileHeight - offsY + handler.mouseManager.mouseY) / Tile.tileHeight) * Tile.tileHeight) - Tile.tileHeight,
+                                          Tile.tileWidth,
+                                          Tile.tileHeight);
+
+            if (handler.mouseManager.rightPressed)
+                handler.world.itemManager.addItem(Item.shadowKey.createNew(handler.world.toWorldX(handler.mouseManager.mouseX)*Tile.tileWidth, 
+                                                                           handler.world.toWorldY(handler.mouseManager.mouseY)*Tile.tileHeight));
+            //Minmap
+
+            g.FillRectangle(Assets.uiFore, 13, 13, handler.world.width * 8 + 15, handler.world.height * 8 + 15);
+            g.FillRectangle(Assets.uiCent, 16, 16, handler.world.width * 8 + 8, handler.world.height * 8 + 8);
 
             for (int j = 0; j < handler.world.height; j++) {
                 for (int i = 0; i < handler.world.width; i++) {
@@ -171,38 +199,21 @@ namespace SharpDungeon.Game.Entities {
                         b = Assets.minMapEther;
                     else if (tile.isSolid())
                         b = Assets.minMapSolid;
+                    else if (tile is CraftingTableCellTile || tile is CraftingTableCoreTile)
+                        b = Assets.minMapBack;
                     else if (tile is StoneTile)
                         b = Assets.minMapBack;
 
                     g.FillRectangle(b, 20 + j * 8, 20 + i * 8, 8, 8);
                 }
             }
-            TextRenderer.DrawText(g, $"offsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
 
-            inventory.render(g);
-        }
+            //States
+            g.DrawImage(Assets.playerStates, 35 + handler.world.width * 8, 13, Assets.playerStates.Width*1.5f, Assets.playerStates.Height* 1.5f);
 
-        private void renderSelection(System.Drawing.Graphics g) {
-            Rectangle ar = new Rectangle();
-            int arSize = 64;
-            ar.Width = arSize;
-            ar.Height = arSize;
+            //g.FillRectangle(Assets.uiFore, 15 + handler.world.width * 8, 0, handler.game.display.Width, 64*2.3f+20);
+            //g.FillRectangle(Assets.uiCent, 15 + handler.world.width * 8, 3, handler.game.display.Width, 64* 2.3f + 13);
 
-            //Убрать потом ...
-
-            offsX = (int)(Tile.tileWidth - handler.gameCamera.xOffset % Tile.tileWidth);
-            offsY = (int)(Tile.tileHeight - handler.gameCamera.yOffset % Tile.tileHeight);
-
-            ////g.DrawImage(Assets.selection, )
-
-            g.DrawImage(Assets.selection, (offsX + ((Tile.tileWidth - offsX + handler.mouseManager.mouseX) / Tile.tileWidth) * Tile.tileWidth) - Tile.tileWidth,
-                                          (offsY + ((Tile.tileHeight - offsY + handler.mouseManager.mouseY) / Tile.tileHeight) * Tile.tileHeight) - Tile.tileHeight,
-                                          Tile.tileWidth,
-                                          Tile.tileHeight);
-
-            if (handler.mouseManager.rightPressed)
-                handler.world.itemManager.addItem(Item.shadowKey.createNew(handler.world.toWorldX(handler.mouseManager.mouseX)*Tile.tileWidth, 
-                                                                         handler.world.toWorldY(handler.mouseManager.mouseY)*Tile.tileHeight));
         }
 
     }

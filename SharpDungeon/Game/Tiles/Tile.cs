@@ -19,6 +19,8 @@ namespace SharpDungeon.Game.Tiles {
         public static Tile planks = new PlanksTile(5);
         public static Tile shadowGate = new ShadowGateTile(6);
         public static Tile etherGate = new EtherGateTile(7);
+        public static Tile craftingTableCore = new CraftingTableCoreTile(8);
+        public static Tile craftingTableCell = new CraftingTableCellTile(9);
 
         public static readonly int tileWidth = 64,
                                    tileHeight = 64;

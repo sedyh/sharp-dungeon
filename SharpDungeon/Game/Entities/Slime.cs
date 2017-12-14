@@ -13,7 +13,7 @@ namespace SharpDungeon.Game.Entities {
         Animation currentAnimation;
 
         Animation idleWalk, attackLeft, attackRight;
-        int targetX, targetY, count, worldX, worldY, rndX, rndY;
+        int targetX, targetY, count, countRange, rndX, rndY;
         Random rnd;
 
         public Slime(Handler handler, int worldX, int worldY) : base(handler, worldX, worldY, defaultWidth, defaultHeight) {
@@ -21,10 +21,11 @@ namespace SharpDungeon.Game.Entities {
             attackLeft = new Animation(300, Assets.slimeAttackLeft);
             attackRight = new Animation(300, Assets.slimeAttackRight);
 
-            rnd = new Random();
+            rnd = new Random(this.GetHashCode());
             currentAnimation = idleWalk;
             targetX = (int)x;
             targetY = (int)y;
+            countRange = rnd.Next(10, 60);
         }
 
         public override void die() {
@@ -35,32 +36,30 @@ namespace SharpDungeon.Game.Entities {
 
             currentAnimation.tick();
 
-            if (count < 30) {
+            if (count < 20) {
                 count++;
             } else {
                 count = 0;
 
-                worldX = handler.world.toWorldX((int)x);
-                worldY = handler.world.toWorldY((int)y);
+                rndX = rnd.Next(-1, 2);
+                rndY = rnd.Next(-1, 2);
 
-                rndX = rnd.Next(worldX - 1, worldX + 1);
-                rndY = rnd.Next(worldY - 1, worldY + 2);
-
-                if (!handler.world.getTile(rndX, rndY).isSolid()) {
-                    targetX = rndX * Tile.tileWidth - (int)handler.gameCamera.xOffset;
-                    targetX = rndY * Tile.tileHeight - (int)handler.gameCamera.yOffset;
+                if (!handler.world.getTile((int)(x + rndX * Tile.tileWidth) / Tile.tileWidth,
+                                           (int)(y + rndY * Tile.tileHeight) / Tile.tileHeight).isSolid()) {
+                    targetX = (int)(x + rndX * Tile.tileWidth);
+                    targetY = (int)(y + rndY * Tile.tileHeight);
                 }
             }
 
             if (targetX < x)
-                x-=8;
-            else if(targetX > x)
-                x+=8;
+                x -= 16;
+            else if (targetX > x)
+                x += 16;
 
             if (targetY < y)
-                y-=8;
-            else if(targetY > y)
-                y+=8;
+                y -= 16;
+            else if (targetY > y)
+                y += 16;
         }
 
         public override void render(System.Drawing.Graphics g) {

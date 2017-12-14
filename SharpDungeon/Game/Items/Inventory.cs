@@ -28,12 +28,13 @@ namespace SharpDungeon.Game.Items {
         }
 
         public void render(System.Drawing.Graphics g) {
-            xOff = 0;
+            g.DrawImage(Assets.playerInventory, 35 + handler.world.width * 8, 116, Assets.playerStates.Width * 1.5f, Assets.playerStates.Height * 1.5f);
+            xOff = 60;
             foreach (Item i in inventoryItems) {
-                xOff += 20;
-                g.DrawImage(i.texture, handler.world.height * 8 + xOff, 10, Item.itemWidth * 2, Item.itemHeight * 2);
-                xOff += Item.itemHeight * 2;
-                TextRenderer.DrawText(g, i.count.ToString(), Assets.themeFontBig, new System.Drawing.Point(handler.world.height * 8 + xOff, + Item.itemHeight), Color.White);
+                xOff += 10;
+                g.DrawImage(i.texture, handler.world.height * 8 + xOff, 98, Item.itemWidth * 2, Item.itemHeight * 2);
+                xOff += Item.itemHeight + 20;
+                TextRenderer.DrawText(g, i.count.ToString(), Assets.themeFontBig, new System.Drawing.Point(handler.world.height * 8 + xOff, 148), Color.White);
             }
         }
         

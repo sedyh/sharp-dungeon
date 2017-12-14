@@ -88,7 +88,8 @@
     <Compile Include="Game\States\MenuState.cs" />
     <Compile Include="Game\States\State.cs" />
     <Compile Include="Game\Tiles\AirTile.cs" />
-    <Compile Include="Game\Tiles\CraftingTable.cs" />
+    <Compile Include="Game\Tiles\CraftingTableCoreTile.cs" />
+    <Compile Include="Game\Tiles\CraftingTableCellTile.cs" />
     <Compile Include="Game\Tiles\DoorTile.cs" />
     <Compile Include="Game\Tiles\DownStairsTile.cs" />
     <Compile Include="Game\Tiles\EtherGateTile.cs" />

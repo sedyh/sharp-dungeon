@@ -20,8 +20,8 @@ namespace SharpDungeon.Game.Graphics {
 
         //Tiles
 
-        public static Bitmap air, stone, planks, upStairs, downStairs;
-        public static Bitmap[] stoneWall, door, shadowGate, etherGate;
+        public static Bitmap air, stone, planks;
+        public static Bitmap[] stoneWall, door, shadowGate, etherGate, craftingTableCore, craftingTableCell;
 
         //Items
 
@@ -50,6 +50,7 @@ namespace SharpDungeon.Game.Graphics {
         public static Brush uiFore = new SolidBrush(Color.FromArgb(128, 128, 128));
         public static Brush uiCent = new SolidBrush(Color.FromArgb(86, 86, 86));
         public static Brush uiBack = new SolidBrush(Color.FromArgb(63, 63, 63));
+        public static Bitmap playerStates, playerInventory;
 
         //Brushes
 
@@ -80,6 +81,15 @@ namespace SharpDungeon.Game.Graphics {
 
                 air = tileSheet.crop(width * 6, height * 2, width, height);
                 stone = tileSheet.crop(width * 4, height * 2, width, height);
+                planks = tileSheet.crop(width * 5, height * 2, width, height);
+
+                craftingTableCore = new Bitmap[2];
+                craftingTableCell = new Bitmap[2];
+
+                craftingTableCore[0] = tileSheet.crop(width * 6, height * 3, width, height);
+                craftingTableCell[0] = tileSheet.crop(width * 7, height * 3, width, height);
+                craftingTableCore[1] = tileSheet.crop(width * 8, height * 3, width, height);
+                craftingTableCell[1] = tileSheet.crop(width * 9, height * 3, width, height);
 
                 stoneWall = new Bitmap[24];
 
@@ -163,6 +173,9 @@ namespace SharpDungeon.Game.Graphics {
                 door[3] = tileSheet.crop(width, height * 3, width, height);
 
                 logo = tileSheet.crop(width*9, height*11, width*3, height);
+                
+                playerStates = uiSheet.crop(width * 5, 0, width * 5, height);
+                playerInventory = uiSheet.crop(width * 5, height, width * 5, height);
 
                 playerWalkRight = new Bitmap[3];
                 playerWalkRight[0] = entitiesSheet.crop(0, 0, width, height);
