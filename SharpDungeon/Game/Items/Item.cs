@@ -20,17 +20,17 @@ namespace SharpDungeon.Game.Items {
         public static Item brownTrash1 = new Item(Assets.brownTrash1, "Brown trash", 6);
         public static Item brownTrash2 = new Item(Assets.brownTrash2, "Brown trash", 7);
         public static Item brownTrash3 = new Item(Assets.brownTrash3, "Brown trash", 8);
-        public static Item brownTrash4 = new Item(Assets.brownTrash3, "Brown trash", 9);
+        public static Item brownTrash4 = new Item(Assets.brownTrash4, "Brown trash", 9);
         public static Item blueTrash1 = new Item(Assets.blueTrash1, "Blue trash", 10);
         public static Item blueTrash2 = new Item(Assets.blueTrash2, "Blue trash", 11);
         public static Item blueTrash3 = new Item(Assets.blueTrash3, "Blue trash", 12);
-        public static Item blueTrash4 = new Item(Assets.blueTrash3, "Blue trash", 13);
+        public static Item blueTrash4 = new Item(Assets.blueTrash4, "Blue trash", 13);
         public static Item redTrash1 = new Item(Assets.redTrash1, "Red trash", 14);
-        public static Item redTrash2 = new Item(Assets.redTrash1, "Red trash", 15);
-        public static Item redTrash3 = new Item(Assets.redTrash1, "Red trash", 16);
-        public static Item redTrash4 = new Item(Assets.redTrash1, "Red trash", 17);
-        public static Item key = new Item(Assets.key, "Key", 14);
-        public static Item shadowKey = new Item(Assets.shadowKey, "Shadow key", 15);
+        public static Item redTrash2 = new Item(Assets.redTrash2, "Red trash", 15);
+        public static Item redTrash3 = new Item(Assets.redTrash3, "Red trash", 16);
+        public static Item redTrash4 = new Item(Assets.redTrash4, "Red trash", 17);
+        public static Item key = new Item(Assets.key, "Key", 18);
+        public static Item shadowKey = new Item(Assets.shadowKey, "Shadow key", 19);
 
         public static readonly int itemWidth = 64, itemHeight = 64;
 

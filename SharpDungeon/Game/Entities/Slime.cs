@@ -1,5 +1,6 @@
 ﻿using SharpDungeon.Game.Graphics;
 using SharpDungeon.Game.Tiles;
+using SharpDungeon.Game.Items;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,7 +14,7 @@ namespace SharpDungeon.Game.Entities {
         Animation currentAnimation;
 
         Animation idleWalk, attackLeft, attackRight;
-        int targetX, targetY, count, countRange, rndX, rndY;
+        int targetX, targetY, count, hurtCount, countRange, rndX, rndY;
         Random rnd;
 
         public Slime(Handler handler, int worldX, int worldY) : base(handler, worldX, worldY, defaultWidth, defaultHeight) {
@@ -25,18 +26,19 @@ namespace SharpDungeon.Game.Entities {
             currentAnimation = idleWalk;
             targetX = (int)x;
             targetY = (int)y;
-            countRange = rnd.Next(10, 60);
+            countRange = rnd.Next(10, 40);
         }
 
         public override void die() {
-
+            handler.world.itemManager.addItem(Item.items[rnd.Next(6, 17)].createNew((int)x, (int)y));
+            handler.world.entityManager.player.xp += 50;
         }
 
         public override void tick() {
 
             currentAnimation.tick();
 
-            if (count < 20) {
+            if (count < countRange) {
                 count++;
             } else {
                 count = 0;
@@ -60,11 +62,34 @@ namespace SharpDungeon.Game.Entities {
                 y -= 16;
             else if (targetY > y)
                 y += 16;
+
+            if (hurtCount < 10) {
+
+                hurtCount++;
+
+            } else {
+                hurtCount = 0;
+
+                if (handler.world.entityManager.player.x == x && handler.world.entityManager.player.y == y ||
+                    handler.world.entityManager.player.x == x - Tile.tileWidth && handler.world.entityManager.player.y == y - Tile.tileHeight ||
+                    handler.world.entityManager.player.x == x && handler.world.entityManager.player.y == y - Tile.tileHeight ||
+                    handler.world.entityManager.player.x == x + Tile.tileWidth && handler.world.entityManager.player.y == y - Tile.tileHeight ||
+                    handler.world.entityManager.player.x == x - Tile.tileWidth && handler.world.entityManager.player.y == y ||
+                    handler.world.entityManager.player.x == x + Tile.tileWidth && handler.world.entityManager.player.y == y ||
+                    handler.world.entityManager.player.x == x - Tile.tileWidth && handler.world.entityManager.player.y == y + Tile.tileHeight ||
+                    handler.world.entityManager.player.x == x && handler.world.entityManager.player.y == y + Tile.tileHeight ||
+                    handler.world.entityManager.player.x == x + Tile.tileWidth && handler.world.entityManager.player.y == y + Tile.tileWidth) {
+
+                    handler.world.entityManager.player.hurt(20);
+                }
+            }
         }
 
         public override void render(System.Drawing.Graphics g) {
             if (currentAnimation != null)
                 g.DrawImage(currentAnimation.getCurrentFrame(), (int)(x - handler.gameCamera.xOffset), (int)(y - handler.gameCamera.yOffset), width, height);
+            g.FillRectangle(Brushes.Red, (int)(x - handler.gameCamera.xOffset)+5, (int)(y - handler.gameCamera.yOffset) - 7, width-6, 7);
+            g.FillRectangle(Brushes.Green, (int)(x - handler.gameCamera.xOffset)+5, (int)(y - handler.gameCamera.yOffset) - 7, (int)(((double)health / (double)defaultHealth) * (double)width)-6, 7);
         }
     }
 }

@@ -38,81 +38,6 @@ namespace SharpDungeon.Game.World {
             int seed = (int)DateTime.UtcNow.Ticks;
             rnd = new DotNetRandom(seed);
 
-            //for (int x = 0; x < width; x++) {
-            //    for (int y = 0; y < height; y++) {
-
-            //        //if (x == 0)
-            //        //    tiles[x, y] = Tile.stoneWall.getId();
-            //        //else if (y == 0)
-            //        //    tiles[x, y] = Tile.stoneWall.getId();
-            //        //else if (x == width - 1)
-            //        //    tiles[x, y] = Tile.stoneWall.getId();
-            //        //else if (y == height - 1)
-            //        //    tiles[x, y] = Tile.stoneWall.getId();
-            //        //else
-            //        //    tiles[x, y] = Tile.stone.getId();
-            //    }
-            //}
-
-
-            //int maxSize = width;
-
-            //List<Leaf> leafs = new List<Leaf>();
-
-            //Leaf root = new Leaf(0, 0, width, height);
-            //leafs.Add(root);
-
-            //bool didSplit = true;
-
-            //while (didSplit) {
-            //    didSplit = false;
-            //    foreach(Leaf l in leafs) {
-            //        if (l.leftChild == null || l.rightChild == null)
-            //            if(l.width > maxSize || l.height > maxSize) {
-            //                if(l.split()) {
-            //                    leafs.Add(l.leftChild);
-            //                    leafs.Add(l.rightChild);
-            //                    didSplit = true;
-            //                }
-            //            }
-            //    }
-            //}
-
-            //root.createRooms();
-
-            //List<Leaf> leafs = new List<Leaf>();
-
-            //Leaf root = new Leaf(0, 0, 30, 30);
-            //leafs.Add(root);
-
-            //bool didSplit = true;
-
-            //while (didSplit) {
-            //    didSplit = false;
-            //    for (int i = 0; i < leafs.ToArray().Length; i++) {
-            //        if (leafs[i].leftChild == null && leafs[i].rightChild == null) {
-            //            if (leafs[i].width > maxSize || leafs[i].height > maxSize || rnd.NextDouble() > 0.25) {
-            //                if (leafs[i].split()) {
-            //                    leafs.Add(leafs[i].leftChild);
-            //                    leafs.Add(leafs[i].rightChild);
-            //                    didSplit = true;
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //}
-            //root.createRooms();
-
-            //foreach (Leaf leaf in leafs) {
-            //    fillTile(Tile.stone.getId(), leaf.getRoom().X, leaf.getRoom().Y, leaf.getRoom().Width, leaf.getRoom().Height);
-
-            //    if (leaf.halls != null)
-            //        foreach (Rectangle hall in leaf.halls) {
-            //            fillTile(Tile.stone.getId(), hall.X, hall.Y, hall.Width, hall.Height);
-            //        }
-            //}
-
             int roomSize = 8;
             List<Rectangle> cells = new List<Rectangle>();
             Rectangle cell;
@@ -254,11 +179,11 @@ namespace SharpDungeon.Game.World {
             Rectangle reee;
             reee = rooms.ElementAt(2);
             if (!getTile(reee.Left + 1, reee.Top + 2).isSolid() &&
-               !getTile(reee.Left + 1 - 1, reee.Top + 2 - 1).isSolid() &&
-               !getTile(reee.Left + 1, reee.Top + 2 - 1).isSolid() &&
-               !getTile(reee.Left + 1 + 1, reee.Top + 2 - 1).isSolid() &&
-               !getTile(reee.Left + 1, reee.Top + 2 + 1).isSolid() &&
-               !getTile(reee.Left + 1, reee.Top + 2 - 2).isSolid()) {
+                !getTile(reee.Left + 1 - 1, reee.Top + 2 - 1).isSolid() &&
+                !getTile(reee.Left + 1, reee.Top + 2 - 1).isSolid() &&
+                !getTile(reee.Left + 1 + 1, reee.Top + 2 - 1).isSolid() &&
+                !getTile(reee.Left + 1, reee.Top + 2 + 1).isSolid() &&
+                !getTile(reee.Left + 1, reee.Top + 2 - 2).isSolid()) {
                 setTile(Tile.craftingTableCore.getId(), reee.Left + 1, reee.Top + 2);
                 setTile(Tile.craftingTableCell.getId(), reee.Left + 1 - 1, reee.Top + 2 - 1);
                 setTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 - 1);
@@ -286,7 +211,16 @@ namespace SharpDungeon.Game.World {
             foreach (Rectangle r in rooms.ToList()) {
                 for (int x = r.X; x < r.Width - 1; x++)
                     for (int y = r.Y; y < r.Height - 1; y++)
-                        if (rnd.Next(1, 10) == 1 && !getTile(x, y).isSolid())
+                        if (rnd.Next(1, 10) == 1 && !getTile(x, y).isSolid() && 
+                            x != re.X-1 && y != re.Y-1 &&
+                            x != re.X && y != re.Y-1 &&
+                            x != re.X+1 && y != re.Y-1 &&
+                            x != re.X - 1 && y != re.Y &&
+                            x != re.X && y != re.Y &&
+                            x != re.X + 1 && y != re.Y &&
+                            x != re.X - 1 && y != re.Y + 1 &&
+                            x != re.X && y != re.Y + 1 &&
+                            x != re.X + 1 && y != re.Y + 1)
                             entityManager.addEntity(new Slime(handler, x * Tile.tileWidth, y * Tile.tileHeight));
             }
 

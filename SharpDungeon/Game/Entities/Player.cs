@@ -1,5 +1,6 @@
 ﻿using SharpDungeon.Game.Graphics;
 using SharpDungeon.Game.Items;
+using SharpDungeon.Game.States;
 using SharpDungeon.Game.Tiles;
 using SharpDungeon.Game.Utils;
 using System;
@@ -13,11 +14,12 @@ using System.Windows.Forms;
 namespace SharpDungeon.Game.Entities {
     public class Player : Entity {
 
+        
         Animation currentAnimation, walkLeft, walkRight;
         Bitmap stayTex;
         public Inventory inventory { get; set; }
 
-        Animation idle;
+        Animation idle, playerState;
 
         int offsX;
         int offsY;
@@ -31,7 +33,14 @@ namespace SharpDungeon.Game.Entities {
         Point thisPoint, nextPoint, i, j;
         int thisX, thisY, speed = 32, dirStepX = 0, dirStepY = 0;
 
-        public int level = 1, xp = 0, world = 0, attack = 5;
+        int charge = 0, chargeTime = 0;
+        bool wasPressed = false;
+
+        public int level { get; set; } = 1;
+        public int xp { get; set; } = 0;
+        public int maxXP { get; set; } = 300;
+        public int world { get; set; } = 1;
+        public int attack { get; set; } = 5;
 
         Random rnd = new Random();
         bool wasMid = false, wasMid2 = false;
@@ -43,6 +52,7 @@ namespace SharpDungeon.Game.Entities {
             idle = new Animation(540, Assets.playerIdle);
             walkLeft = new Animation(100, Assets.playerWalkLeft);
             walkRight = new Animation(100, Assets.playerWalkRight);
+            playerState = new Animation(540, Assets.playerIdle);
 
             currentAnimation = idle;
             thisX = (int)x;
@@ -53,14 +63,24 @@ namespace SharpDungeon.Game.Entities {
         }
 
         public override void die() {
+            handler.game.recordState = new RecordState(handler);
+            State.currentState = handler.game.recordState; 
 
         }
 
         public override void tick() {
 
             currentAnimation.tick();
+
+            playerState.tick();
             handler.gameCamera.centerOnEntity(this);
             inventory.tick();
+
+            if(xp > maxXP) {
+                level++;
+                xp = xp - maxXP;
+                maxXP += 50;
+            }
 
                 //handler.world.setTile(Tile.shadowGate.getId(), 
                 //    handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY));
@@ -82,7 +102,6 @@ namespace SharpDungeon.Game.Entities {
                                 path.block(j, i);
 
                         } else {
-
 
                             if (handler.world.getTile(j, i).isSolid())
                                 path.block(j, i);
@@ -151,10 +170,53 @@ namespace SharpDungeon.Game.Entities {
             else
                 g.DrawImage(stayTex, (int)(x - handler.gameCamera.xOffset), (int)(y - handler.gameCamera.yOffset), width, height);
 
-            renderUI(g);
-            inventory.render(g);
+            //if (charge > 0)
+            //    g.DrawEllipse(Pens.White, 
+            //                  (int)(x - handler.gameCamera.xOffset) + charge*3 - 20, 
+            //                  (int)(y - handler.gameCamera.yOffset) + charge*3 - 20, 
+            //                  Tile.tileWidth - charge*3 + 20,
+            //                  Tile.tileHeight - charge*3 + 20);
 
-            TextRenderer.DrawText(g, $"offsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
+            if (handler.mouseManager.rightPressed) {
+                if (charge < 20)
+                    charge++;
+            } else {
+                if (charge < 20) {
+                    charge = 0;
+                } else {
+
+                    if (chargeTime < 10) {
+                        chargeTime++;
+
+                        List<int> arr = new List<int>();
+
+                        splitn((int)(x - handler.gameCamera.xOffset) + Tile.tileWidth / 2,
+                               (int)(y - handler.gameCamera.yOffset) + Tile.tileHeight / 2,
+                               (offsX + ((Tile.tileWidth - offsX + handler.mouseManager.mouseX) / Tile.tileWidth) * Tile.tileWidth) - Tile.tileWidth + 32,
+                               (offsY + ((Tile.tileHeight - offsY + handler.mouseManager.mouseY) / Tile.tileHeight) * Tile.tileHeight) - Tile.tileHeight + 32,
+                               arr,
+                               7);
+
+                        for (int i = 0; i < arr.Count - 2; i += 2) {
+                            g.DrawLine(new Pen(Color.FromArgb(255, 255, 255), 2), arr[i], arr[i + 1], arr[i + 2], arr[i + 3]);
+                        }
+
+                        Entity e = handler.world.entityManager.getEntity(handler.world.toWorldX(handler.mouseManager.mouseX) * Tile.tileWidth,
+                                                                         handler.world.toWorldY(handler.mouseManager.mouseY) * Tile.tileHeight);
+                        if (e != null)
+                            e.hurt(35);
+                    } else {
+                        chargeTime = 0;
+                        charge = 0;
+                    }
+
+                }
+            }
+
+            inventory.render(g);
+            renderUI(g);
+
+            TextRenderer.DrawText(g, $"charge = {charge}\nhealth = {handler.world.entityManager.player.health}\noffsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
 
         }
 
@@ -174,9 +236,12 @@ namespace SharpDungeon.Game.Entities {
                                           Tile.tileWidth,
                                           Tile.tileHeight);
 
-            if (handler.mouseManager.rightPressed)
-                handler.world.itemManager.addItem(Item.shadowKey.createNew(handler.world.toWorldX(handler.mouseManager.mouseX)*Tile.tileWidth, 
-                                                                           handler.world.toWorldY(handler.mouseManager.mouseY)*Tile.tileHeight));
+            if (handler.mouseManager.rightPressed) {
+                
+
+            }
+
+                    
             //Minmap
 
             g.FillRectangle(Assets.uiFore, 13, 13, handler.world.width * 8 + 15, handler.world.height * 8 + 15);
@@ -210,9 +275,24 @@ namespace SharpDungeon.Game.Entities {
 
             //States
             g.DrawImage(Assets.playerStates, 35 + handler.world.width * 8, 13, Assets.playerStates.Width*1.5f, Assets.playerStates.Height* 1.5f);
+            g.DrawImage(playerState.getCurrentFrame(), 50 + handler.world.width * 8, 25, Tile.tileWidth, Tile.tileHeight);
+            g.FillRectangle(Brushes.PaleVioletRed, 134 + handler.world.width * 8, 20, (int)(((double)health / (double)defaultHealth) * (double)249*1.5f), 9);
+            g.FillRectangle(Brushes.LightGoldenrodYellow, 134 + handler.world.width * 8, 40, (int)(((double)xp / (double)maxXP) * (double)249 * 1.5f), 9);
+            TextRenderer.DrawText(g, $"Level {level}", Assets.themeFont, new Point(165 + handler.world.width * 8, 70), Color.White);
+            TextRenderer.DrawText(g, $"World {world}", Assets.themeFont, new Point(370 + handler.world.width * 8, 70), Color.White);
+        }
 
-            //g.FillRectangle(Assets.uiFore, 15 + handler.world.width * 8, 0, handler.game.display.Width, 64*2.3f+20);
-            //g.FillRectangle(Assets.uiCent, 15 + handler.world.width * 8, 3, handler.game.display.Width, 64* 2.3f + 13);
+        public void splitn(int x1, int y1, int x2, int y2, List<int> arr, int cnt) {
+
+            --cnt;
+
+            int xMiddle = (int)(x1 + x2) / 2 + rnd.Next(-10, 10);
+            int yMiddle = (int)(y1 + y2) / 2 + rnd.Next(-10, 10);
+
+            if (cnt > 0) splitn(x1, y1, xMiddle, yMiddle, arr, cnt);
+            arr.Add(xMiddle);
+            arr.Add(yMiddle);
+            if (cnt > 0) splitn(xMiddle, yMiddle, x2, y2, arr, cnt);
 
         }
 

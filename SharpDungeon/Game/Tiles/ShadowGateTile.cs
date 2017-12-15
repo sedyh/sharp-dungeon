@@ -1,4 +1,7 @@
-﻿using SharpDungeon.Game.Graphics;
+﻿using SharpDungeon.Game.Entities;
+using SharpDungeon.Game.Graphics;
+using SharpDungeon.Game.Items;
+using SharpDungeon.Game.States;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,60 +13,55 @@ namespace SharpDungeon.Game.Tiles {
     public class ShadowGateTile : TileSingleSide {
 
         Animation an;
-        //Random rnd;
-        //List<int> ar;
 
-        //int posX=-1, posY=-1;
-        //int time = 0;
+        List<Item> inventoryItems;
+        private int level, xp, maxXP, health, attack, world;
+        
 
         public ShadowGateTile(int id) : base(Assets.shadowGate[0], id) {
             an = new Animation(10, Assets.shadowGate);
-            //rnd = new Random();
+            
         }
 
         public override void tick(Handler handler, int x, int y) {
             base.tick(handler, x, y);
             an.tick();
             currentTex = an.getCurrentFrame();
-            //if (time < 10) {
-            //    time++;
-            //} else {
-            //    time = 0;
-            //    posX = (int)(rnd.Next(x - 1, x + 2) * Tile.tileWidth);
-            //    posY = (int)(rnd.Next(y - 1, y + 2) * Tile.tileWidth);
-            //}
+            
+            if((int)(handler.world.entityManager.player.x)/Tile.tileWidth == x &&
+               (int)(handler.world.entityManager.player.y)/Tile.tileHeight == y) {
+
+                level = handler.world.entityManager.player.level;
+                xp = handler.world.entityManager.player.xp;
+                maxXP = handler.world.entityManager.player.maxXP;
+                health = handler.world.entityManager.player.health;
+                attack = handler.world.entityManager.player.attack;
+                world = handler.world.entityManager.player.world;
+                inventoryItems = handler.world.entityManager.player.inventory.inventoryItems;
+
+                handler.game.gameCamera = new GameCamera(handler, 0, 0);
+                handler.game.gameState = new GameState(handler);
+                State.currentState = handler.game.gameState;
+
+                handler.world.entityManager.player.level = level;
+                handler.world.entityManager.player.xp = xp;
+                handler.world.entityManager.player.maxXP = maxXP;
+                handler.world.entityManager.player.health = health;
+                handler.world.entityManager.player.attack = attack;
+                handler.world.entityManager.player.inventory.inventoryItems = inventoryItems;
+                handler.world.entityManager.player.world = world + 1;
+            }
+
         }
 
         public override void render(System.Drawing.Graphics g, int x, int y) {
             base.render(g, x, y);
-
-            //if (posX != -1 && posY != -1) {
-            //    ar = new List<int>();
-            //    splitn(x+32, y+32, posX+32, posY+32, ar, 7);
-            //    for (int i = 0; i < ar.Count - 2; i += 2) {
-            //        g.DrawLine(new Pen(Color.FromArgb(0, 0, 0), 2), ar[i], ar[i + 1], ar[i + 2], ar[i + 3]);
-            //        g.DrawLine(new Pen(Color.FromArgb(255, 0, 187), 2), ar[i], ar[i + 1], ar[i + 2], ar[i + 3]);
-            //    }
-            //}
-
         }
 
         public override bool isSolid() {
             return false;
         }
 
-        //public void splitn(int x1, int y1, int x2, int y2, List<int> arr, int cnt) {
-
-        //    --cnt;
-
-        //    int xMiddle = (int)(x1 + x2) / 2 + rnd.Next(-10, 10);
-        //    int yMiddle = (int)(y1 + y2) / 2 + rnd.Next(-10, 10);
-
-        //    if (cnt > 0) splitn(x1, y1, xMiddle, yMiddle, arr, cnt);
-        //    arr.Add(xMiddle);
-        //    arr.Add(yMiddle);
-        //    if (cnt > 0) splitn(xMiddle, yMiddle, x2, y2, arr, cnt);
-
-        //}
+        
     }
 }

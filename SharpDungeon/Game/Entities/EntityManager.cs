@@ -39,5 +39,14 @@ namespace SharpDungeon.Game.Entities {
             entities.Remove(player);
             entities.Add(player);
         }
+
+        public Entity getEntity(int x, int y) {
+            Entity entity = null;
+            foreach (Entity e in entities)
+                if (e.x == x && e.y == y)
+                    entity = e;
+
+            return entity;
+        }
     }
 }

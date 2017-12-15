@@ -21,7 +21,7 @@ namespace SharpDungeon.Game.Entities {
         protected bool active = true;
         protected bool turn = false;
 
-        public static readonly int defaultHealth = 10;
+        public static readonly int defaultHealth = 100;
 
         public static readonly int defaultWidth = 64,
                                    defaultHeight = 64;

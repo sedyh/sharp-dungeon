@@ -21,7 +21,7 @@ namespace SharpDungeon.Game.States {
             uiManager.add(b1);
 
             UIButton b2 = new UIButton(handler, Assets.loadSeedButton, 150, handler.height / 2, Assets.loadSeedButton[0].Width * 2, Assets.loadSeedButton[0].Height * 2);
-            b2.OnClick += () => State.currentState = handler.game.gameState;
+            b2.OnClick += () => { };
             uiManager.add(b2);
         }
 

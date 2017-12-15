@@ -22,6 +22,7 @@ namespace SharpDungeon.Game {
         public GameState gameState { get; set; }
         public MenuState menuState { get; set; }
         public LoadState loadState { get; set; }
+        public RecordState recordState { get; set; }
 
         public GameCamera gameCamera { get; set; }
 

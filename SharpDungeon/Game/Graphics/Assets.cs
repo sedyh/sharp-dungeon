@@ -45,7 +45,7 @@ namespace SharpDungeon.Game.Graphics {
         //UI
 
         public static Bitmap logo;
-        public static Bitmap background, backgroundLoading;
+        public static Bitmap background, backgroundLoading, backgroundGameover;
         public static Bitmap[] newGameButton, loadSeedButton, optionsButton, exitButton;
         public static Brush uiFore = new SolidBrush(Color.FromArgb(128, 128, 128));
         public static Brush uiCent = new SolidBrush(Color.FromArgb(86, 86, 86));
@@ -74,7 +74,8 @@ namespace SharpDungeon.Game.Graphics {
 
                 background = new Bitmap("../../Assets/background.png");
                 backgroundLoading = new Bitmap("../../Assets/backgroundLoading.png");
-                
+                backgroundGameover = new Bitmap("../../Assets/backgroundGameover.png");
+
                 f.AddFontFile("../../Assets/emulogic.ttf");
                 themeFont = new Font(f.Families[0], 10);
                 themeFontBig = new Font(f.Families[0], 20);
