@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SharpDungeon.Game.Tiles {
     public class CraftingTableCoreTile : TileSingleSide {
+
 
         public CraftingTableCoreTile(int id) : base(Assets.craftingTableCore[0], id) {
 
@@ -18,10 +20,48 @@ namespace SharpDungeon.Game.Tiles {
             if ((int)(handler.world.entityManager.player.x) / Tile.tileWidth == x &&
                 (int)(handler.world.entityManager.player.y) / Tile.tileHeight == y) {
                 currentTex = Assets.craftingTableCore[1];
-                handler.world.getTile(x - 1, y-1).currentTex = Assets.craftingTableCell[1];
-                handler.world.getTile(x, y-1).currentTex = Assets.craftingTableCell[1];
+                handler.world.getTile(x - 1, y - 1).currentTex = Assets.craftingTableCell[1];
+                handler.world.getTile(x, y - 1).currentTex = Assets.craftingTableCell[1];
                 handler.world.getTile(x + 1, y - 1).currentTex = Assets.craftingTableCell[1];
                 handler.world.getTile(x, y + 1).currentTex = Assets.craftingTableCell[1];
+
+
+                //Scaning items
+
+                Item i1 = null;
+                Item i2 = null;
+                Item i3 = null;
+
+                int item1X = (x-1) * Tile.tileWidth;
+                int item1Y = (y-1) * Tile.tileHeight;
+                
+                int item2X = x * Tile.tileWidth;
+                int item2Y = (y-1) * Tile.tileHeight;
+                
+                int item3X = (x+1) * Tile.tileWidth;
+                int item3Y = (y-1) * Tile.tileWidth;
+
+                foreach (Item i in handler.world.itemManager.items) {
+                    if (i.x == item1X && i.y == item1Y)
+                        i1 = i;
+                    else if (i.x == item2X && i.y == item2Y)
+                        i2 = i;
+                    else if (i.x == item3X && i.y == item3Y)
+                        i3 = i;
+                }
+
+                if (i1 != null && i2 != null && i3 != null) {
+                    //Recipes
+
+                    if (i1.name == "Green rupy" && i2.name == "Red rupy" && i3.name == "Purple rupy") {
+                        handler.world.itemManager.addItem(Item.lighthingKnob.createNew(x * Tile.tileWidth, (y + 1) * Tile.tileHeight));
+                        handler.world.itemManager.items.Remove(i1);
+                        handler.world.itemManager.items.Remove(i2);
+                        handler.world.itemManager.items.Remove(i3);
+                    }
+
+                }
+
             } else {
                 currentTex = Assets.craftingTableCore[0];
                 handler.world.getTile(x - 1, y - 1).currentTex = Assets.craftingTableCell[0];
@@ -29,6 +69,7 @@ namespace SharpDungeon.Game.Tiles {
                 handler.world.getTile(x + 1, y - 1).currentTex = Assets.craftingTableCell[0];
                 handler.world.getTile(x, y + 1).currentTex = Assets.craftingTableCell[0];
             }
+
         }
 
         public override void render(System.Drawing.Graphics g, int x, int y) {

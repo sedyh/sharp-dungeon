@@ -22,6 +22,8 @@ namespace SharpDungeon.Game.Items {
             addItem(Item.redRupy.createNew(2));
             addItem(Item.greenRupy.createNew(2));
             addItem(Item.purpleRupy.createNew(2));
+            addItem(Item.redTrash1.createNew(2));
+            addItem(Item.redTrash2.createNew(2));
         }
 
         public void tick() {

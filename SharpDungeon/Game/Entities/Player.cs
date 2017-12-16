@@ -250,7 +250,7 @@ namespace SharpDungeon.Game.Entities {
             renderUI(g);
             inventory.render(g);
 
-            TextRenderer.DrawText(g, $"+ = {dropNum+inventory.scroll}\ndropNum = {dropNum}\nscroll = {inventory.scroll}\nwheel = {handler.mouseManager.wheel}\ncharge = {charge}\nhealth = {handler.world.entityManager.player.health}\noffsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
+            TextRenderer.DrawText(g, $"Count = {inventory.inventoryItems.Count}\n+ = {dropNum+inventory.scroll}\ndropNum = {dropNum}\nscroll = {inventory.scroll}\nwheel = {handler.mouseManager.wheel}\ncharge = {charge}\nhealth = {handler.world.entityManager.player.health}\noffsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
 
         }
 
@@ -305,45 +305,47 @@ namespace SharpDungeon.Game.Entities {
             //States
             g.DrawImage(Assets.playerStates, 35 + handler.world.width * 8, 13, Assets.playerStates.Width*1.5f, Assets.playerStates.Height* 1.5f);
             g.DrawImage(playerState.getCurrentFrame(), 50 + handler.world.width * 8, 25, Tile.tileWidth, Tile.tileHeight);
+            g.DrawImage(Assets.playerDrop, 35 + handler.world.width * 8, 219, Assets.playerStates.Width * 1.5f, Assets.playerStates.Height * 1.5f);
             g.FillRectangle(Brushes.PaleVioletRed, 134 + handler.world.width * 8, 20, (int)(((double)health / (double)defaultHealth) * (double)249*1.5f), 9);
             g.FillRectangle(Brushes.LightGoldenrodYellow, 134 + handler.world.width * 8, 40, (int)(((double)xp / (double)maxXP) * (double)249 * 1.5f), 9);
+            //Charge
+            g.FillRectangle(Brushes.BlueViolet, 80 + handler.world.width * 8, 239, (int)(((double)charge / (double)20) * (double)249 * 1.5f), 9);
+            g.FillRectangle(Assets.uiBack, 80 + handler.world.width * 8, 239, (int)(((double)chargeTime / (double)10) * (double)249 * 1.5f), 9);
             TextRenderer.DrawText(g, $"Level {level}", Assets.themeFont, new Point(165 + handler.world.width * 8, 70), Color.White);
             TextRenderer.DrawText(g, $"World {world}", Assets.themeFont, new Point(370 + handler.world.width * 8, 70), Color.White);
-
-            //Drop
-            g.DrawImage(Assets.playerDrop, 35 + handler.world.width * 8, 219, Assets.playerStates.Width * 1.5f, Assets.playerStates.Height * 1.5f);
+            
 
             if (renderDrop) {
 
                 wasRenderDrop = true;
 
                 if (inventory.inventoryItems.Count == 1)
-                    g.FillRectangle(Brushes.White, 230 + handler.world.width * 8, 236, 72, 15);
+                    g.FillRectangle(Assets.uiFore, 230 + handler.world.width * 8, 236, 72, 15);
 
                 if (inventory.inventoryItems.Count == 2)
                     if(twoItemsDropNum == 0)
-                        g.FillRectangle(Brushes.White, 198 + handler.world.width * 8, 236, 72, 15);
+                        g.FillRectangle(Assets.uiFore, 198 + handler.world.width * 8, 236, 72, 15);
                     else
-                        g.FillRectangle(Brushes.White, 284 + handler.world.width * 8, 236, 72, 15);
+                        g.FillRectangle(Assets.uiFore, 284 + handler.world.width * 8, 236, 72, 15);
 
                 if (inventory.inventoryItems.Count > 2)
                     if(dropNum == 0)
-                        g.FillRectangle(Brushes.White, 145 + handler.world.width * 8, 236, 72, 15);
+                        g.FillRectangle(Assets.uiFore, 145 + handler.world.width * 8, 236, 72, 15);
                     else if(dropNum == 1)
-                        g.FillRectangle(Brushes.White, 240 + handler.world.width * 8, 236, 72, 15);
+                        g.FillRectangle(Assets.uiFore, 240 + handler.world.width * 8, 236, 72, 15);
                     else if(dropNum == 2)
-                        g.FillRectangle(Brushes.White, 335 + handler.world.width * 8, 236, 72, 15);
+                        g.FillRectangle(Assets.uiFore, 335 + handler.world.width * 8, 236, 72, 15);
 
             } else if(wasRenderDrop) {
                 if(!handler.world.getTile(handler.world.toWorldX(handler.mouseManager.mouseX),
                                           handler.world.toWorldY(handler.mouseManager.mouseY)).isSolid()) {
                     if(inventory.inventoryItems.Count > 2) {
-                            Item item = inventory.inventoryItems[inventory.scroll + dropNum];
-                            item.count--;
-                            handler.world.itemManager.addItem(item.createNew(handler.world.toWorldX(handler.mouseManager.mouseX) * Tile.tileWidth,
-                                                                             handler.world.toWorldY(handler.mouseManager.mouseY) * Tile.tileHeight));
-                            if (item.count <= 0)
-                                inventory.inventoryItems.Remove(item);
+                        Item item = inventory.inventoryItems[inventory.scroll + dropNum];
+                        item.count--;
+                        handler.world.itemManager.addItem(item.createNew(handler.world.toWorldX(handler.mouseManager.mouseX) * Tile.tileWidth,
+                                                                         handler.world.toWorldY(handler.mouseManager.mouseY) * Tile.tileHeight));
+                        if (item.count <= 0)
+                            inventory.inventoryItems.Remove(item);
 
                     } else if(inventory.inventoryItems.Count == 2) {
                         Item item = inventory.inventoryItems[inventory.scroll + twoItemsDropNum];

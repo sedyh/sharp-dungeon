@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.Items {
     public class ItemManager {
         private Handler handler;
-        private List<Item> items;
+        public List<Item> items;
 
         public ItemManager(Handler handler) {
             this.handler = handler;
