@@ -31,6 +31,10 @@ namespace SharpDungeon.Game.Items {
         public static Item redTrash4 = new Item(Assets.redTrash4, "Red trash", 17);
         public static Item key = new Item(Assets.key, "Key", 18);
         public static Item shadowKey = new Item(Assets.shadowKey, "Shadow key", 19);
+        public static Item orangePotion = new Item(Assets.orangePotion, "Orange potion", 20);
+        public static Item yellowPotion = new Item(Assets.yellowPotion, "Yellow potion", 21);
+        public static Item bluePotion = new Item(Assets.bluePotion, "Blue potion", 22);
+        public static Item moon = new Item(Assets.moon, "Moon", 22);
 
         public static readonly int itemWidth = 64, itemHeight = 64;
 
@@ -65,7 +69,18 @@ namespace SharpDungeon.Game.Items {
         public void tick() {
             if (handler.world.entityManager.player.x == x && handler.world.entityManager.player.y == y) {
                 pickedUp = true;
-                handler.world.entityManager.player.inventory.addItem(this);
+                if (name == "Orange potion") {
+                    handler.world.entityManager.player.maxHealth += 20;
+                    handler.world.entityManager.player.health += 20;
+                } else if (name == "Yellow potion") {
+                    handler.world.entityManager.player.xp += 300;
+                } else if (name == "Blue potion") {
+                    if(handler.world.entityManager.player.maxCharge > 1)
+                        handler.world.entityManager.player.maxCharge--;
+                    handler.world.entityManager.player.maxChargeTime++;
+                } else {
+                    handler.world.entityManager.player.inventory.addItem(this);
+                }
             }
 
             itemShadow.tick();

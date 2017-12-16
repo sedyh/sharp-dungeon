@@ -15,7 +15,7 @@ namespace SharpDungeon.Game.Tiles {
         Animation an;
 
         List<Item> inventoryItems;
-        private int level, xp, maxXP, health, attack, world;
+        private int level, xp, maxXP, health, maxHealth, attack, maxCharge, maxChargeTime, world;
         
 
         public ShadowGateTile(int id) : base(Assets.shadowGate[0], id) {
@@ -35,6 +35,9 @@ namespace SharpDungeon.Game.Tiles {
                 xp = handler.world.entityManager.player.xp;
                 maxXP = handler.world.entityManager.player.maxXP;
                 health = handler.world.entityManager.player.health;
+                maxHealth = handler.world.entityManager.player.maxHealth;
+                maxCharge = handler.world.entityManager.player.maxCharge;
+                maxChargeTime = handler.world.entityManager.player.maxChargeTime;
                 attack = handler.world.entityManager.player.attack;
                 world = handler.world.entityManager.player.world;
                 inventoryItems = handler.world.entityManager.player.inventory.inventoryItems;
@@ -47,6 +50,9 @@ namespace SharpDungeon.Game.Tiles {
                 handler.world.entityManager.player.xp = xp;
                 handler.world.entityManager.player.maxXP = maxXP;
                 handler.world.entityManager.player.health = health;
+                handler.world.entityManager.player.maxHealth = maxHealth;
+                handler.world.entityManager.player.maxCharge = maxCharge;
+                handler.world.entityManager.player.maxChargeTime = maxChargeTime;
                 handler.world.entityManager.player.attack = attack;
                 handler.world.entityManager.player.inventory.inventoryItems = inventoryItems;
                 handler.world.entityManager.player.world = world + 1;

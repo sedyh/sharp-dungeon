@@ -53,13 +53,47 @@ namespace SharpDungeon.Game.Tiles {
                 if (i1 != null && i2 != null && i3 != null) {
                     //Recipes
 
-                    if (i1.name == "Green rupy" && i2.name == "Red rupy" && i3.name == "Purple rupy") {
+                    if (i1.name == "Red rupy" && i2.name == "Green rupy" && i3.name == "Purple rupy" ||
+                        i1.name == "Green rupy" && i2.name == "Red rupy" && i3.name == "Purple rupy" ||
+                        i1.name == "Red rupy" && i2.name == "Purple rupy" && i3.name == "Green rupy" ||
+                        i1.name == "Green rupy" && i2.name == "Purple rupy" && i3.name == "Red rupy" ||
+                        i1.name == "Purple rupy" && i2.name == "Green rupy" && i3.name == "Red rupy" ||
+                        i1.name == "Purple rupy" && i2.name == "Red rupy" && i3.name == "Green rupy") {
+                        handler.world.itemManager.addItem(Item.moon.createNew(x * Tile.tileWidth, (y + 1) * Tile.tileHeight));
+                        handler.world.itemManager.items.Remove(i1);
+                        handler.world.itemManager.items.Remove(i2);
+                        handler.world.itemManager.items.Remove(i3);
+                    } else if(i1.name == "Red rupy" && i2.name == "Red rupy" && i3.name == "Red rupy") {
+                        handler.world.itemManager.addItem(Item.fireKnob.createNew(x * Tile.tileWidth, (y + 1) * Tile.tileHeight));
+                        handler.world.itemManager.items.Remove(i1);
+                        handler.world.itemManager.items.Remove(i2);
+                        handler.world.itemManager.items.Remove(i3);
+                    } else if (i1.name == "Green rupy" && i2.name == "Green rupy" && i3.name == "Green rupy") {
                         handler.world.itemManager.addItem(Item.lighthingKnob.createNew(x * Tile.tileWidth, (y + 1) * Tile.tileHeight));
                         handler.world.itemManager.items.Remove(i1);
                         handler.world.itemManager.items.Remove(i2);
                         handler.world.itemManager.items.Remove(i3);
+                    } else if (i1.name == "Purple rupy" && i2.name == "Purple rupy" && i3.name == "Purple rupy") {
+                        handler.world.itemManager.addItem(Item.poisonKnob.createNew(x * Tile.tileWidth, (y + 1) * Tile.tileHeight));
+                        handler.world.itemManager.items.Remove(i1);
+                        handler.world.itemManager.items.Remove(i2);
+                        handler.world.itemManager.items.Remove(i3);
+                    } else if (i1.name == "Red trash" && i2.name == "Red rupy" && i3.name == "Red trash") {
+                        handler.world.itemManager.addItem(Item.orangePotion.createNew(x * Tile.tileWidth, (y + 1) * Tile.tileHeight));
+                        handler.world.itemManager.items.Remove(i1);
+                        handler.world.itemManager.items.Remove(i2);
+                        handler.world.itemManager.items.Remove(i3);
+                    } else if (i1.name == "Brown trash" && i2.name == "Green rupy" && i3.name == "Brown trash") {
+                        handler.world.itemManager.addItem(Item.yellowPotion.createNew(x * Tile.tileWidth, (y + 1) * Tile.tileHeight));
+                        handler.world.itemManager.items.Remove(i1);
+                        handler.world.itemManager.items.Remove(i2);
+                        handler.world.itemManager.items.Remove(i3);
+                    } else if (i1.name == "Blue trash" && i2.name == "Purple rupy" && i3.name == "Blue trash") {
+                        handler.world.itemManager.addItem(Item.bluePotion.createNew(x * Tile.tileWidth, (y + 1) * Tile.tileHeight));
+                        handler.world.itemManager.items.Remove(i1);
+                        handler.world.itemManager.items.Remove(i2);
+                        handler.world.itemManager.items.Remove(i3);
                     }
-
                 }
 
             } else {

@@ -32,6 +32,8 @@ namespace SharpDungeon.Game.Graphics {
         public static Bitmap brownTrash1, brownTrash2, brownTrash3, brownTrash4,
                              blueTrash1, blueTrash2, blueTrash3, blueTrash4,
                              redTrash1, redTrash2, redTrash3, redTrash4;
+        public static Bitmap orangePotion, yellowPotion, bluePotion;
+        public static Bitmap moon;
         
         //Player
 
@@ -50,7 +52,7 @@ namespace SharpDungeon.Game.Graphics {
         public static Brush uiFore = new SolidBrush(Color.FromArgb(128, 128, 128));
         public static Brush uiCent = new SolidBrush(Color.FromArgb(86, 86, 86));
         public static Brush uiBack = new SolidBrush(Color.FromArgb(63, 63, 63));
-        public static Bitmap playerStates, playerInventory, playerDrop;
+        public static Bitmap playerStates, playerInventory, playerDrop, playerRecipes;
 
         //Brushes
 
@@ -175,9 +177,10 @@ namespace SharpDungeon.Game.Graphics {
 
                 logo = tileSheet.crop(width*9, height*11, width*3, height);
                 
-                playerStates = uiSheet.crop(width * 5, 0, width * 5, height);
-                playerInventory = uiSheet.crop(width * 5, height, width * 5, height);
-                playerDrop = uiSheet.crop(width * 5, height * 2, width * 5, height);
+                playerStates = uiSheet.crop(width * 7, 0, width * 5, height);
+                playerInventory = uiSheet.crop(width * 7, height, width * 5, height);
+                playerDrop = uiSheet.crop(width * 7, height * 2, width * 5, height);
+                playerRecipes = uiSheet.crop(width * 3, height, width * 3, height * 4);
 
                 playerWalkRight = new Bitmap[3];
                 playerWalkRight[0] = entitiesSheet.crop(0, 0, width, height);
@@ -232,6 +235,12 @@ namespace SharpDungeon.Game.Graphics {
                 redTrash2 = itemsSheet.crop(width * 5, height * 2, width, height);
                 redTrash3 = itemsSheet.crop(width * 6, height * 2, width, height);
                 redTrash4 = itemsSheet.crop(width * 7, height * 2, width, height);
+
+                orangePotion = itemsSheet.crop(width * 8, 0, width, height);
+                yellowPotion = itemsSheet.crop(width * 9, 0, width, height);
+                bluePotion = itemsSheet.crop(width * 10, 0, width, height);
+
+                moon = itemsSheet.crop(width * 8, height, width, height);
 
                 slimeIdleWalk = new Bitmap[3];
                 slimeIdleWalk[0] = entitiesSheet.crop(width * 6, 0, width, height);

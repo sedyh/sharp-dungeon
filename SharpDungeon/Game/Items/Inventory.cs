@@ -19,11 +19,14 @@ namespace SharpDungeon.Game.Items {
             this.handler = handler;
             inventoryItems = new List<Item>();
 
-            addItem(Item.redRupy.createNew(2));
-            addItem(Item.greenRupy.createNew(2));
-            addItem(Item.purpleRupy.createNew(2));
-            addItem(Item.redTrash1.createNew(2));
-            addItem(Item.redTrash2.createNew(2));
+            addItem(Item.fireKnob.createNew(1));
+            //addItem(Item.yellowPotion.createNew(2));
+            //addItem(Item.bluePotion.createNew(50));
+            //addItem(Item.redRupy.createNew(2));
+            //addItem(Item.greenRupy.createNew(2));
+            //addItem(Item.purpleRupy.createNew(2));
+            //addItem(Item.redTrash1.createNew(2));
+            //addItem(Item.redTrash2.createNew(2));
         }
 
         public void tick() {
