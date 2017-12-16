@@ -13,15 +13,15 @@ namespace SharpDungeon.Game.Items {
         private bool active = false;
         public List<Item> inventoryItems { get; set; }
         private int xOff;
-        private int scroll = 0 ;
+        public int scroll = 0;
 
         public Inventory(Handler handler) {
             this.handler = handler;
             inventoryItems = new List<Item>();
 
-            //addItem(Item.redRupy.createNew(2));
-            //addItem(Item.greenRupy.createNew(2));
-            //addItem(Item.purpleRupy.createNew(2));
+            addItem(Item.redRupy.createNew(2));
+            addItem(Item.greenRupy.createNew(2));
+            addItem(Item.purpleRupy.createNew(2));
         }
 
         public void tick() {

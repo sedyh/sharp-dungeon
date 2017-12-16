@@ -36,7 +36,7 @@ namespace SharpDungeon.Game.Graphics {
         //Player
 
         public static Bitmap[] playerIdle, playerWalkLeft, playerWalkRight, playerAttackLeft, playerAttackRight;
-        public static Bitmap selection;
+        public static Bitmap selection, target;
 
         //Entities
 
@@ -50,7 +50,7 @@ namespace SharpDungeon.Game.Graphics {
         public static Brush uiFore = new SolidBrush(Color.FromArgb(128, 128, 128));
         public static Brush uiCent = new SolidBrush(Color.FromArgb(86, 86, 86));
         public static Brush uiBack = new SolidBrush(Color.FromArgb(63, 63, 63));
-        public static Bitmap playerStates, playerInventory;
+        public static Bitmap playerStates, playerInventory, playerDrop;
 
         //Brushes
 
@@ -177,6 +177,7 @@ namespace SharpDungeon.Game.Graphics {
                 
                 playerStates = uiSheet.crop(width * 5, 0, width * 5, height);
                 playerInventory = uiSheet.crop(width * 5, height, width * 5, height);
+                playerDrop = uiSheet.crop(width * 5, height * 2, width * 5, height);
 
                 playerWalkRight = new Bitmap[3];
                 playerWalkRight[0] = entitiesSheet.crop(0, 0, width, height);
@@ -266,6 +267,7 @@ namespace SharpDungeon.Game.Graphics {
                 itemShadow[5] = itemsSheet.crop(width, 0, width, height);
 
                 selection = uiSheet.crop(0, 0, width, height);
+                target = uiSheet.crop(width, 0, width, height);
 
                 newGameButton = new Bitmap[2];
                 newGameButton[0] = uiSheet.crop(0, height, width*3, height);
