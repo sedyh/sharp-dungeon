@@ -31,6 +31,7 @@ namespace SharpDungeon.Game.Entities {
         public void render(System.Drawing.Graphics g) {
             foreach(Entity e in entities) {
                 e.render(g);
+                e.postRender(g);
             }
         }
 

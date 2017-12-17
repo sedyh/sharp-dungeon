@@ -19,7 +19,9 @@ namespace SharpDungeon.Game.Items {
             this.handler = handler;
             inventoryItems = new List<Item>();
 
+            addItem(Item.lighthingKnob.createNew(1));
             addItem(Item.fireKnob.createNew(1));
+            addItem(Item.poisonKnob.createNew(1));
             //addItem(Item.yellowPotion.createNew(2));
             //addItem(Item.bluePotion.createNew(50));
             //addItem(Item.redRupy.createNew(2));

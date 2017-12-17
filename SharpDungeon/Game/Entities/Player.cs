@@ -34,7 +34,7 @@ namespace SharpDungeon.Game.Entities {
         private int thisX, thisY, speed = 32, dirStepX = 0, dirStepY = 0;
 
         public int maxCharge { get; set; } = 20;
-        public int maxChargeTime { get; set;} = 10;
+        public int maxChargeTime { get; set; } = 10;
         private int charge = 0, chargeTime = 0, lastDelta = 0;
         private bool renderDrop = false, wasRenderDrop = false;
 
@@ -49,11 +49,9 @@ namespace SharpDungeon.Game.Entities {
 
         private int dropNum = 0, twoItemsDropNum = 0;
 
-        private int preAttackNum, laserWidth;
+        private int laserWidth, lightingCharge;
 
         private Random rnd = new Random();
-        bool wasMid = false, wasMid2 = false;
-        int oldX, oldY, oldMouseX, oldMouseY;
 
         int attackTypeNum = 0;
 
@@ -85,7 +83,7 @@ namespace SharpDungeon.Game.Entities {
 
         public override void die() {
             handler.game.recordState = new RecordState(handler);
-            State.currentState = handler.game.recordState; 
+            State.currentState = handler.game.recordState;
 
         }
 
@@ -105,19 +103,18 @@ namespace SharpDungeon.Game.Entities {
                 attack += 2;
             }
 
-                //handler.world.setTile(Tile.shadowGate.getId(), 
-                //    handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY));
+            //handler.world.setTile(Tile.shadowGate.getId(), 
+            //    handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY));
 
             if (handler.mouseManager.leftPressed &&
                 handler.world.toWorldX(handler.mouseManager.mouseX) > 0 &&
                 handler.world.toWorldY(handler.mouseManager.mouseY) > 0) {
-                
 
                 path = new WaveAlg(handler.world.width, handler.world.height);
 
                 for (int j = 0; j < handler.world.height; j++)
                     for (int i = 0; i < handler.world.width; i++)
-                        if (handler.world.getTile(handler.world.toWorldX(handler.mouseManager.mouseX), 
+                        if (handler.world.getTile(handler.world.toWorldX(handler.mouseManager.mouseX),
                             handler.world.toWorldY(handler.mouseManager.mouseY))
                             is DoorTile) {
 
@@ -168,8 +165,8 @@ namespace SharpDungeon.Game.Entities {
                     if (x == direction[directionStep].X * Tile.tileWidth &&
                         y == direction[directionStep].Y * Tile.tileHeight) {
 
-                        if (handler.world.getTile((int)(x/Tile.tileWidth),
-                                                  (int)(y/Tile.tileWidth))
+                        if (handler.world.getTile((int)(x / Tile.tileWidth),
+                                                  (int)(y / Tile.tileWidth))
                                                   is DoorTile)
                             handler.world.setTile(Tile.openDoor.getId(), (int)(x / Tile.tileWidth), (int)(y / Tile.tileWidth));
 
@@ -197,7 +194,11 @@ namespace SharpDungeon.Game.Entities {
             foreach (Item i in inventory.inventoryItems)
                 if (i.name == "Fire knob")
                     attackTypeNum = (int)attackType.fireKnob;
-            
+                else if (i.name == "Lighting knob")
+                    attackTypeNum = (int)attackType.lightingKnob;
+                else if (i.name == "Poison knob")
+                    attackTypeNum = (int)attackType.poisonKnob;
+
 
             //if (charge > 0)
             //    g.DrawEllipse(Pens.White, 
@@ -239,23 +240,24 @@ namespace SharpDungeon.Game.Entities {
                             if (e != null)
                                 e.hurt(attack);
 
-                        } else if(attackTypeNum == (int)attackType.fireKnob) {
+                        } else if (attackTypeNum == (int)attackType.fireKnob) {
 
                             if (laserWidth > 0)
-                                laserWidth -=5;
+                                laserWidth -= 4;
                             else
-                                laserWidth = maxChargeTime*5;
+                                laserWidth = chargeTime * 5;
+
 
                             Pen pen = new Pen(Color.FromArgb(255, 94, 94), 5);
                             pen.Width = laserWidth;
                             pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
                             pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
                             Pen pen2 = new Pen(Color.FromArgb(255, 193, 193), 5);
-                            pen2.Width = laserWidth/1.2f;
+                            pen2.Width = laserWidth / 1.2f;
                             pen2.StartCap = System.Drawing.Drawing2D.LineCap.Round;
                             pen2.EndCap = System.Drawing.Drawing2D.LineCap.RoundAnchor;
                             Pen pen3 = new Pen(Color.FromArgb(255, 255, 255), 5);
-                            pen3.Width = laserWidth/5;
+                            pen3.Width = laserWidth / 5;
                             pen3.StartCap = System.Drawing.Drawing2D.LineCap.Round;
                             pen3.EndCap = System.Drawing.Drawing2D.LineCap.RoundAnchor;
 
@@ -279,50 +281,109 @@ namespace SharpDungeon.Game.Entities {
 
                             Entity e = handler.world.entityManager.getEntity(handler.world.toWorldX(handler.mouseManager.mouseX) * Tile.tileWidth,
                                                                              handler.world.toWorldY(handler.mouseManager.mouseY) * Tile.tileHeight);
-                            if (e != null)
+                            if (e != null) {
                                 e.hurt(attack + rnd.Next(-30, +30));
-                        }
+                                e.fire = true;
+                                e.currentBuff = e.onFire;
+                            }
 
+                        } else if (attackTypeNum == (int)attackType.lightingKnob) {
+
+                            if (lightingCharge < 1) {
+                                lightingCharge++;
+                            } else {
+                                lightingCharge = 0;
+
+
+                                List<int> arr = new List<int>();
+
+                                splitn((offsX + ((Tile.tileWidth - offsX + handler.mouseManager.mouseX) / Tile.tileWidth) * Tile.tileWidth) - Tile.tileWidth + 32 + rnd.Next(-Tile.tileWidth * 2, Tile.tileWidth * 2),
+                                       (offsY + ((Tile.tileHeight - offsY + handler.mouseManager.mouseY) / Tile.tileHeight) * Tile.tileHeight) - Tile.tileHeight + 32 - handler.game.display.Height,
+                                       (offsX + ((Tile.tileWidth - offsX + handler.mouseManager.mouseX) / Tile.tileWidth) * Tile.tileWidth) - Tile.tileWidth + 32,
+                                       (offsY + ((Tile.tileHeight - offsY + handler.mouseManager.mouseY) / Tile.tileHeight) * Tile.tileHeight) - Tile.tileHeight + 64,
+                                       arr,
+                                       5);
+
+                                for (int i = 0; i < arr.Count - 2; i += 2) {
+                                    g.DrawLine(new Pen(Color.FromArgb(255, 255, 255), 5), arr[i], arr[i + 1], arr[i + 2], arr[i + 3]);
+                                    g.DrawLine(new Pen(Color.LightBlue, 2), arr[i] + rnd.Next(-5, 5), arr[i + 1] + rnd.Next(-5, 5), arr[i + 2] + rnd.Next(-5, 5), arr[i + 3] + rnd.Next(-5, 5));
+                                    g.DrawLine(new Pen(Color.LightBlue, 2), arr[i] + rnd.Next(-3, 3), arr[i + 1] + rnd.Next(-3, 3), arr[i + 2] + rnd.Next(-8, 8), arr[i + 3] + rnd.Next(-3, 3));
+                                }
+
+                                Entity e = handler.world.entityManager.getEntity(handler.world.toWorldX(handler.mouseManager.mouseX) * Tile.tileWidth,
+                                                                                 handler.world.toWorldY(handler.mouseManager.mouseY) * Tile.tileHeight);
+                                if (e != null)
+                                    e.hurt(attack*2);
+                            }
+
+                        } else if (attackTypeNum == (int)attackType.poisonKnob) {
+
+                            List<int> arr = new List<int>();
+
+                            splitn((int)(x - handler.gameCamera.xOffset) + Tile.tileWidth / 2,
+                                   (int)(y - handler.gameCamera.yOffset) + Tile.tileHeight / 2,
+                                   (offsX + ((Tile.tileWidth - offsX + handler.mouseManager.mouseX) / Tile.tileWidth) * Tile.tileWidth) - Tile.tileWidth + 32,
+                                   (offsY + ((Tile.tileHeight - offsY + handler.mouseManager.mouseY) / Tile.tileHeight) * Tile.tileHeight) - Tile.tileHeight + 32,
+                                   arr,
+                                   7);
+
+                            for (int i = 0; i < arr.Count - 2; i += 2) {
+                                g.DrawLine(new Pen(Color.FromArgb(105, 79, 126), 6), arr[i], arr[i + 1], arr[i + 2], arr[i + 3]);
+                                g.DrawLine(new Pen(Color.FromArgb(76, 57, 91), 5), arr[i], arr[i + 1], arr[i + 2], arr[i + 3]);
+                                g.DrawLine(new Pen(Color.FromArgb(63, 48, 76), 4), arr[i], arr[i + 1], arr[i + 2], arr[i + 3]);
+                                g.DrawLine(new Pen(Color.FromArgb(48, 36, 58), 3), arr[i], arr[i + 1], arr[i + 2], arr[i + 3]);
+                                g.DrawLine(new Pen(Color.FromArgb(36, 27, 43), 2), arr[i], arr[i + 1], arr[i + 2], arr[i + 3]);
+                            }
+
+                            Entity e = handler.world.entityManager.getEntity(handler.world.toWorldX(handler.mouseManager.mouseX) * Tile.tileWidth,
+                                                                             handler.world.toWorldY(handler.mouseManager.mouseY) * Tile.tileHeight);
+                            if (e != null) {
+                                e.poison = true;
+                                e.currentBuff = e.onPoison;
+                            }
+
+                        }
                     } else {
                         chargeTime = 0;
                         charge = 0;
+                        laserWidth = 50;
                         selection = Assets.selection;
                     }
 
+                    }
                 }
+
+                if (handler.mouseManager.mouseMid) {
+
+                    renderDrop = true;
+
+                    if (lastDelta < handler.mouseManager.wheel) {
+                        if (dropNum > 0)
+                            dropNum--;
+                        if (twoItemsDropNum > 0)
+                            twoItemsDropNum--;
+                    }
+
+                    if (lastDelta > handler.mouseManager.wheel) {
+                        if (dropNum < 2)
+                            dropNum++;
+                        if (twoItemsDropNum < 1)
+                            twoItemsDropNum++;
+                    }
+
+                    lastDelta = handler.mouseManager.wheel;
+                } else {
+                    if (renderDrop)
+                        renderDrop = false;
+                }
+
+
+                renderUI(g);
+                inventory.render(g);
+
+                //TextRenderer.DrawText(g, $"Count = {inventory.inventoryItems.Count}\n+ = {dropNum+inventory.scroll}\ndropNum = {dropNum}\nscroll = {inventory.scroll}\nwheel = {handler.mouseManager.wheel}\ncharge = {charge}\nhealth = {handler.world.entityManager.player.health}\noffsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
+
             }
-
-            if (handler.mouseManager.mouseMid) {
-
-                renderDrop = true;
-
-                if (lastDelta < handler.mouseManager.wheel) {
-                    if (dropNum > 0)
-                        dropNum--;
-                    if (twoItemsDropNum > 0)
-                        twoItemsDropNum--;
-                }
-
-                if (lastDelta > handler.mouseManager.wheel) {
-                    if (dropNum < 2)
-                        dropNum++;
-                    if (twoItemsDropNum < 1)
-                        twoItemsDropNum++;
-                }
-
-                lastDelta = handler.mouseManager.wheel;
-            } else {
-                if (renderDrop)
-                    renderDrop = false;
-            }
-
-            
-            renderUI(g);
-            inventory.render(g);
-
-            //TextRenderer.DrawText(g, $"Count = {inventory.inventoryItems.Count}\n+ = {dropNum+inventory.scroll}\ndropNum = {dropNum}\nscroll = {inventory.scroll}\nwheel = {handler.mouseManager.wheel}\ncharge = {charge}\nhealth = {handler.world.entityManager.player.health}\noffsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
-
-        }
 
         private void renderUI(System.Drawing.Graphics g) {
 
@@ -340,7 +401,7 @@ namespace SharpDungeon.Game.Entities {
                                    Tile.tileWidth,
                                    Tile.tileHeight);
 
-                    
+
             //Minmap
 
             g.FillRectangle(Assets.uiFore, 13, 13, handler.world.width * 8 + 15, handler.world.height * 8 + 15);
@@ -373,12 +434,12 @@ namespace SharpDungeon.Game.Entities {
             }
 
             //States
-            g.DrawImage(Assets.playerStates, 35 + handler.world.width * 8, 13, Assets.playerStates.Width*1.5f, Assets.playerStates.Height* 1.5f);
+            g.DrawImage(Assets.playerStates, 35 + handler.world.width * 8, 13, Assets.playerStates.Width * 1.5f, Assets.playerStates.Height * 1.5f);
             g.DrawImage(playerState.getCurrentFrame(), 50 + handler.world.width * 8, 25, Tile.tileWidth, Tile.tileHeight);
             g.DrawImage(Assets.playerDrop, 35 + handler.world.width * 8, 219, Assets.playerStates.Width * 1.5f, Assets.playerStates.Height * 1.5f);
             g.DrawImage(Assets.playerRecipes, 13, 275, Assets.playerRecipes.Width, Assets.playerRecipes.Height);
             //Hp
-            g.FillRectangle(Brushes.PaleVioletRed, 134 + handler.world.width * 8, 20, (int)(((double)health / (double)maxHealth) * (double)249*1.5f), 9);
+            g.FillRectangle(Brushes.PaleVioletRed, 134 + handler.world.width * 8, 20, (int)(((double)health / (double)maxHealth) * (double)249 * 1.5f), 9);
             //Xp
             g.FillRectangle(Brushes.LightGoldenrodYellow, 134 + handler.world.width * 8, 40, (int)(((double)xp / (double)maxXP) * (double)249 * 1.5f), 9);
             //Charge
@@ -386,7 +447,7 @@ namespace SharpDungeon.Game.Entities {
             g.FillRectangle(Assets.uiBack, 80 + handler.world.width * 8, 239, (int)(((double)chargeTime / (double)maxChargeTime) * (double)249 * 1.5f), 9);
             TextRenderer.DrawText(g, $"Level {level}", Assets.themeFont, new Point(165 + handler.world.width * 8, 70), Color.White);
             TextRenderer.DrawText(g, $"World {world}", Assets.themeFont, new Point(370 + handler.world.width * 8, 70), Color.White);
-            
+
 
             if (renderDrop) {
 
@@ -396,23 +457,23 @@ namespace SharpDungeon.Game.Entities {
                     g.FillRectangle(Assets.uiFore, 230 + handler.world.width * 8, 236, 72, 15);
 
                 if (inventory.inventoryItems.Count == 2)
-                    if(twoItemsDropNum == 0)
+                    if (twoItemsDropNum == 0)
                         g.FillRectangle(Assets.uiFore, 198 + handler.world.width * 8, 236, 72, 15);
                     else
                         g.FillRectangle(Assets.uiFore, 284 + handler.world.width * 8, 236, 72, 15);
 
                 if (inventory.inventoryItems.Count > 2)
-                    if(dropNum == 0)
+                    if (dropNum == 0)
                         g.FillRectangle(Assets.uiFore, 145 + handler.world.width * 8, 236, 72, 15);
-                    else if(dropNum == 1)
+                    else if (dropNum == 1)
                         g.FillRectangle(Assets.uiFore, 240 + handler.world.width * 8, 236, 72, 15);
-                    else if(dropNum == 2)
+                    else if (dropNum == 2)
                         g.FillRectangle(Assets.uiFore, 335 + handler.world.width * 8, 236, 72, 15);
 
-            } else if(wasRenderDrop) {
-                if(!handler.world.getTile(handler.world.toWorldX(handler.mouseManager.mouseX),
+            } else if (wasRenderDrop) {
+                if (!handler.world.getTile(handler.world.toWorldX(handler.mouseManager.mouseX),
                                           handler.world.toWorldY(handler.mouseManager.mouseY)).isSolid()) {
-                    if(inventory.inventoryItems.Count > 2) {
+                    if (inventory.inventoryItems.Count > 2) {
                         Item item = inventory.inventoryItems[inventory.scroll + dropNum];
                         item.count--;
                         handler.world.itemManager.addItem(item.createNew(handler.world.toWorldX(handler.mouseManager.mouseX) * Tile.tileWidth,
@@ -420,7 +481,7 @@ namespace SharpDungeon.Game.Entities {
                         if (item.count <= 0)
                             inventory.inventoryItems.Remove(item);
 
-                    } else if(inventory.inventoryItems.Count == 2) {
+                    } else if (inventory.inventoryItems.Count == 2) {
                         Item item = inventory.inventoryItems[inventory.scroll + twoItemsDropNum];
                         item.count--;
                         handler.world.itemManager.addItem(item.createNew(handler.world.toWorldX(handler.mouseManager.mouseX) * Tile.tileWidth,
@@ -428,7 +489,7 @@ namespace SharpDungeon.Game.Entities {
                         if (item.count <= 0)
                             inventory.inventoryItems.Remove(item);
 
-                    } else if(inventory.inventoryItems.Count == 1) {
+                    } else if (inventory.inventoryItems.Count == 1) {
                         Item item = inventory.inventoryItems[inventory.scroll];
                         item.count--;
                         handler.world.itemManager.addItem(item.createNew(handler.world.toWorldX(handler.mouseManager.mouseX) * Tile.tileWidth,
@@ -441,7 +502,7 @@ namespace SharpDungeon.Game.Entities {
                 }
                 wasRenderDrop = false;
             }
-            
+
         }
 
         public void splitn(int x1, int y1, int x2, int y2, List<int> arr, int cnt) {

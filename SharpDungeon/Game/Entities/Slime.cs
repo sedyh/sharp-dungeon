@@ -15,14 +15,12 @@ namespace SharpDungeon.Game.Entities {
 
         Animation idleWalk, attackLeft, attackRight;
         int targetX, targetY, count, hurtCount, countRange, rndX, rndY;
-        Random rnd;
 
         public Slime(Handler handler, int worldX, int worldY) : base(handler, worldX, worldY, defaultWidth, defaultHeight) {
             idleWalk = new Animation(300, Assets.slimeIdleWalk);
             attackLeft = new Animation(300, Assets.slimeAttackLeft);
             attackRight = new Animation(300, Assets.slimeAttackRight);
-
-            rnd = new Random(this.GetHashCode());
+            
             currentAnimation = idleWalk;
             targetX = (int)x;
             targetY = (int)y;

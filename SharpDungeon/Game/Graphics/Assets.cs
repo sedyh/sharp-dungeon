@@ -44,6 +44,10 @@ namespace SharpDungeon.Game.Graphics {
 
         public static Bitmap[] slimeIdleWalk, slimeAttackLeft, slimeAttackRight;
 
+        //Buffs
+
+        public static Bitmap[] fireBuff, poisonBuff;
+
         //UI
 
         public static Bitmap logo;
@@ -73,6 +77,7 @@ namespace SharpDungeon.Game.Graphics {
                 SpriteSheet entitiesSheet = new SpriteSheet("../../Assets/entities.png");
                 SpriteSheet uiSheet = new SpriteSheet("../../Assets/ui.png");
                 SpriteSheet itemsSheet = new SpriteSheet("../../Assets/items.png");
+                SpriteSheet buffsSheet = new SpriteSheet("../../Assets/buffs.png");
 
                 background = new Bitmap("../../Assets/background.png");
                 backgroundLoading = new Bitmap("../../Assets/backgroundLoading.png");
@@ -266,6 +271,24 @@ namespace SharpDungeon.Game.Graphics {
                 slimeAttackRight[5] = entitiesSheet.crop(width * 9, height * 2, width, height);
                 slimeAttackRight[6] = entitiesSheet.crop(width * 9, height, width, height);
                 slimeAttackRight[7] = entitiesSheet.crop(width * 9, 0, width, height);
+
+                fireBuff = new Bitmap[7];
+                fireBuff[0] = buffsSheet.crop(0, 0, width, height);
+                fireBuff[1] = buffsSheet.crop(width, 0, width, height);
+                fireBuff[2] = buffsSheet.crop(width*2, 0, width, height);
+                fireBuff[3] = buffsSheet.crop(width*3, 0, width, height);
+                fireBuff[4] = buffsSheet.crop(width*4, 0, width, height);
+                fireBuff[5] = buffsSheet.crop(width*5, 0, width, height);
+                fireBuff[6] = buffsSheet.crop(width*6, 0, width, height);
+
+                poisonBuff = new Bitmap[7];
+                poisonBuff[0] = buffsSheet.crop(0, height, width, height);
+                poisonBuff[1] = buffsSheet.crop(width, height, width, height);
+                poisonBuff[2] = buffsSheet.crop(width * 2, height, width, height);
+                poisonBuff[3] = buffsSheet.crop(width * 3, height, width, height);
+                poisonBuff[4] = buffsSheet.crop(width * 4, height, width, height);
+                poisonBuff[5] = buffsSheet.crop(width * 5, height, width, height);
+                poisonBuff[6] = buffsSheet.crop(width * 6, height, width, height);
 
                 itemShadow = new Bitmap[6];
                 itemShadow[0] = itemsSheet.crop(0, 0, width, height);
