@@ -38,7 +38,7 @@ namespace SharpDungeon.Game.States {
                 //    });
 
                 //} else {
-                    
+
                 //    PlayerSet p = new PlayerSet { Name = Environment.UserName };
 
                 //    p.ScoreSet.Add(new ScoreSet {
@@ -57,7 +57,7 @@ namespace SharpDungeon.Game.States {
                 State.currentState = handler.game.gameState;
             };
 
-           uiManager.add(b1);
+            uiManager.add(b1);
 
         }
 
@@ -68,7 +68,7 @@ namespace SharpDungeon.Game.States {
         public override void render(System.Drawing.Graphics g) {
 
             g.DrawImage(Assets.backgroundGameover, 0, 0, handler.width, handler.height);
-            TextRenderer.DrawText(g, "Game over", Assets.themeFontBig, new Point(handler.width/2-135, handler.height / 4), Color.White);
+            TextRenderer.DrawText(g, "Game over", Assets.themeFontBig, new Point(handler.width / 2 - 135, handler.height / 4), Color.White);
 
             //var player = from pl in context.PlayerSet
             //             join sc in context.ScoreSet
