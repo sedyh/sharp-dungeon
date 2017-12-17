@@ -77,7 +77,6 @@ namespace SharpDungeon.Game.Items {
                 } else if (name == "Blue potion") {
                     if(handler.world.entityManager.player.maxCharge > 1)
                         handler.world.entityManager.player.maxCharge--;
-                    handler.world.entityManager.player.maxChargeTime++;
                 } else {
                     handler.world.entityManager.player.inventory.addItem(this);
                 }

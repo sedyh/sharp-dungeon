@@ -90,8 +90,6 @@
     </Compile>
     <Compile Include="Game\Entities\Entity.cs" />
     <Compile Include="Game\Entities\EntityManager.cs" />
-    <Compile Include="Game\Entities\Mob.cs" />
-    <Compile Include="Game\Entities\Npc.cs" />
     <Compile Include="Game\Entities\Player.cs" />
     <Compile Include="Game\Entities\Slime.cs" />
     <Compile Include="Game\Game.cs" />

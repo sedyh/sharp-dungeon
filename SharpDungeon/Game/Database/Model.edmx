@@ -54,7 +54,7 @@
           </Key>
           <Property Name="PlayerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ScoreID" Type="Int32" Nullable="false" />
+          <Property Name="ScoreID" Nullable="false" Type="Int32" />
           <NavigationProperty Name="ScoreSet" Relationship="Self.FK_PlayerScore" FromRole="PlayerSet" ToRole="ScoreSet" />
         </EntityType>
         <EntityType Name="ScoreSet">

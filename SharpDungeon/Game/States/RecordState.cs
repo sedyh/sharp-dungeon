@@ -23,34 +23,34 @@ namespace SharpDungeon.Game.States {
             UIButton b1 = new UIButton(handler, Assets.newGameButton, handler.width / 2 - Assets.newGameButton[0].Width, handler.height / 2 - 108, Assets.newGameButton[0].Width * 2, Assets.newGameButton[0].Height * 2);
             b1.OnClick += () => {
 
-                PlayerSet exist = null;
-                foreach (PlayerSet p in context.PlayerSet) {
-                    if (p.Name == Environment.UserName)
-                        exist = p;
-                }
+                //PlayerSet exist = null;
+                //foreach (PlayerSet p in context.PlayerSet) {
+                //    if (p.Name == Environment.UserName)
+                //        exist = p;
+                //}
 
-                if (exist != null) {
+                //if (exist != null) {
 
-                    exist.ScoreSet.Add(new ScoreSet {
-                        Level = handler.world.entityManager.player.level.ToString(),
-                        World = handler.world.entityManager.player.world.ToString(),
-                        Total = ((handler.world.entityManager.player.level + handler.world.entityManager.player.world) * 3).ToString()
-                    });
+                //    exist.ScoreSet.Add(new ScoreSet {
+                //        Level = handler.world.entityManager.player.level.ToString(),
+                //        World = handler.world.entityManager.player.world.ToString(),
+                //        Total = ((handler.world.entityManager.player.level + handler.world.entityManager.player.world) * 3).ToString()
+                //    });
 
-                } else {
+                //} else {
                     
-                    PlayerSet p = new PlayerSet { Name = Environment.UserName };
+                //    PlayerSet p = new PlayerSet { Name = Environment.UserName };
 
-                    p.ScoreSet.Add(new ScoreSet {
-                        Level = handler.world.entityManager.player.level.ToString(),
-                        World = handler.world.entityManager.player.world.ToString(),
-                        Total = ((handler.world.entityManager.player.level + handler.world.entityManager.player.world) * 3).ToString()
-                    });
+                //    p.ScoreSet.Add(new ScoreSet {
+                //        Level = handler.world.entityManager.player.level.ToString(),
+                //        World = handler.world.entityManager.player.world.ToString(),
+                //        Total = ((handler.world.entityManager.player.level + handler.world.entityManager.player.world) * 3).ToString()
+                //    });
 
-                    context.PlayerSet.Add(p);
-                }
+                //    context.PlayerSet.Add(p);
+                //}
 
-                context.SaveChanges();
+                //context.SaveChanges();
                 handler.game.gameCamera = new GameCamera(handler, 0, 0);
                 handler.game.menuState = new MenuState(handler);
                 handler.game.gameState = new GameState(handler);
@@ -70,30 +70,30 @@ namespace SharpDungeon.Game.States {
             g.DrawImage(Assets.backgroundGameover, 0, 0, handler.width, handler.height);
             TextRenderer.DrawText(g, "Game over", Assets.themeFontBig, new Point(handler.width/2-135, handler.height / 4), Color.White);
 
-            var player = from pl in context.PlayerSet
-                         join sc in context.ScoreSet
-                         on pl.PlayerID equals sc.Player_PlayerID
-                         orderby sc.Total descending
-                         select pl.Name + " " + sc.Level + " " + sc.World + " " + sc.Total;
+            //var player = from pl in context.PlayerSet
+            //             join sc in context.ScoreSet
+            //             on pl.PlayerID equals sc.Player_PlayerID
+            //             orderby sc.Total descending
+            //             select pl.Name + " " + sc.Level + " " + sc.World + " " + sc.Total;
 
-            TextRenderer.DrawText(g, $"Level {handler.world.entityManager.player.level} World {handler.world.entityManager.player.world} Total {(handler.world.entityManager.player.level + handler.world.entityManager.player.world) * 3}",
-                                      Assets.themeFontBig,
-                                      new Point(handler.game.display.Width / 2 - 300,
-                                                handler.height / 4 + 180),
-                                      Color.White);
+            //TextRenderer.DrawText(g, $"Level {handler.world.entityManager.player.level} World {handler.world.entityManager.player.world} Total {(handler.world.entityManager.player.level + handler.world.entityManager.player.world) * 3}",
+            //                          Assets.themeFontBig,
+            //                          new Point(handler.game.display.Width / 2 - 300,
+            //                                    handler.height / 4 + 80),
+            //                          Color.White);
 
-            int outer = 65, counter = 0;
-            foreach (string str in player) {
-                if (counter > 5)
-                    break;
-                TextRenderer.DrawText(g, str,
-                                      Assets.themeFontBig,
-                                      new Point(handler.game.display.Width / 2 - 160,
-                                                handler.game.display.Height / 2 + outer),
-                                      Color.White);
-                outer += 40;
-                counter++;
-            }
+            //int outer = 65, counter = 0;
+            //foreach (string str in player) {
+            //    if (counter > 5)
+            //        break;
+            //    TextRenderer.DrawText(g, str,
+            //                          Assets.themeFontBig,
+            //                          new Point(handler.game.display.Width / 2 - 160,
+            //                                    handler.game.display.Height / 2 + outer),
+            //                          Color.White);
+            //    outer += 40;
+            //    counter++;
+            //}
 
             uiManager.render(g);
         }

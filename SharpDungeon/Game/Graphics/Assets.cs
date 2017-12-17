@@ -305,9 +305,9 @@ namespace SharpDungeon.Game.Graphics {
                 newGameButton[0] = uiSheet.crop(0, height, width*3, height);
                 newGameButton[1] = uiSheet.crop(0, height * 2, width * 3, height);
 
-                loadSeedButton = new Bitmap[2];
-                loadSeedButton[0] = uiSheet.crop(0, height * 3, width * 3, height);
-                loadSeedButton[1] = uiSheet.crop(0, height * 4, width * 3, height);
+                exitButton = new Bitmap[2];
+                exitButton[0] = uiSheet.crop(0, height * 3, width * 3, height);
+                exitButton[1] = uiSheet.crop(0, height * 4, width * 3, height);
 
             } catch (OutOfMemoryException) {
                 //logg: not correct coords of SpriteSheet

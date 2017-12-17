@@ -20,8 +20,8 @@ namespace SharpDungeon.Game.States {
             b1.OnClick += () => State.currentState = handler.game.gameState;
             uiManager.add(b1);
 
-            UIButton b2 = new UIButton(handler, Assets.loadSeedButton, 150, handler.height / 2, Assets.loadSeedButton[0].Width * 2, Assets.loadSeedButton[0].Height * 2);
-            b2.OnClick += () => { };
+            UIButton b2 = new UIButton(handler, Assets.exitButton, 150, handler.height / 2, Assets.exitButton[0].Width * 2, Assets.exitButton[0].Height * 2);
+            b2.OnClick += () => { handler.game.display.Close(); Application.Exit(); };
             uiManager.add(b2);
         }
 
@@ -33,7 +33,7 @@ namespace SharpDungeon.Game.States {
         public override void render(System.Drawing.Graphics g) {
             
             g.DrawImage(Assets.background, 0, 0, handler.width, handler.height);
-            TextRenderer.DrawText(g, "Sharp Dungeon", Assets.themeFontBig, new Point(160, handler.height / 2 - 420), Color.White);
+            TextRenderer.DrawText(g, "Sharp Dungeon", Assets.themeFontBig, new Point(160, handler.height / 2 - 320), Color.White);
 
             
             uiManager.render(g);
