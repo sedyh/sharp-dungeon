@@ -282,7 +282,8 @@ namespace SharpDungeon.Game.World {
 
             for (int x = xStart; x < xEnd; x++) {
                 for (int y = yStart; y < yEnd; y++) {
-                    //Тик объявлен только для видимых тайлов
+
+                    //Тик объявлен только для видимых тайлов, исключая туман войны
                     getBackTile(x, y).tick(handler, x, y);
                     getBackTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
                     
@@ -341,17 +342,16 @@ namespace SharpDungeon.Game.World {
 
         public void setBackTile(ushort id, int x, int y) {
             try {
-
-                // null parts, which not needed to connect then connect both
-                //                 |/ current      |/ null id          |/ null meta
-                backTiles[x, y] = (backTiles[x, y] & 0xFFFF0000) | id;
-
+                
                 if (x >= 0 || y >= 0 || x < width || y < height)
-                    backTiles[x, y] = id;
+                    // null parts, which not needed to connect then connect both
+                    //                 |/ current      |/ null id          |/ null meta
+                    backTiles[x, y] = (backTiles[x, y] & 0xFFFF0000) | id;
+
             } catch (IndexOutOfRangeException e) { }
         }
 
-        public void fillBackTile(uint id, int x, int y, int fillWidth, int fillHeight) {
+        public void fillBackTile(ushort id, int x, int y, int fillWidth, int fillHeight) {
 
             // null parts, which not needed to connect then connect both
             //                 |/ current      |/ null id          |/ null meta
@@ -364,9 +364,9 @@ namespace SharpDungeon.Game.World {
                     } catch (IndexOutOfRangeException e) { }
         }
 
-        public void drawBackTile(uint id, int x, int y, int fillWidth, int fillHeight) {
+        public void drawBackTile(ushort id, int x, int y, int fillWidth, int fillHeight) {
 
-            uint nid = (backTiles[x, y] & 0xFFFF0000) | (id & 0xFFFF);
+            uint nid = (backTiles[x, y] & 0xFFFF0000) | id;
 
             for (int j = y; j < fillHeight; j++)
                 for (int i = x; i < fillWidth; i++)
@@ -391,52 +391,69 @@ namespace SharpDungeon.Game.World {
             if (x < 0 || y < 0 || x >= width || y >= height) {
                 return Tile.air;
             }
-            Tile t = Tile.tiles[backTiles[x, y]];
+            Tile t = Tile.tiles[foreTiles[x, y] & 0xFFFF];
             if (t == null)
                 return Tile.air;
             return t;
         }
 
-        public void setForeTile(uint id, int x, int y) {
+        public void setForeTile(ushort id, int x, int y) {
             try {
                 if (x >= 0 || y >= 0 || x < width || y < height)
-                    backTiles[x, y] = id;
+                    // null parts, which not needed to connect then connect both
+                    //                 |/ current      |/ null id          |/ null meta
+                    foreTiles[x, y] = (foreTiles[x, y] & 0xFFFF0000) | id;
             } catch (IndexOutOfRangeException e) { }
         }
 
-        public void fillForeTile(uint id, int x, int y, int fillWidth, int fillHeight) {
+        public void fillForeTile(ushort id, int x, int y, int fillWidth, int fillHeight) {
+
+            uint nid = (foreTiles[x, y] & 0xFFFF0000) | id;
+
             for (int j = y; j < fillHeight; j++)
                 for (int i = x; i < fillWidth; i++)
                     try {
-                        backTiles[j, i] = id;
+                        backTiles[j, i] = nid;
                     } catch (IndexOutOfRangeException e) { }
         }
 
-        public void drawForeTile(uint id, int x, int y, int fillWidth, int fillHeight) {
+        public void drawForeTile(ushort id, int x, int y, int fillWidth, int fillHeight) {
+
+            uint nid = (foreTiles[x, y] & 0xFFFF0000) | id;
+
             for (int j = y; j < fillHeight; j++)
                 for (int i = x; i < fillWidth; i++)
                     if (j == y)
                         try {
-                            backTiles[j, i] = id;
+                            backTiles[j, i] = nid;
                         } catch (IndexOutOfRangeException e) { } else if (i == x)
                         try {
-                            backTiles[j, i] = id;
+                            backTiles[j, i] = nid;
                         } catch (IndexOutOfRangeException e) { } else if (j == fillHeight - 1)
                         try {
-                            backTiles[j, i] = id;
+                            backTiles[j, i] = nid;
                         } catch (IndexOutOfRangeException e) { } else if (i == fillWidth - 1)
                         try {
-                            backTiles[j, i] = id;
+                            backTiles[j, i] = nid;
                         } catch (IndexOutOfRangeException e) { }
         }
 
         //metadata
 
-        public void setMetadata(byte metadata, int x, int y) {
+        public void setBackMetadata(ushort metadata, int x, int y) {
 
         }
 
-        public byte getMetadata(int x, int y) {
+        public byte getBackMetadata(int x, int y) {
+            return 0;
+        }
+
+        public void setForeMetadata(ushort metadata, int x, int y) {
+            //                                 |/ keep id, change meta
+            foreTiles[x, y] = (foreTiles[x, y] & 0xFFFF) | metadata;
+        }
+
+        public byte getForeMetadata(int x, int y) {
             return 0;
         }
 

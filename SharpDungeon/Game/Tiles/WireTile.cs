@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpDungeon.Game.Tiles {
-    class UpStairsTile {
+    public class WireTile : TileSmartSide {
+
     }
 }

@@ -120,7 +120,6 @@
     <Compile Include="Game\Tiles\CraftingTableCoreTile.cs" />
     <Compile Include="Game\Tiles\CraftingTableCellTile.cs" />
     <Compile Include="Game\Tiles\DoorTile.cs" />
-    <Compile Include="Game\Tiles\DownStairsTile.cs" />
     <Compile Include="Game\Tiles\EtherGateTile.cs" />
     <Compile Include="Game\Tiles\OpenDoorTile.cs" />
     <Compile Include="Game\Tiles\PlanksTile.cs" />
@@ -130,7 +129,7 @@
     <Compile Include="Game\Tiles\TileSmartSide.cs" />
     <Compile Include="Game\Tiles\Tile.cs" />
     <Compile Include="Game\Tiles\TileSingleSide.cs" />
-    <Compile Include="Game\Tiles\UpStairsTile.cs" />
+    <Compile Include="Game\Tiles\WireTile.cs" />
     <Compile Include="Game\UI\UIButton.cs" />
     <Compile Include="Game\UI\UIManager.cs" />
     <Compile Include="Game\UI\UIObject.cs" />
@@ -213,6 +212,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Game\Database\" />
+    <Folder Include="Game\Tiles\Back\" />
+    <Folder Include="Game\Tiles\Fog\" />
+    <Folder Include="Game\Tiles\Fore\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
