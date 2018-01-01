@@ -11,13 +11,13 @@ namespace SharpDungeon.Game.Tiles {
 
         private bool isVertical = false;
 
-        public DoorTile(int id) : base(Assets.door, id) {
+        public DoorTile(ushort id) : base(Assets.door, id) {
         }
 
         public override void tick(Handler handler, int x, int y) {
             base.tick(handler, x, y);
 
-            if (handler.world.getTile(x, y - 1) is StoneWallTile)
+            if (handler.world.getBackTile(x, y - 1) is StoneWallTile)
                 isVertical = true;
             else
                 isVertical = false;

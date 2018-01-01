@@ -6,6 +6,7 @@ using SharpDungeon.Game.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,10 @@ namespace SharpDungeon.Game.Entities {
         public int maxChargeTime { get; set; } = 10;
         private int charge = 0, chargeTime = 0, lastDelta = 0;
         private bool renderDrop = false, wasRenderDrop = false;
+
+        private int hurtCounter = 0;
+        private bool hurting = false;
+        private Color hurtingColor;
 
         private Bitmap selection;
 
@@ -103,7 +108,46 @@ namespace SharpDungeon.Game.Entities {
                 attack += 2;
             }
 
-            //handler.world.setTile(Tile.shadowGate.getId(), 
+            //clear fog
+            int worldX = (int)(x) / Tile.tileWidth;
+            int worldY = (int)(y) / Tile.tileHeight;
+
+            for (int i=0; i<360; i++) {
+                double deg = Math.PI * i / 180.0;
+                //12 22 7
+                int nx = (int)(Math.Cos(deg) * 22) + worldX;
+                int ny = (int)(Math.Sin(deg) * 22) + worldY;
+
+                int d = Math.Max(Math.Abs(nx - worldX), Math.Abs(ny - worldY));
+
+                for(int j=0; j<d; j++) {
+
+                    int tx = worldX + (int)(j / (double)d * (nx - worldX));
+                    int ty = worldY + (int)(j / (double)d * (ny - worldY));
+
+                    if (tx < 0 || tx > handler.world.width) continue;
+                    if (ty < 0 || ty > handler.world.height) continue;
+
+                    if (handler.world.getBackTile(tx, ty).isSolid()) {
+                        if (handler.world.getFog(tx, ty).A - 7 > 0)
+                            handler.world.setFog(handler.world.getFog(tx, ty).A - 7, tx, ty);
+                        break;
+                    }
+
+                    if (handler.world.getFog(tx, ty).A - 7 > 0)
+                        handler.world.setFog(handler.world.getFog(tx, ty).A - 7, tx, ty);
+                }
+            }
+
+            //for (int xOff = worldX - 3; xOff < worldX + 3; xOff++) {
+            //    for (int yOff = worldY - 3; yOff < worldY + 3; yOff++) {
+            //        if (handler.world.getFog(xOff, yOff).A - 7 > 0)
+            //            handler.world.setFog(handler.world.getFog(xOff, yOff).A - 7, xOff, yOff);
+
+            //    }
+            //}
+
+            //handler.world.setBackTile(Tile.shadowGate.getId(), 
             //    handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY));
 
             if (handler.mouseManager.leftPressed &&
@@ -114,16 +158,16 @@ namespace SharpDungeon.Game.Entities {
 
                 for (int j = 0; j < handler.world.height; j++)
                     for (int i = 0; i < handler.world.width; i++)
-                        if (handler.world.getTile(handler.world.toWorldX(handler.mouseManager.mouseX),
+                        if (handler.world.getBackTile(handler.world.toWorldX(handler.mouseManager.mouseX),
                             handler.world.toWorldY(handler.mouseManager.mouseY))
                             is DoorTile) {
 
-                            if (!(handler.world.getTile(j, i) is DoorTile) && handler.world.getTile(j, i).isSolid())
+                            if (!(handler.world.getBackTile(j, i) is DoorTile) && handler.world.getBackTile(j, i).isSolid())
                                 path.block(j, i);
 
                         } else {
 
-                            if (handler.world.getTile(j, i).isSolid())
+                            if (handler.world.getBackTile(j, i).isSolid())
                                 path.block(j, i);
 
                         }
@@ -165,10 +209,10 @@ namespace SharpDungeon.Game.Entities {
                     if (x == direction[directionStep].X * Tile.tileWidth &&
                         y == direction[directionStep].Y * Tile.tileHeight) {
 
-                        if (handler.world.getTile((int)(x / Tile.tileWidth),
+                        if (handler.world.getBackTile((int)(x / Tile.tileWidth),
                                                   (int)(y / Tile.tileWidth))
                                                   is DoorTile)
-                            handler.world.setTile(Tile.openDoor.getId(), (int)(x / Tile.tileWidth), (int)(y / Tile.tileWidth));
+                            handler.world.setBackTile(Tile.openDoor.getId(), (int)(x / Tile.tileWidth), (int)(y / Tile.tileWidth));
 
                         directionStep++;
                     }
@@ -377,15 +421,58 @@ namespace SharpDungeon.Game.Entities {
                         renderDrop = false;
                 }
 
-
-                renderUI(g);
-                inventory.render(g);
-
                 //TextRenderer.DrawText(g, $"Count = {inventory.inventoryItems.Count}\n+ = {dropNum+inventory.scroll}\ndropNum = {dropNum}\nscroll = {inventory.scroll}\nwheel = {handler.mouseManager.wheel}\ncharge = {charge}\nhealth = {handler.world.entityManager.player.health}\noffsetx = {handler.gameCamera.xOffset}\noffsety = {handler.gameCamera.yOffset}\nmid = {handler.mouseManager.mouseMid}\nmove = {handler.mouseManager.move}\ndirectionisnull? = {direction == null}\nwasMid = {wasMid}\nwasMid2 = {wasMid2}\nthisX = {thisX}\nthisY = {thisY}\ndirStepX = {dirStepX}\ndirStepY = {dirStepY}\nisRightAnimation = { ((int)x / Tile.tileWidth > handler.world.toWorldX(handler.mouseManager.mouseX)).ToString() }", Assets.themeFont, new Point(0, 500), Color.White);
 
             }
 
-        private void renderUI(System.Drawing.Graphics g) {
+        public void postRender(System.Drawing.Graphics g) {
+
+            if(hurting) {
+                if (hurtCounter < 200) {
+                    hurtCounter += 51;
+
+                    //left
+                    LinearGradientBrush linGrBrush = new LinearGradientBrush(
+                       new Point(0, handler.game.display.Height/2),
+                       new Point(handler.game.display.Width / 10, handler.game.display.Height / 2),
+                       Color.FromArgb(hurtingColor.A - hurtCounter, hurtingColor.R, hurtingColor.G, hurtingColor.B),
+                       Color.FromArgb(0, hurtingColor.R, hurtingColor.G, hurtingColor.B));  
+
+                    g.FillRectangle(linGrBrush, 0, 0, handler.game.display.Width / 10, handler.game.display.Height);
+
+                    //right
+                    LinearGradientBrush linGrBrush2 = new LinearGradientBrush(
+                       new Point(handler.game.display.Width - handler.game.display.Width / 10, handler.game.display.Height / 2),
+                       new Point(handler.game.display.Width, handler.game.display.Height / 2),
+                       Color.FromArgb(0, hurtingColor.R, hurtingColor.G, hurtingColor.B),
+                       Color.FromArgb(hurtingColor.A - hurtCounter, hurtingColor.R, hurtingColor.G, hurtingColor.B));
+
+                    g.FillRectangle(linGrBrush2, handler.game.display.Width - handler.game.display.Width / 10 + 1, 0,
+                                                 handler.game.display.Width, handler.game.display.Height);
+
+                    //top
+                    LinearGradientBrush linGrBrush3 = new LinearGradientBrush(
+                       new Point(handler.game.display.Width / 2, 0),
+                       new Point(handler.game.display.Width / 2, handler.game.display.Height / 10),
+                       Color.FromArgb(hurtingColor.A - hurtCounter, hurtingColor.R, hurtingColor.G, hurtingColor.B),
+                       Color.FromArgb(0, hurtingColor.R, hurtingColor.G, hurtingColor.B));
+
+                    g.FillRectangle(linGrBrush3, 0, 0, handler.game.display.Width, handler.game.display.Height/10);
+
+                    //bottom
+                    LinearGradientBrush linGrBrush4 = new LinearGradientBrush(
+                       new Point(handler.game.display.Width / 2, handler.game.display.Height),
+                       new Point(handler.game.display.Width / 2, handler.game.display.Height - handler.game.display.Height / 10 - 30),
+                       Color.FromArgb(hurtingColor.A - hurtCounter, hurtingColor.R, hurtingColor.G, hurtingColor.B),
+                       Color.FromArgb(0, hurtingColor.R, hurtingColor.G, hurtingColor.B));
+
+                    g.FillRectangle(linGrBrush4, 0, handler.game.display.Height - handler.game.display.Height / 10 + 1 - 30, handler.game.display.Width, handler.game.display.Height);
+
+                } else {
+                    hurtCounter = 0;
+                    hurting = false;
+                }
+            }
 
             // Selection
             Rectangle ar = new Rectangle();
@@ -409,7 +496,7 @@ namespace SharpDungeon.Game.Entities {
 
             for (int j = 0; j < handler.world.height; j++) {
                 for (int i = 0; i < handler.world.width; i++) {
-                    Tile tile = handler.world.getTile(j, i);
+                    Tile tile = handler.world.getBackTile(j, i);
                     Brush b = Assets.minMapBlack;
 
                     if (tile.isSolid() && tile is DoorTile)
@@ -430,6 +517,12 @@ namespace SharpDungeon.Game.Entities {
                         b = Assets.minMapBack;
 
                     g.FillRectangle(b, 20 + j * 8, 20 + i * 8, 8, 8);
+                }
+            }
+
+            for (int j = 0; j < handler.world.height; j++) {
+                for (int i = 0; i < handler.world.width; i++) {
+                    g.FillRectangle(new SolidBrush(handler.world.getFog(j, i)), 20 + j * 8, 20 + i * 8, 8, 8);
                 }
             }
 
@@ -471,7 +564,7 @@ namespace SharpDungeon.Game.Entities {
                         g.FillRectangle(Assets.uiFore, 335 + handler.world.width * 8, 236, 72, 15);
 
             } else if (wasRenderDrop) {
-                if (!handler.world.getTile(handler.world.toWorldX(handler.mouseManager.mouseX),
+                if (!handler.world.getBackTile(handler.world.toWorldX(handler.mouseManager.mouseX),
                                           handler.world.toWorldY(handler.mouseManager.mouseY)).isSolid()) {
                     if (inventory.inventoryItems.Count > 2) {
                         Item item = inventory.inventoryItems[inventory.scroll + dropNum];
@@ -503,6 +596,7 @@ namespace SharpDungeon.Game.Entities {
                 wasRenderDrop = false;
             }
 
+            inventory.render(g);
         }
 
         public void splitn(int x1, int y1, int x2, int y2, List<int> arr, int cnt) {
@@ -517,6 +611,13 @@ namespace SharpDungeon.Game.Entities {
             arr.Add(yMiddle);
             if (cnt > 0) splitn(xMiddle, yMiddle, x2, y2, arr, cnt);
 
+        }
+
+        public new void hurt(int amt) {
+            hurting = true;
+            hurtingColor = Color.FromArgb(200, 94, 94);
+
+            base.hurt(amt);
         }
 
     }

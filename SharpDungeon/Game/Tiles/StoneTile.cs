@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.Tiles {
     public class StoneTile : TileSingleSide {
 
-        public StoneTile(int id) : base(Assets.stone, id) {
+        public StoneTile(ushort id) : base(Assets.stone, id) {
 
         }
 

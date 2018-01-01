@@ -1,7 +1,6 @@
 using SharpDungeon.Game.Entities;
 using SharpDungeon.Game.Graphics;
 using SharpDungeon.Game.Items;
-using SharpDungeon.Game.Tiles;
 using SharpDungeon.Game.Utils;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpDungeon.Game.Tiles;
 
 namespace SharpDungeon.Game.World {
     public class World {
@@ -22,7 +22,18 @@ namespace SharpDungeon.Game.World {
         public int height { get; set; }
 
         private int spawnX, spawnY;
-        private int[,] tiles;
+
+        /*
+         
+         tile
+         00000000 00000000 00000000 00000000
+         |------meta-----| |-------id------|
+
+        */
+
+        private uint[,] backTiles;
+        private uint[,] foreTiles;
+        private Color[,] fog;
 
         public static IRandom rnd { get; private set; }
 
@@ -34,7 +45,16 @@ namespace SharpDungeon.Game.World {
             spawnX = 64;
             spawnY = 64;
 
-            tiles = new int[width, height];
+            backTiles = new uint[width, height];
+            foreTiles = new uint[width, height];
+            fog = new Color[width, height];
+
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    fog[x, y] = Color.FromArgb(255, 0, 0, 0);
+                }
+            }
+
             int seed = (int)DateTime.UtcNow.Ticks;
             rnd = new DotNetRandom(seed);
 
@@ -88,83 +108,83 @@ namespace SharpDungeon.Game.World {
             }
 
             foreach (Rectangle r in rooms) {
-                    fillTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
+                    fillBackTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
                     
             }
 
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                     try {
-                        if (getTile(y - 2, x) is StoneTile && getTile(y - 1, x) is AirTile)
-                            tiles[y - 1, x] = Tile.stoneWall.getId();
-                        if (getTile(y, x - 2) is StoneTile && getTile(y, x - 1) is AirTile)
-                            tiles[y, x - 1] = Tile.stoneWall.getId();
-                        if (getTile(y, x + 2) is StoneTile && getTile(y, x + 1) is AirTile)
-                            tiles[y, x + 1] = Tile.stoneWall.getId();
-                        if (getTile(y + 2, x) is StoneTile && getTile(y + 1, x) is AirTile)
-                            tiles[y + 1, x] = Tile.stoneWall.getId();
+                        if (getBackTile(y - 2, x) is StoneTile && getBackTile(y - 1, x) is AirTile)
+                            backTiles[y - 1, x] = Tile.stoneWall.getId();
+                        if (getBackTile(y, x - 2) is StoneTile && getBackTile(y, x - 1) is AirTile)
+                            backTiles[y, x - 1] = Tile.stoneWall.getId();
+                        if (getBackTile(y, x + 2) is StoneTile && getBackTile(y, x + 1) is AirTile)
+                            backTiles[y, x + 1] = Tile.stoneWall.getId();
+                        if (getBackTile(y + 2, x) is StoneTile && getBackTile(y + 1, x) is AirTile)
+                            backTiles[y + 1, x] = Tile.stoneWall.getId();
                     } catch (IndexOutOfRangeException e) { }
 
 
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                     try {
-                        if (getTile(y - 1, x) is StoneWallTile && getTile(y, x - 1) is StoneWallTile && getTile(y - 1, x - 1) is StoneTile && getTile(y, x) is AirTile)
-                            tiles[y, x] = Tile.stoneWall.getId();
-                        if (getTile(y - 1, x) is StoneWallTile && getTile(y, x + 1) is StoneWallTile && getTile(y - 1, x + 1) is StoneTile && getTile(y, x) is AirTile)
-                            tiles[y, x] = Tile.stoneWall.getId();
-                        if (getTile(y + 1, x) is StoneWallTile && getTile(y, x + 1) is StoneWallTile && getTile(y + 1, x + 1) is StoneTile && getTile(y, x) is AirTile)
-                            tiles[y, x] = Tile.stoneWall.getId();
-                        if (getTile(y + 1, x) is StoneWallTile && getTile(y, x - 1) is StoneWallTile && getTile(y + 1, x - 1) is StoneTile && getTile(y, x) is AirTile)
-                            tiles[y, x] = Tile.stoneWall.getId();
+                        if (getBackTile(y - 1, x) is StoneWallTile && getBackTile(y, x - 1) is StoneWallTile && getBackTile(y - 1, x - 1) is StoneTile && getBackTile(y, x) is AirTile)
+                            backTiles[y, x] = Tile.stoneWall.getId();
+                        if (getBackTile(y - 1, x) is StoneWallTile && getBackTile(y, x + 1) is StoneWallTile && getBackTile(y - 1, x + 1) is StoneTile && getBackTile(y, x) is AirTile)
+                            backTiles[y, x] = Tile.stoneWall.getId();
+                        if (getBackTile(y + 1, x) is StoneWallTile && getBackTile(y, x + 1) is StoneWallTile && getBackTile(y + 1, x + 1) is StoneTile && getBackTile(y, x) is AirTile)
+                            backTiles[y, x] = Tile.stoneWall.getId();
+                        if (getBackTile(y + 1, x) is StoneWallTile && getBackTile(y, x - 1) is StoneWallTile && getBackTile(y + 1, x - 1) is StoneTile && getBackTile(y, x) is AirTile)
+                            backTiles[y, x] = Tile.stoneWall.getId();
                     } catch (IndexOutOfRangeException e) { }
 
 
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                     try {
-                        if (getTile(y - 1, x) is StoneWallTile &&
-                            getTile(y + 1, x) is StoneWallTile &&
-                            getTile(y, x + 1) is StoneTile &&
-                            getTile(y, x) is StoneTile &&
-                            getTile(y, x - 1) is StoneTile &&
-                            getTile(y - 1, x - 1) is StoneTile &&
-                            getTile(y + 1, x - 1) is StoneTile)
-                                tiles[y, x] = Tile.door.getId();
-                        else if (getTile(y, x - 1) is StoneWallTile &&
-                            getTile(y, x + 1) is StoneWallTile &&
-                            getTile(y + 1, x) is StoneTile &&
-                            getTile(y, x) is StoneTile &&
-                            getTile(y - 1, x) is StoneTile &&
-                            getTile(y - 1, x - 1) is StoneTile &&
-                            getTile(y - 1, x + 1) is StoneTile)
-                                tiles[y, x] = Tile.door.getId();
-                        else if (getTile(y, x - 1) is StoneWallTile &&
-                            getTile(y, x + 1) is StoneWallTile &&
-                            getTile(y + 1, x) is StoneTile &&
-                            getTile(y, x) is StoneTile &&
-                            getTile(y - 1, x) is StoneTile &&
-                            getTile(y + 1, x - 1) is StoneTile &&
-                            getTile(y + 1, x + 1) is StoneTile)
-                                tiles[y, x] = Tile.door.getId();
-                        else if (getTile(y, x - 1) is StoneWallTile &&
-                            getTile(y, x + 1) is StoneWallTile &&
-                            getTile(y + 1, x) is StoneTile &&
-                            getTile(y, x) is StoneTile &&
-                            getTile(y - 1, x) is StoneTile &&
-                            getTile(y - 1, x + 1) is StoneTile &&
-                            getTile(y + 1, x + 1) is StoneTile)
-                                tiles[y, x] = Tile.door.getId();
+                        if (getBackTile(y - 1, x) is StoneWallTile &&
+                            getBackTile(y + 1, x) is StoneWallTile &&
+                            getBackTile(y, x + 1) is StoneTile &&
+                            getBackTile(y, x) is StoneTile &&
+                            getBackTile(y, x - 1) is StoneTile &&
+                            getBackTile(y - 1, x - 1) is StoneTile &&
+                            getBackTile(y + 1, x - 1) is StoneTile)
+                                backTiles[y, x] = Tile.door.getId();
+                        else if (getBackTile(y, x - 1) is StoneWallTile &&
+                            getBackTile(y, x + 1) is StoneWallTile &&
+                            getBackTile(y + 1, x) is StoneTile &&
+                            getBackTile(y, x) is StoneTile &&
+                            getBackTile(y - 1, x) is StoneTile &&
+                            getBackTile(y - 1, x - 1) is StoneTile &&
+                            getBackTile(y - 1, x + 1) is StoneTile)
+                                backTiles[y, x] = Tile.door.getId();
+                        else if (getBackTile(y, x - 1) is StoneWallTile &&
+                            getBackTile(y, x + 1) is StoneWallTile &&
+                            getBackTile(y + 1, x) is StoneTile &&
+                            getBackTile(y, x) is StoneTile &&
+                            getBackTile(y - 1, x) is StoneTile &&
+                            getBackTile(y + 1, x - 1) is StoneTile &&
+                            getBackTile(y + 1, x + 1) is StoneTile)
+                                backTiles[y, x] = Tile.door.getId();
+                        else if (getBackTile(y, x - 1) is StoneWallTile &&
+                            getBackTile(y, x + 1) is StoneWallTile &&
+                            getBackTile(y + 1, x) is StoneTile &&
+                            getBackTile(y, x) is StoneTile &&
+                            getBackTile(y - 1, x) is StoneTile &&
+                            getBackTile(y - 1, x + 1) is StoneTile &&
+                            getBackTile(y + 1, x + 1) is StoneTile)
+                                backTiles[y, x] = Tile.door.getId();
                     } catch (IndexOutOfRangeException e) { }
 
             //int planksRoom = rnd.Next(0, rooms.Count - 1);
             //foreach(Rectangle r in rooms)
             //    if(r == rooms.ElementAt(planksRoom))
-            //        fillTile(Tile.planks.getId(), r.X, r.Y, r.Width, r.Height);
+            //        fillBackTile(Tile.planks.getId(), r.X, r.Y, r.Width, r.Height);
 
             Rectangle ree;
             ree = rooms.ElementAt(rooms.Count - 1);
-            setTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+2);
+            setBackTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+2);
 
             //StreamWriter f = new StreamWriter("file.txt");
             //StringBuilder sb = new StringBuilder();
@@ -174,21 +194,21 @@ namespace SharpDungeon.Game.World {
             //sb.Append($"reLeftBefore = {re.Left}\nreTopBefore = {re.Top}\nxOffBefore = {handler.gameCamera.xOffset}\n yOffBefore = {handler.gameCamera.yOffset}\n\n\n");
             spawnX = (int)(re.X* Tile.tileWidth + 64 - handler.gameCamera.xOffset);
             spawnY = (int)(re.Y* Tile.tileHeight + 128 - handler.gameCamera.yOffset);
-            setTile(Tile.etherGate.getId(), re.Left + 1, re.Top + 2);
+            setBackTile(Tile.etherGate.getId(), re.Left + 1, re.Top + 2);
 
             Rectangle reee;
             reee = rooms.ElementAt(2);
-            if (!getTile(reee.Left + 1, reee.Top + 2).isSolid() &&
-                !getTile(reee.Left + 1 - 1, reee.Top + 2 - 1).isSolid() &&
-                !getTile(reee.Left + 1, reee.Top + 2 - 1).isSolid() &&
-                !getTile(reee.Left + 1 + 1, reee.Top + 2 - 1).isSolid() &&
-                !getTile(reee.Left + 1, reee.Top + 2 + 1).isSolid() &&
-                !getTile(reee.Left + 1, reee.Top + 2 - 2).isSolid()) {
-                setTile(Tile.craftingTableCore.getId(), reee.Left + 1, reee.Top + 2);
-                setTile(Tile.craftingTableCell.getId(), reee.Left + 1 - 1, reee.Top + 2 - 1);
-                setTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 - 1);
-                setTile(Tile.craftingTableCell.getId(), reee.Left + 1 + 1, reee.Top + 2 - 1);
-                setTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 + 1);
+            if (!getBackTile(reee.Left + 1, reee.Top + 2).isSolid() &&
+                !getBackTile(reee.Left + 1 - 1, reee.Top + 2 - 1).isSolid() &&
+                !getBackTile(reee.Left + 1, reee.Top + 2 - 1).isSolid() &&
+                !getBackTile(reee.Left + 1 + 1, reee.Top + 2 - 1).isSolid() &&
+                !getBackTile(reee.Left + 1, reee.Top + 2 + 1).isSolid() &&
+                !getBackTile(reee.Left + 1, reee.Top + 2 - 2).isSolid()) {
+                setBackTile(Tile.craftingTableCore.getId(), reee.Left + 1, reee.Top + 2);
+                setBackTile(Tile.craftingTableCell.getId(), reee.Left + 1 - 1, reee.Top + 2 - 1);
+                setBackTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 - 1);
+                setBackTile(Tile.craftingTableCell.getId(), reee.Left + 1 + 1, reee.Top + 2 - 1);
+                setBackTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 + 1);
             }
 
             //sb.Append($"reLeft = {re.Left}\nreTop = {re.Top}\n xOff = {handler.gameCamera.xOffset}\n yOff = {handler.gameCamera.yOffset}\nreLeft*64+64 - xOff = {re.Left * 64 + 64 - handler.gameCamera.xOffset}\nint = {(int)(re.Left * 64 + 64 - handler.gameCamera.xOffset)}\n reTop * 64 + 128 - yOff = {re.Top * 64 + 128 - handler.gameCamera.yOffset}\nint = {(int)(re.Top * 64 + 128 - handler.gameCamera.yOffset)}");
@@ -204,14 +224,14 @@ namespace SharpDungeon.Game.World {
             foreach (Rectangle r in rooms.ToList()) {
                 for (int x = r.X; x < r.Width-1; x++)
                     for (int y = r.Y; y < r.Height-1; y++)
-                        if(rnd.Next(1, 10) == 1 && !getTile(x, y).isSolid())
+                        if(rnd.Next(1, 10) == 1 && !getBackTile(x, y).isSolid())
                             itemManager.addItem(Item.items[rnd.Next(0, 2)].createNew(x*Tile.tileWidth, y*Tile.tileHeight));
             }
 
             foreach (Rectangle r in rooms.ToList()) {
                 for (int x = r.X; x < r.Width - 1; x++)
                     for (int y = r.Y; y < r.Height - 1; y++)
-                        if (rnd.Next(1, 10) == 1 && !getTile(x, y).isSolid() && 
+                        if (rnd.Next(1, 10) == 1 && !getBackTile(x, y).isSolid() && 
                             x != re.X-1 && y != re.Y-1 &&
                             x != re.X && y != re.Y-1 &&
                             x != re.X+1 && y != re.Y-1 &&
@@ -227,19 +247,19 @@ namespace SharpDungeon.Game.World {
         }
 
         // Carve a tunnel out of the map parallel to the x-axis
-        private void CreateHorizontalTunnel(int id, int xStart, int xEnd, int yPosition) {
+        private void CreateHorizontalTunnel(uint id, int xStart, int xEnd, int yPosition) {
             for (int x = Math.Min(xStart, xEnd); x <= Math.Max(xStart, xEnd); x++) {
                 try {
-                    tiles[x, yPosition] = id;
+                    backTiles[x, yPosition] = id;
                 } catch (IndexOutOfRangeException e) { }
             }
         }
 
         // Carve a tunnel out of the map parallel to the y-axis
-        private void CreateVerticalTunnel(int id, int yStart, int yEnd, int xPosition) {
+        private void CreateVerticalTunnel(uint id, int yStart, int yEnd, int xPosition) {
             for (int y = Math.Min(yStart, yEnd); y <= Math.Max(yStart, yEnd); y++) {
                 try {
-                    tiles[xPosition, y] = id;
+                    backTiles[xPosition, y] = id;
                 } catch (IndexOutOfRangeException e) { }
             }
         }
@@ -263,8 +283,9 @@ namespace SharpDungeon.Game.World {
             for (int x = xStart; x < xEnd; x++) {
                 for (int y = yStart; y < yEnd; y++) {
                     //Тик объявлен только для видимых тайлов
-                    getTile(x, y).tick(handler, x, y);
-                    getTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
+                    getBackTile(x, y).tick(handler, x, y);
+                    getBackTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
+                    
                 }
             }
 
@@ -272,61 +293,162 @@ namespace SharpDungeon.Game.World {
             itemManager.render(g);
             //Сущности
             entityManager.render(g);
+
+            //Туман войны
+            for (int x = xStart; x < xEnd; x++) {
+                for (int y = yStart; y < yEnd; y++) {
+                    g.FillRectangle(new SolidBrush(getFog(x, y)), (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset), Tile.tileWidth, Tile.tileHeight);
+                }
+            }
+
+            entityManager.player.postRender(g);
+
         }
 
+        //fog
 
+        public Color getFog(int x, int y) {
+            if (x < 0 || y < 0 || x >= width || y >= height) {
+                return Color.Black;
+            }
+            Color c = fog[x, y];
+            if (c == null)
+                return Color.Black;
+            return c;
+        }
 
+        public void setFog(int alpha, int x, int y) {
+            try {
+                if (x >= 0 || y >= 0 || x < width || y < height) {
+                    Color prev = fog[x, y];
+                    Color c = Color.FromArgb(alpha, prev.R, prev.G, prev.B);
+                    fog[x, y] = c;
+                }
+            } catch (IndexOutOfRangeException e) { }
+        }
 
-        public Tile getTile(int x, int y) {
+        //back
+
+        public Tile getBackTile(int x, int y) {
             if (x < 0 || y < 0 || x >= width || y >= height) {
                 return Tile.air;
             }
-            Tile t = Tile.tiles[tiles[x, y]];
+            Tile t = Tile.tiles[backTiles[x, y] & 0xFFFF];
             if (t == null)
                 return Tile.air;
             return t;
         }
 
-        public void setTile(int id, int x, int y) {
+        public void setBackTile(ushort id, int x, int y) {
             try {
+
+                // null parts, which not needed to connect then connect both
+                //                 |/ current      |/ null id          |/ null meta
+                backTiles[x, y] = (backTiles[x, y] & 0xFFFF0000) | id;
+
                 if (x >= 0 || y >= 0 || x < width || y < height)
-                    tiles[x, y] = id;
+                    backTiles[x, y] = id;
             } catch (IndexOutOfRangeException e) { }
         }
 
-        public void fillTile(int id, int x, int y, int fillWidth, int fillHeight) {
+        public void fillBackTile(uint id, int x, int y, int fillWidth, int fillHeight) {
+
+            // null parts, which not needed to connect then connect both
+            //                 |/ current      |/ null id          |/ null meta
+            uint nid = (backTiles[x, y] & 0xFFFF0000) | id;
+
             for (int j = y; j < fillHeight; j++)
                 for (int i = x; i < fillWidth; i++)
                     try {
-                        tiles[j, i] = id;
+                        backTiles[j, i] = nid;
                     } catch (IndexOutOfRangeException e) { }
         }
 
-        public void drawTile(int id, int x, int y, int fillWidth, int fillHeight) {
+        public void drawBackTile(uint id, int x, int y, int fillWidth, int fillHeight) {
+
+            uint nid = (backTiles[x, y] & 0xFFFF0000) | (id & 0xFFFF);
+
             for (int j = y; j < fillHeight; j++)
                 for (int i = x; i < fillWidth; i++)
                     if (j == y)
                         try {
-                            tiles[j, i] = id;
+                            backTiles[j, i] = nid;
                         } catch (IndexOutOfRangeException e) { } else if (i == x)
                         try {
-                            tiles[j, i] = id;
+                            backTiles[j, i] = nid;
                         } catch (IndexOutOfRangeException e) { } else if (j == fillHeight - 1)
                         try {
-                            tiles[j, i] = id;
+                            backTiles[j, i] = nid;
                         } catch (IndexOutOfRangeException e) { } else if (i == fillWidth - 1)
                         try {
-                            tiles[j, i] = id;
+                            backTiles[j, i] = nid;
                         } catch (IndexOutOfRangeException e) { }
         }
 
+        //fore
+
+        public Tile getForeTile(int x, int y) {
+            if (x < 0 || y < 0 || x >= width || y >= height) {
+                return Tile.air;
+            }
+            Tile t = Tile.tiles[backTiles[x, y]];
+            if (t == null)
+                return Tile.air;
+            return t;
+        }
+
+        public void setForeTile(uint id, int x, int y) {
+            try {
+                if (x >= 0 || y >= 0 || x < width || y < height)
+                    backTiles[x, y] = id;
+            } catch (IndexOutOfRangeException e) { }
+        }
+
+        public void fillForeTile(uint id, int x, int y, int fillWidth, int fillHeight) {
+            for (int j = y; j < fillHeight; j++)
+                for (int i = x; i < fillWidth; i++)
+                    try {
+                        backTiles[j, i] = id;
+                    } catch (IndexOutOfRangeException e) { }
+        }
+
+        public void drawForeTile(uint id, int x, int y, int fillWidth, int fillHeight) {
+            for (int j = y; j < fillHeight; j++)
+                for (int i = x; i < fillWidth; i++)
+                    if (j == y)
+                        try {
+                            backTiles[j, i] = id;
+                        } catch (IndexOutOfRangeException e) { } else if (i == x)
+                        try {
+                            backTiles[j, i] = id;
+                        } catch (IndexOutOfRangeException e) { } else if (j == fillHeight - 1)
+                        try {
+                            backTiles[j, i] = id;
+                        } catch (IndexOutOfRangeException e) { } else if (i == fillWidth - 1)
+                        try {
+                            backTiles[j, i] = id;
+                        } catch (IndexOutOfRangeException e) { }
+        }
+
+        //metadata
+
+        public void setMetadata(byte metadata, int x, int y) {
+
+        }
+
+        public byte getMetadata(int x, int y) {
+            return 0;
+        }
+
+        //loading
+
         private void loadWorld(String path) {
 
-            tiles = new int[width, height];
+            backTiles = new uint[width, height];
 
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
-                    tiles[x, y] = Tile.stone.getId();
+                    backTiles[x, y] = Tile.stone.getId();
                 }
             }
 
@@ -337,10 +459,10 @@ namespace SharpDungeon.Game.World {
             //spawnX = Utils.parseInt(tokens[2]);
             //spawnY = Utils.parseInt(tokens[3]);
 
-            //tiles = new int[width, height];
+            //backTiles = new int[width, height];
             //for (int x = 0; x < width; x++) {
             //    for (int y = 0; y < height; y++) {
-            //        tiles[x, y] = Utils.parseInt(tokens[(x + y * width) + 4]);
+            //        backTiles[x, y] = Utils.parseInt(tokens[(x + y * width) + 4]);
             //    }
             //}
         }

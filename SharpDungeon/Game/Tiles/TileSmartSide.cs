@@ -10,7 +10,7 @@ namespace SharpDungeon.Game.Tiles {
 
         protected Bitmap[] textures;
 
-        public TileSmartSide(Bitmap[] tex, int id) : base(id) {
+        public TileSmartSide(Bitmap[] tex, ushort id) : base(id) {
             this.textures = tex;
             currentTex = textures[0];
         }

@@ -25,7 +25,7 @@ namespace SharpDungeon.Game.Tiles {
         public static readonly int tileWidth = 64,
                                    tileHeight = 64;
 
-        protected readonly int id;
+        protected readonly ushort id;
         public Bitmap currentTex { get; set; }
         protected Handler handler { get; set; }
 
@@ -33,7 +33,7 @@ namespace SharpDungeon.Game.Tiles {
         protected int x { get; set; }
         protected int y { get; set; }
 
-        public Tile(int id) {
+        public Tile(ushort id) {
             this.id = id;
             tiles[id] = this;
         }
@@ -49,7 +49,7 @@ namespace SharpDungeon.Game.Tiles {
             g.DrawImage(currentTex, x, y, tileWidth, tileHeight);
         }
 
-        public int getId() {
+        public ushort getId() {
             return id;
         }
 

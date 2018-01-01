@@ -44,7 +44,7 @@ namespace SharpDungeon.Game.Entities {
                 rndX = rnd.Next(-1, 2);
                 rndY = rnd.Next(-1, 2);
 
-                if (!handler.world.getTile((int)(x + rndX * Tile.tileWidth) / Tile.tileWidth,
+                if (!handler.world.getBackTile((int)(x + rndX * Tile.tileWidth) / Tile.tileWidth,
                                            (int)(y + rndY * Tile.tileHeight) / Tile.tileHeight).isSolid()) {
                     targetX = (int)(x + rndX * Tile.tileWidth);
                     targetY = (int)(y + rndY * Tile.tileHeight);

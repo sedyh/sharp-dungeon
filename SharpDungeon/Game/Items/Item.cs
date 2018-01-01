@@ -42,7 +42,7 @@ namespace SharpDungeon.Game.Items {
 
         public Bitmap texture { get; protected set; }
         public string name { get; protected set; }
-        public int id { get; }
+        public uint id { get; }
 
         public int x { get; protected set; }
         public int y { get; protected set; }
@@ -56,7 +56,7 @@ namespace SharpDungeon.Game.Items {
 
         public bool pickedUp { get; protected set; } = false;
 
-        public Item(Bitmap texture, string name, int id) {
+        public Item(Bitmap texture, string name, uint id) {
             this.texture = texture;
             this.name = name;
             this.id = id;
@@ -113,7 +113,7 @@ namespace SharpDungeon.Game.Items {
             return i;
         }
 
-        public int getId() {
+        public uint getId() {
             return id;
         }
 

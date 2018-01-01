@@ -12,6 +12,24 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>C:\Users\admin\Desktop\SharpDungeon\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <TargetCulture>en</TargetCulture>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,16 +53,26 @@
   <PropertyGroup>
     <ApplicationIcon>chest.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>1EA9E04784D8206D9C49C065C60D507028C1051D</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>SharpDungeon_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SharpDungeon.Launch</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -61,27 +89,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game\Database\Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Game\Database\Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Game\Database\Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Game\Database\PlayerSet.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Game\Database\ScoreSet.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Game\Display\Display.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,13 +155,6 @@
     </Compile>
     <None Include="App.Config" />
     <None Include="Assets\emulogic.ttf" />
-    <EntityDeploy Include="Game\Database\Model.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Game\Database\Model.edmx.diagram">
-      <DependentUpon>Model.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -176,18 +176,44 @@
     <Content Include="Assets\tilesWorld.png" />
     <Content Include="Assets\ui.png" />
     <Content Include="chest.ico" />
-    <Content Include="Game\Database\Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Game\Database\Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="Game\Database\Model.Context.tt">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Game\Database\Model.tt">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Game\Database\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

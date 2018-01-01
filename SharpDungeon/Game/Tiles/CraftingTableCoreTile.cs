@@ -11,7 +11,7 @@ namespace SharpDungeon.Game.Tiles {
     public class CraftingTableCoreTile : TileSingleSide {
 
 
-        public CraftingTableCoreTile(int id) : base(Assets.craftingTableCore[0], id) {
+        public CraftingTableCoreTile(ushort id) : base(Assets.craftingTableCore[0], id) {
 
         }
 
@@ -20,10 +20,10 @@ namespace SharpDungeon.Game.Tiles {
             if ((int)(handler.world.entityManager.player.x) / Tile.tileWidth == x &&
                 (int)(handler.world.entityManager.player.y) / Tile.tileHeight == y) {
                 currentTex = Assets.craftingTableCore[1];
-                handler.world.getTile(x - 1, y - 1).currentTex = Assets.craftingTableCell[1];
-                handler.world.getTile(x, y - 1).currentTex = Assets.craftingTableCell[1];
-                handler.world.getTile(x + 1, y - 1).currentTex = Assets.craftingTableCell[1];
-                handler.world.getTile(x, y + 1).currentTex = Assets.craftingTableCell[1];
+                handler.world.getBackTile(x - 1, y - 1).currentTex = Assets.craftingTableCell[1];
+                handler.world.getBackTile(x, y - 1).currentTex = Assets.craftingTableCell[1];
+                handler.world.getBackTile(x + 1, y - 1).currentTex = Assets.craftingTableCell[1];
+                handler.world.getBackTile(x, y + 1).currentTex = Assets.craftingTableCell[1];
 
 
                 //Scaning items
@@ -98,10 +98,10 @@ namespace SharpDungeon.Game.Tiles {
 
             } else {
                 currentTex = Assets.craftingTableCore[0];
-                handler.world.getTile(x - 1, y - 1).currentTex = Assets.craftingTableCell[0];
-                handler.world.getTile(x, y - 1).currentTex = Assets.craftingTableCell[0];
-                handler.world.getTile(x + 1, y - 1).currentTex = Assets.craftingTableCell[0];
-                handler.world.getTile(x, y + 1).currentTex = Assets.craftingTableCell[0];
+                handler.world.getBackTile(x - 1, y - 1).currentTex = Assets.craftingTableCell[0];
+                handler.world.getBackTile(x, y - 1).currentTex = Assets.craftingTableCell[0];
+                handler.world.getBackTile(x + 1, y - 1).currentTex = Assets.craftingTableCell[0];
+                handler.world.getBackTile(x, y + 1).currentTex = Assets.craftingTableCell[0];
             }
 
         }

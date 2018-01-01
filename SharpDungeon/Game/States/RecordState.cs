@@ -1,5 +1,4 @@
-﻿using SharpDungeon.Game.Database;
-using SharpDungeon.Game.Graphics;
+﻿using SharpDungeon.Game.Graphics;
 using SharpDungeon.Game.UI;
 using System;
 using System.Collections.Generic;
@@ -11,8 +10,7 @@ using System.Windows.Forms;
 
 namespace SharpDungeon.Game.States {
     public class RecordState : State {
-
-        ssdEntities context = new ssdEntities();
+        
 
         private UIManager uiManager;
         private bool firstRender = true;

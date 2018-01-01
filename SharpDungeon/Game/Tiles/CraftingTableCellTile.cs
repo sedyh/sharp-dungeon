@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.Tiles {
     public class CraftingTableCellTile : TileSingleSide {
 
-        public CraftingTableCellTile(int id) : base(Assets.craftingTableCell[0], id) {
+        public CraftingTableCellTile(ushort id) : base(Assets.craftingTableCell[0], id) {
 
         }
 
@@ -18,7 +18,7 @@ namespace SharpDungeon.Game.Tiles {
         public override void render(System.Drawing.Graphics g, int x, int y) {
             base.render(g, x, y);
 
-            //Tile t = handler.world.getTile(handler.world.toWorldX(x + 1), handler.world.toWorldY(y + 1));
+            //Tile t = handler.world.getBackTile(handler.world.toWorldX(x + 1), handler.world.toWorldY(y + 1));
 
             //if (t is CraftingTableCoreTile)
             //    g.DrawImage((CraftingTableCoreTile)t., x, y, width, height);

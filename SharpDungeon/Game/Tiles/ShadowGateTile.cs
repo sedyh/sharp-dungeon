@@ -18,7 +18,7 @@ namespace SharpDungeon.Game.Tiles {
         private int level, xp, maxXP, health, maxHealth, attack, maxCharge, maxChargeTime, world;
         
 
-        public ShadowGateTile(int id) : base(Assets.shadowGate[0], id) {
+        public ShadowGateTile(ushort id) : base(Assets.shadowGate[0], id) {
             an = new Animation(10, Assets.shadowGate);
             
         }

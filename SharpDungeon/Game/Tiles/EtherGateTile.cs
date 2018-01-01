@@ -15,7 +15,7 @@ namespace SharpDungeon.Game.Tiles {
         //int posX=-1, posY=-1;
         //int time = 0;
 
-        public EtherGateTile(int id) : base(Assets.etherGate[0], id) {
+        public EtherGateTile(ushort id) : base(Assets.etherGate[0], id) {
             an = new Animation(10, Assets.etherGate);
             //rnd = new Random();
         }

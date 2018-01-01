@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SharpDungeon.Game.Tiles {
     public abstract class TileSingleSide : Tile {
 
-        public TileSingleSide(Bitmap tex, int id) : base(id) {
+        public TileSingleSide(Bitmap tex, ushort id) : base(id) {
             currentTex = tex;
         }
 
