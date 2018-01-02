@@ -441,19 +441,23 @@ namespace SharpDungeon.Game.World {
         //metadata
 
         public void setBackMetadata(ushort metadata, int x, int y) {
-
+                //                                 |/ keep id  |/ move meta to end part
+                backTiles[x, y] = (backTiles[x, y] & 0xFFFF) | (uint)metadata << 16;
         }
 
-        public byte getBackMetadata(int x, int y) {
-            return 0;
+        public ushort getBackMetadata(int x, int y) {
+            if (x < 0 || y < 0 || x >= width || y >= height)
+                return 4;
+            else
+                return (ushort)(backTiles[x, y] >> 16);
         }
 
         public void setForeMetadata(ushort metadata, int x, int y) {
-            //                                 |/ keep id, change meta
-            foreTiles[x, y] = (foreTiles[x, y] & 0xFFFF) | metadata;
+            //                                 |/ keep id  |/ move meta to end part
+            foreTiles[x, y] = (foreTiles[x, y] & 0xFFFF) | (uint)metadata << 16;
         }
 
-        public byte getForeMetadata(int x, int y) {
+        public ushort getForeMetadata(int x, int y) {
             return 0;
         }
 

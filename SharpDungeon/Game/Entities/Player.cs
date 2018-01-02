@@ -150,6 +150,13 @@ namespace SharpDungeon.Game.Entities {
             //handler.world.setBackTile(Tile.shadowGate.getId(), 
             //    handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY));
 
+            //if(handler.keyManager.isPressed(Keys.Z)) {
+            //    ushort meta = handler.world.getBackMetadata(handler.world.toWorldX(handler.mouseManager.mouseX),
+            //                                                handler.world.toWorldY(handler.mouseManager.mouseY));
+            //    handler.world.setBackMetadata((ushort)(meta+1), handler.world.toWorldX(handler.mouseManager.mouseX),
+            //                                                    handler.world.toWorldY(handler.mouseManager.mouseY));
+            //}
+
             if (handler.mouseManager.leftPressed &&
                 handler.world.toWorldX(handler.mouseManager.mouseX) > 0 &&
                 handler.world.toWorldY(handler.mouseManager.mouseY) > 0) {
