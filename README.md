@@ -3,9 +3,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)](https://github.com/sedyh/sharp-dungeon) 
 [![GitHub license](https://img.shields.io/github/license/sedyh/sharp-dungeon.svg)](https://github.com/sedyh/sharp-dungeon/blob/master/LICENSE)
 
-![Preview](https://i.gyazo.com/cd8ae202632f5494c31c2d072fbee2e3.gif "Preview")
-
-![Preview](https://i.gyazo.com/5c5cd6ad60c0ec8910521fb2a5f27f39.gif "Preview")
+![Preview](https://github.com/sedyh/sharp-dungeon/blob/master/SharpDungeon/Assets/demo.gif "Preview")
 
 Poguelike game based on pixel dungeon mechanics.
  
