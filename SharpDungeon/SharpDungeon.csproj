@@ -121,6 +121,8 @@
     <Compile Include="Game\Tiles\CraftingTableCellTile.cs" />
     <Compile Include="Game\Tiles\DoorTile.cs" />
     <Compile Include="Game\Tiles\EtherGateTile.cs" />
+    <Compile Include="Game\Tiles\InvertorTile.cs" />
+    <Compile Include="Game\Tiles\IRotate.cs" />
     <Compile Include="Game\Tiles\OpenDoorTile.cs" />
     <Compile Include="Game\Tiles\PlanksTile.cs" />
     <Compile Include="Game\Tiles\ShadowGateTile.cs" />
