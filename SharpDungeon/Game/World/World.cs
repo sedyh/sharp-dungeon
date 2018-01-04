@@ -176,10 +176,10 @@ namespace SharpDungeon.Game.World {
                                 backTiles[y, x] = Tile.door.getId();
                     } catch (IndexOutOfRangeException e) { }
 
-            //int planksRoom = rnd.Next(0, rooms.Count - 1);
-            //foreach(Rectangle r in rooms)
-            //    if(r == rooms.ElementAt(planksRoom))
-            //        fillBackTile(Tile.planks.getId(), r.X, r.Y, r.Width, r.Height);
+            int planksRoom = rnd.Next(0, rooms.Count - 1);
+            foreach (Rectangle r in rooms)
+                if (r == rooms.ElementAt(planksRoom))
+                    fillBackTile(Tile.planks.getId(), r.X, r.Y, r.Width, r.Height);
 
             Rectangle ree;
             ree = rooms.ElementAt(rooms.Count - 1);
