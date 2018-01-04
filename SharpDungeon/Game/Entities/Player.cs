@@ -163,6 +163,11 @@ namespace SharpDungeon.Game.Entities {
                                                              handler.world.toWorldY(handler.mouseManager.mouseY));
             }
 
+            if (handler.keyManager.isDown(Keys.C)) {
+                handler.world.setForeTile(Tile.invertor.getId(), handler.world.toWorldX(handler.mouseManager.mouseX),
+                                                             handler.world.toWorldY(handler.mouseManager.mouseY));
+            }
+
             if (handler.keyManager.isPressed(Keys.R)) {
                 handler.world.setForeMetadata(64, handler.world.toWorldX(handler.mouseManager.mouseX),
                                                              handler.world.toWorldY(handler.mouseManager.mouseY));

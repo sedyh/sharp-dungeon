@@ -21,7 +21,7 @@ namespace SharpDungeon.Game.Graphics {
         //Tiles
 
         public static Bitmap air, stone, planks;
-        public static Bitmap[] stoneWall, wire, door, shadowGate, etherGate, craftingTableCore, craftingTableCell;
+        public static Bitmap[] stoneWall, wire, invertor, door, shadowGate, etherGate, craftingTableCore, craftingTableCell;
 
         //Items
 
@@ -186,6 +186,17 @@ namespace SharpDungeon.Game.Graphics {
                 wire[45] = tileSheet.crop(width * 9, height * 11, width, height);
                 wire[46] = tileSheet.crop(width * 10, height * 11, width, height);
                 wire[47] = tileSheet.crop(width * 11, height * 11, width, height);
+                
+
+                invertor = new Bitmap[8];
+                invertor[0] = tileSheet.crop(width * 4, height * 9, width, height);
+                invertor[1] = tileSheet.crop(width * 5, height * 9, width, height);
+                invertor[2] = tileSheet.crop(width * 6, height * 9, width, height);
+                invertor[3] = tileSheet.crop(width * 7, height * 9, width, height);
+                invertor[4] = tileSheet.crop(width * 8, height * 9, width, height);
+                invertor[5] = tileSheet.crop(width * 9, height * 9, width, height);
+                invertor[6] = tileSheet.crop(width * 10, height * 9, width, height);
+                invertor[7] = tileSheet.crop(width * 11, height * 9, width, height);
 
                 shadowGate = new Bitmap[19];
                 shadowGate[0] = tileSheet.crop(width * 11, height*3, width, height);
@@ -238,6 +249,7 @@ namespace SharpDungeon.Game.Graphics {
                 door[1] = tileSheet.crop(0, height * 3, width, height);
                 door[2] = tileSheet.crop(width, height * 2, width, height);
                 door[3] = tileSheet.crop(width, height * 3, width, height);
+
 
                 logo = tileSheet.crop(width*9, height*11, width*3, height);
                 

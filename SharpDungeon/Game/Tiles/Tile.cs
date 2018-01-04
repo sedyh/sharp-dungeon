@@ -22,6 +22,7 @@ namespace SharpDungeon.Game.Tiles {
         public static Tile craftingTableCore = new CraftingTableCoreTile(8);
         public static Tile craftingTableCell = new CraftingTableCellTile(9);
         public static Tile wire = new WireTile(10);
+        public static Tile invertor = new InvertorTile(10);
 
         public static readonly int tileWidth = 64,
                                    tileHeight = 64;
