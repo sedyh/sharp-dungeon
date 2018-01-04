@@ -21,6 +21,7 @@ namespace SharpDungeon.Game.Tiles {
         public static Tile etherGate = new EtherGateTile(7);
         public static Tile craftingTableCore = new CraftingTableCoreTile(8);
         public static Tile craftingTableCell = new CraftingTableCellTile(9);
+        public static Tile wire = new WireTile(10);
 
         public static readonly int tileWidth = 64,
                                    tileHeight = 64;
@@ -47,7 +48,6 @@ namespace SharpDungeon.Game.Tiles {
         //World coords
         public virtual void render(System.Drawing.Graphics g, int x, int y) {
             g.DrawImage(currentTex, x, y, tileWidth, tileHeight);
-            //TextRenderer.DrawText(g, handler.world.getBackMetadata(this.x, this.y).ToString(), Assets.themeFont, new Point(x + tileWidth / 2, y + tileHeight / 2), Color.Red);
         }
 
         public ushort getId() {

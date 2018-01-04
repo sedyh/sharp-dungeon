@@ -21,7 +21,7 @@ namespace SharpDungeon.Game.Graphics {
         //Tiles
 
         public static Bitmap air, stone, planks;
-        public static Bitmap[] stoneWall, door, shadowGate, etherGate, craftingTableCore, craftingTableCell;
+        public static Bitmap[] stoneWall, wire, door, shadowGate, etherGate, craftingTableCore, craftingTableCell;
 
         //Items
 
@@ -127,6 +127,65 @@ namespace SharpDungeon.Game.Graphics {
                 stoneWall[21] = tileSheet.crop(width * 9, height, width, height);
                 stoneWall[22] = tileSheet.crop(width * 10, height, width, height);
                 stoneWall[23] = tileSheet.crop(width * 11, height, width, height);
+
+                //Wire
+                wire = new Bitmap[48];
+
+                //Off
+                wire[0] = tileSheet.crop(0, height * 8, width, height);
+                wire[1] = tileSheet.crop(width, height * 8, width, height);
+                wire[2] = tileSheet.crop(width * 2, height * 8, width, height);
+                wire[3] = tileSheet.crop(width * 3, height * 8, width, height);
+                wire[4] = tileSheet.crop(width * 4, height * 8, width, height);
+                wire[5] = tileSheet.crop(width * 5, height * 8, width, height);
+                wire[6] = tileSheet.crop(width * 6, height * 8, width, height);
+                wire[7] = tileSheet.crop(width * 7, height * 8, width, height);
+                wire[8] = tileSheet.crop(width * 8, height * 8, width, height);
+                wire[9] = tileSheet.crop(width * 9, height * 8, width, height);
+                wire[10] = tileSheet.crop(width * 10, height * 8, width, height);
+                wire[11] = tileSheet.crop(width * 11, height * 8, width, height);
+
+                wire[12] = tileSheet.crop(0, height * 9, width, height);
+                wire[13] = tileSheet.crop(width, height * 9, width, height);
+                wire[14] = tileSheet.crop(width * 2, height * 9, width, height);
+                wire[15] = tileSheet.crop(width * 3, height * 9, width, height);
+
+                wire[16] = tileSheet.crop(width * 4, height * 9, width, height);
+                wire[17] = tileSheet.crop(width * 5, height * 9, width, height);
+                wire[18] = tileSheet.crop(width * 6, height * 9, width, height);
+                wire[19] = tileSheet.crop(width * 7, height * 9, width, height);
+                wire[20] = tileSheet.crop(width * 8, height * 9, width, height);
+                wire[21] = tileSheet.crop(width * 9, height * 9, width, height);
+                wire[22] = tileSheet.crop(width * 10, height * 9, width, height);
+                wire[23] = tileSheet.crop(width * 11, height * 9, width, height);
+
+                //On
+                wire[24] = tileSheet.crop(0, height * 10, width, height);
+                wire[25] = tileSheet.crop(width, height * 10, width, height);
+                wire[26] = tileSheet.crop(width * 2, height * 10, width, height);
+                wire[27] = tileSheet.crop(width * 3, height * 10, width, height);
+                wire[28] = tileSheet.crop(width * 4, height * 10, width, height);
+                wire[29] = tileSheet.crop(width * 5, height * 10, width, height);
+                wire[30] = tileSheet.crop(width * 6, height * 10, width, height);
+                wire[31] = tileSheet.crop(width * 7, height * 10, width, height);
+                wire[32] = tileSheet.crop(width * 8, height * 10, width, height);
+                wire[33] = tileSheet.crop(width * 9, height * 10, width, height);
+                wire[34] = tileSheet.crop(width * 10, height * 10, width, height);
+                wire[35] = tileSheet.crop(width * 11, height * 10, width, height);
+
+                wire[36] = tileSheet.crop(0, height * 11, width, height);
+                wire[37] = tileSheet.crop(width, height * 11, width, height);
+                wire[38] = tileSheet.crop(width * 2, height * 11, width, height);
+                wire[39] = tileSheet.crop(width * 3, height * 11, width, height);
+
+                wire[40] = tileSheet.crop(width * 4, height * 11, width, height);
+                wire[41] = tileSheet.crop(width * 5, height * 11, width, height);
+                wire[42] = tileSheet.crop(width * 6, height * 11, width, height);
+                wire[43] = tileSheet.crop(width * 7, height * 11, width, height);
+                wire[44] = tileSheet.crop(width * 8, height * 11, width, height);
+                wire[45] = tileSheet.crop(width * 9, height * 11, width, height);
+                wire[46] = tileSheet.crop(width * 10, height * 11, width, height);
+                wire[47] = tileSheet.crop(width * 11, height * 11, width, height);
 
                 shadowGate = new Bitmap[19];
                 shadowGate[0] = tileSheet.crop(width * 11, height*3, width, height);

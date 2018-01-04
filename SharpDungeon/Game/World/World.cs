@@ -101,7 +101,6 @@ namespace SharpDungeon.Game.World {
                     CreateVerticalTunnel(Tile.stone.getId(), prevY + 1, currY, currX + 1);
                 } else {
                     CreateVerticalTunnel(Tile.stone.getId(), prevY, currY + 1, prevX + 1);
-
                     CreateHorizontalTunnel(Tile.stone.getId(), prevX, currX, currY + 1);
                 }
 
@@ -184,7 +183,7 @@ namespace SharpDungeon.Game.World {
 
             Rectangle ree;
             ree = rooms.ElementAt(rooms.Count - 1);
-            setBackTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+2);
+            setForeTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+2);
 
             //StreamWriter f = new StreamWriter("file.txt");
             //StringBuilder sb = new StringBuilder();
@@ -194,7 +193,7 @@ namespace SharpDungeon.Game.World {
             //sb.Append($"reLeftBefore = {re.Left}\nreTopBefore = {re.Top}\nxOffBefore = {handler.gameCamera.xOffset}\n yOffBefore = {handler.gameCamera.yOffset}\n\n\n");
             spawnX = (int)(re.X* Tile.tileWidth + 64 - handler.gameCamera.xOffset);
             spawnY = (int)(re.Y* Tile.tileHeight + 128 - handler.gameCamera.yOffset);
-            setBackTile(Tile.etherGate.getId(), re.Left + 1, re.Top + 2);
+            setForeTile(Tile.etherGate.getId(), re.Left + 1, re.Top + 2);
 
             Rectangle reee;
             reee = rooms.ElementAt(2);
@@ -204,11 +203,11 @@ namespace SharpDungeon.Game.World {
                 !getBackTile(reee.Left + 1 + 1, reee.Top + 2 - 1).isSolid() &&
                 !getBackTile(reee.Left + 1, reee.Top + 2 + 1).isSolid() &&
                 !getBackTile(reee.Left + 1, reee.Top + 2 - 2).isSolid()) {
-                setBackTile(Tile.craftingTableCore.getId(), reee.Left + 1, reee.Top + 2);
-                setBackTile(Tile.craftingTableCell.getId(), reee.Left + 1 - 1, reee.Top + 2 - 1);
-                setBackTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 - 1);
-                setBackTile(Tile.craftingTableCell.getId(), reee.Left + 1 + 1, reee.Top + 2 - 1);
-                setBackTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 + 1);
+                setForeTile(Tile.craftingTableCore.getId(), reee.Left + 1, reee.Top + 2);
+                setForeTile(Tile.craftingTableCell.getId(), reee.Left + 1 - 1, reee.Top + 2 - 1);
+                setForeTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 - 1);
+                setForeTile(Tile.craftingTableCell.getId(), reee.Left + 1 + 1, reee.Top + 2 - 1);
+                setForeTile(Tile.craftingTableCell.getId(), reee.Left + 1, reee.Top + 2 + 1);
             }
 
             //sb.Append($"reLeft = {re.Left}\nreTop = {re.Top}\n xOff = {handler.gameCamera.xOffset}\n yOff = {handler.gameCamera.yOffset}\nreLeft*64+64 - xOff = {re.Left * 64 + 64 - handler.gameCamera.xOffset}\nint = {(int)(re.Left * 64 + 64 - handler.gameCamera.xOffset)}\n reTop * 64 + 128 - yOff = {re.Top * 64 + 128 - handler.gameCamera.yOffset}\nint = {(int)(re.Top * 64 + 128 - handler.gameCamera.yOffset)}");
@@ -283,10 +282,18 @@ namespace SharpDungeon.Game.World {
             for (int x = xStart; x < xEnd; x++) {
                 for (int y = yStart; y < yEnd; y++) {
 
-                    //Тик объявлен только для видимых тайлов, исключая туман войны
-                    getBackTile(x, y).tick(handler, x, y);
-                    getBackTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
-                    
+                    //Тик объявлен только для видимых тайлов, не включая воздух
+                    if (!(getBackTile(x, y) is AirTile)) {
+                        getBackTile(x, y).tick(handler, x, y);
+                        getBackTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
+                    }
+
+                    //Тик объявлен только для видимых тайлов, не включая воздух
+                    if (!(getForeTile(x, y) is AirTile)) {
+                        getForeTile(x, y).tick(handler, x, y);
+                        getForeTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
+                    }
+
                 }
             }
 
@@ -447,7 +454,7 @@ namespace SharpDungeon.Game.World {
 
         public ushort getBackMetadata(int x, int y) {
             if (x < 0 || y < 0 || x >= width || y >= height)
-                return 4;
+                return 0;
             else
                 return (ushort)(backTiles[x, y] >> 16);
         }
@@ -458,7 +465,10 @@ namespace SharpDungeon.Game.World {
         }
 
         public ushort getForeMetadata(int x, int y) {
-            return 0;
+            if (x < 0 || y < 0 || x >= width || y >= height)
+                return 0;
+            else
+                return (ushort)(foreTiles[x, y] >> 16);
         }
 
         //loading

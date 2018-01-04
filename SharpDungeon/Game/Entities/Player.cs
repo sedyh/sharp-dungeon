@@ -52,6 +52,7 @@ namespace SharpDungeon.Game.Entities {
         public int world { get; set; } = 1;
         public int attack { get; set; } = 35;
 
+        bool check = false;
         private int dropNum = 0, twoItemsDropNum = 0;
 
         private int laserWidth, lightingCharge;
@@ -150,12 +151,36 @@ namespace SharpDungeon.Game.Entities {
             //handler.world.setBackTile(Tile.shadowGate.getId(), 
             //    handler.world.toWorldX(handler.mouseManager.mouseX), handler.world.toWorldY(handler.mouseManager.mouseY));
 
-            //if(handler.keyManager.isPressed(Keys.Z)) {
-            //    ushort meta = handler.world.getBackMetadata(handler.world.toWorldX(handler.mouseManager.mouseX),
-            //                                                handler.world.toWorldY(handler.mouseManager.mouseY));
-            //    handler.world.setBackMetadata((ushort)(meta+1), handler.world.toWorldX(handler.mouseManager.mouseX),
-            //                                                    handler.world.toWorldY(handler.mouseManager.mouseY));
-            //}
+            if (handler.keyManager.isDown(Keys.Z)) {
+                handler.world.setForeTile(Tile.wire.getId(), handler.world.toWorldX(handler.mouseManager.mouseX),
+                                                             handler.world.toWorldY(handler.mouseManager.mouseY));
+            }
+
+            if (handler.keyManager.isDown(Keys.X)) {
+                handler.world.setForeTile(Tile.air.getId(), handler.world.toWorldX(handler.mouseManager.mouseX),
+                                                             handler.world.toWorldY(handler.mouseManager.mouseY));
+            }
+
+            if (handler.keyManager.isPressed(Keys.R)) {
+
+                ushort meta = handler.world.getForeMetadata(handler.world.toWorldX(handler.mouseManager.mouseX),
+                                                            handler.world.toWorldY(handler.mouseManager.mouseY));
+
+                handler.world.setForeMetadata((ushort)(meta + 1), handler.world.toWorldX(handler.mouseManager.mouseX),
+                                                             handler.world.toWorldY(handler.mouseManager.mouseY));
+                
+            }
+
+            if (handler.keyManager.isPressed(Keys.T)) {
+
+                ushort meta = handler.world.getForeMetadata(handler.world.toWorldX(handler.mouseManager.mouseX),
+                                                            handler.world.toWorldY(handler.mouseManager.mouseY));
+
+                if(meta > 0)
+                    handler.world.setForeMetadata((ushort)(meta - 1), handler.world.toWorldX(handler.mouseManager.mouseX),
+                                                             handler.world.toWorldY(handler.mouseManager.mouseY));
+
+            }
 
             if (handler.mouseManager.leftPressed &&
                 handler.world.toWorldX(handler.mouseManager.mouseX) > 0 &&
