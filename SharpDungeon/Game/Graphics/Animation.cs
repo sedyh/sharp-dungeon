@@ -11,6 +11,12 @@ namespace SharpDungeon.Game.Graphics {
         private long lastTime, timer;
         private Bitmap[] frames;
 
+        private int currentDirection;
+        public enum direction {
+            forward,
+            backward
+        }
+
         private static readonly DateTime Jan1st1970 =
         new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
@@ -21,17 +27,46 @@ namespace SharpDungeon.Game.Graphics {
             index = 0;
             lastTime = currentTimeMillis();
             timer = 0;
+
+            currentDirection = (int)direction.forward;
+        }
+
+        public Animation(int speed, Bitmap[] frames, direction direction) {
+            this.speed = speed;
+            this.frames = frames;
+            index = frames.Length-1;
+            lastTime = currentTimeMillis();
+            timer = 0;
+
+            currentDirection = (int)direction;
+        }
+
+        public void reset() {
+            if (currentDirection == (int)direction.forward)
+                index = 0;
+            else if (currentDirection == (int)direction.backward)
+                index = frames.Length - 1;
         }
 
         public void tick() {
             timer += currentTimeMillis() - lastTime;
             lastTime = currentTimeMillis();
 
-            if (timer > speed) {
-                index++;
-                timer = 0;
-                if (index >= frames.Length) {
-                    index = 0;
+            if (currentDirection == (int)direction.forward) {
+                if (timer > speed) {
+                    index++;
+                    timer = 0;
+                    if (index >= frames.Length) {
+                        index = 0;
+                    }
+                }
+            } else if (currentDirection == (int)direction.backward) {
+                if (timer > speed) {
+                    index--;
+                    timer = 0;
+                    if (index == 0) {
+                        index = frames.Length-1;
+                    }
                 }
             }
         }

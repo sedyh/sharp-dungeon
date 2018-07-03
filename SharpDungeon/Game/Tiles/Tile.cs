@@ -31,6 +31,8 @@ namespace SharpDungeon.Game.Tiles {
         public Bitmap currentTex { get; set; }
         protected Handler handler { get; set; }
 
+        //public bool needUpdate { get; set; } = false;
+
         //Tiles array coords
         protected int x { get; set; }
         protected int y { get; set; }
@@ -44,6 +46,7 @@ namespace SharpDungeon.Game.Tiles {
             this.handler = handler;
             this.x = x;
             this.y = y;
+            //needUpdate = false;
         }
 
         //World coords

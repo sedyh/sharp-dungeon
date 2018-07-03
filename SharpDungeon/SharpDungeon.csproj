@@ -98,6 +98,7 @@
     <Compile Include="Game\Entities\Entity.cs" />
     <Compile Include="Game\Entities\EntityManager.cs" />
     <Compile Include="Game\Entities\Player.cs" />
+    <Compile Include="Game\Entities\Cube.cs" />
     <Compile Include="Game\Entities\Slime.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\Graphics\Animation.cs" />

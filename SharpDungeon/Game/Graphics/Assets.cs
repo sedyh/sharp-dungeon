@@ -43,6 +43,7 @@ namespace SharpDungeon.Game.Graphics {
         //Entities
 
         public static Bitmap[] slimeIdleWalk, slimeAttackLeft, slimeAttackRight;
+        public static Bitmap[] cubeWalk, cubeWalkSide;
 
         //Buffs
 
@@ -187,7 +188,6 @@ namespace SharpDungeon.Game.Graphics {
                 wire[46] = tileSheet.crop(width * 10, height * 11, width, height);
                 wire[47] = tileSheet.crop(width * 11, height * 11, width, height);
                 
-
                 invertor = new Bitmap[8];
                 invertor[0] = tileSheet.crop(width * 4, height * 9, width, height);
                 invertor[1] = tileSheet.crop(width * 5, height * 9, width, height);
@@ -249,7 +249,6 @@ namespace SharpDungeon.Game.Graphics {
                 door[1] = tileSheet.crop(0, height * 3, width, height);
                 door[2] = tileSheet.crop(width, height * 2, width, height);
                 door[3] = tileSheet.crop(width, height * 3, width, height);
-
 
                 logo = tileSheet.crop(width*9, height*11, width*3, height);
                 
@@ -342,6 +341,40 @@ namespace SharpDungeon.Game.Graphics {
                 slimeAttackRight[5] = entitiesSheet.crop(width * 9, height * 2, width, height);
                 slimeAttackRight[6] = entitiesSheet.crop(width * 9, height, width, height);
                 slimeAttackRight[7] = entitiesSheet.crop(width * 9, 0, width, height);
+
+                slimeAttackRight = new Bitmap[8];
+                slimeAttackRight[0] = entitiesSheet.crop(width * 7, 0, width, height);
+                slimeAttackRight[1] = entitiesSheet.crop(width * 7, height, width, height);
+                slimeAttackRight[2] = entitiesSheet.crop(width * 7, height * 2, width, height);
+                slimeAttackRight[3] = entitiesSheet.crop(width * 9, 0, width, height);
+                slimeAttackRight[4] = entitiesSheet.crop(width * 9, height, width, height);
+                slimeAttackRight[5] = entitiesSheet.crop(width * 9, height * 2, width, height);
+                slimeAttackRight[6] = entitiesSheet.crop(width * 9, height, width, height);
+                slimeAttackRight[7] = entitiesSheet.crop(width * 9, 0, width, height);
+
+                cubeWalk = new Bitmap[10];
+                cubeWalk[0] = entitiesSheet.crop(width * 10, 0, width, height);
+                cubeWalk[1] = entitiesSheet.crop(width * 10, height, width, height);
+                cubeWalk[2] = entitiesSheet.crop(width * 10, height * 2, width, height);
+                cubeWalk[3] = entitiesSheet.crop(width * 10, height * 3, width, height);
+                cubeWalk[4] = entitiesSheet.crop(width * 10, height * 4, width, height);
+                cubeWalk[5] = entitiesSheet.crop(width * 10, height * 5, width, height);
+                cubeWalk[6] = entitiesSheet.crop(width * 10, height * 6, width, height);
+                cubeWalk[7] = entitiesSheet.crop(width * 10, height * 7, width, height);
+                cubeWalk[8] = entitiesSheet.crop(width * 10, height * 8, width, height);
+                cubeWalk[9] = entitiesSheet.crop(width * 10, height * 9, width, height);
+
+                cubeWalkSide = new Bitmap[10];
+                cubeWalkSide[0] = entitiesSheet.crop(width * 11, 0, width, height);
+                cubeWalkSide[1] = entitiesSheet.crop(width * 11, height, width, height);
+                cubeWalkSide[2] = entitiesSheet.crop(width * 11, height * 2, width, height);
+                cubeWalkSide[3] = entitiesSheet.crop(width * 11, height * 3, width, height);
+                cubeWalkSide[4] = entitiesSheet.crop(width * 11, height * 4, width, height);
+                cubeWalkSide[5] = entitiesSheet.crop(width * 11, height * 5, width, height);
+                cubeWalkSide[6] = entitiesSheet.crop(width * 11, height * 6, width, height);
+                cubeWalkSide[7] = entitiesSheet.crop(width * 11, height * 7, width, height);
+                cubeWalkSide[8] = entitiesSheet.crop(width * 11, height * 8, width, height);
+                cubeWalkSide[9] = entitiesSheet.crop(width * 11, height * 9, width, height);
 
                 fireBuff = new Bitmap[7];
                 fireBuff[0] = buffsSheet.crop(0, 0, width, height);

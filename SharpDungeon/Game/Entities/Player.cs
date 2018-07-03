@@ -299,7 +299,7 @@ namespace SharpDungeon.Game.Entities {
 
 
                         selection = Assets.target;
-
+                        
                         if (attackTypeNum == (int)attackType.common) {
                             List<int> arr = new List<int>();
 

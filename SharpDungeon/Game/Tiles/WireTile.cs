@@ -210,12 +210,14 @@ namespace SharpDungeon.Game.Tiles {
                 }
             }
 
-            if (handler.world.getForeMetadata(x, y) < meta && meta > 0)
+            ushort foreMeta = handler.world.getForeMetadata(x, y);
+
+            if (foreMeta < meta) 
                 handler.world.setForeMetadata((ushort)(handler.world.getForeMetadata(np.X, np.Y) - 1),
                                               x, y);
-            else if(handler.world.getForeMetadata(x, y) != 64)
-                handler.world.setForeMetadata(0,
-                                              x, y);
+            else if (foreMeta != 64)
+                handler.world.setForeMetadata(0, x, y);
+            
         }
 
         public override void render(System.Drawing.Graphics g, int x, int y) {

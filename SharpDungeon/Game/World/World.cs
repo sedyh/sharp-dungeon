@@ -230,17 +230,21 @@ namespace SharpDungeon.Game.World {
             foreach (Rectangle r in rooms.ToList()) {
                 for (int x = r.X; x < r.Width - 1; x++)
                     for (int y = r.Y; y < r.Height - 1; y++)
-                        if (rnd.Next(1, 10) == 1 && !getBackTile(x, y).isSolid() && 
-                            x != re.X-1 && y != re.Y-1 &&
-                            x != re.X && y != re.Y-1 &&
-                            x != re.X+1 && y != re.Y-1 &&
+                        if (rnd.Next(1, 10) == 1 && !getBackTile(x, y).isSolid() &&
+                            x != re.X - 1 && y != re.Y - 1 &&
+                            x != re.X && y != re.Y - 1 &&
+                            x != re.X + 1 && y != re.Y - 1 &&
                             x != re.X - 1 && y != re.Y &&
                             x != re.X && y != re.Y &&
                             x != re.X + 1 && y != re.Y &&
                             x != re.X - 1 && y != re.Y + 1 &&
                             x != re.X && y != re.Y + 1 &&
-                            x != re.X + 1 && y != re.Y + 1)
-                            entityManager.addEntity(new Slime(handler, x * Tile.tileWidth, y * Tile.tileHeight));
+                            x != re.X + 1 && y != re.Y + 1) {
+                            if (rnd.Next(1, 3) == 1)
+                                entityManager.addEntity(new Cube(handler, x * Tile.tileWidth, y * Tile.tileHeight));
+                            else
+                                entityManager.addEntity(new Slime(handler, x * Tile.tileWidth, y * Tile.tileHeight));
+                        }
             }
 
         }
@@ -290,6 +294,7 @@ namespace SharpDungeon.Game.World {
 
                     //Тик объявлен только для видимых тайлов, не включая воздух
                     if (!(getForeTile(x, y) is AirTile)) {
+                        //if(getForeTile(x, y).)
                         getForeTile(x, y).tick(handler, x, y);
                         getForeTile(x, y).render(g, (int)(x * Tile.tileWidth - handler.gameCamera.xOffset), (int)(y * Tile.tileHeight - handler.gameCamera.yOffset));
                     }
