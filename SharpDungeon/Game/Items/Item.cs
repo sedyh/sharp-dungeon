@@ -47,6 +47,7 @@ namespace SharpDungeon.Game.Items {
         public int x { get; protected set; }
         public int y { get; protected set; }
 
+        private Random rnd;
         public int count { get; set; }
 
         Animation itemShadow;
@@ -62,7 +63,7 @@ namespace SharpDungeon.Game.Items {
             this.id = id;
             count = 1;
             itemShadow = new Animation(260, Assets.itemShadow);
-
+            rnd = new Random();
             items[id] = this;
         }
 
@@ -110,6 +111,7 @@ namespace SharpDungeon.Game.Items {
             Item i = new Item(texture, name, id);
             i.x = x;
             i.y = y;
+            grad = rnd.Next(0, 360);
             return i;
         }
 
