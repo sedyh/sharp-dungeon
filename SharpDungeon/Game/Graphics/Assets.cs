@@ -68,6 +68,7 @@ namespace SharpDungeon.Game.Graphics {
         public static Brush minMapOpenDoor = new SolidBrush(Color.FromArgb(142, 130, 119));
         public static Brush minMapShadow = new SolidBrush(Color.FromArgb(153, 61, 137));
         public static Brush minMapEther = new SolidBrush(Color.FromArgb(204, 155, 71));
+        public static Brush minMapPlanks = new SolidBrush(Color.FromArgb(215, 170, 226));
 
         //Load textures
 

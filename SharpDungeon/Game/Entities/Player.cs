@@ -537,7 +537,7 @@ namespace SharpDungeon.Game.Entities {
                     if (tile.isSolid() && tile is DoorTile)
                         b = Assets.minMapDoor;
                     else if (tile is OpenDoorTile)
-                        b = Assets.minMapBack;
+                        b = Assets.minMapOpenDoor;
                     else if (tile is AirTile)
                         b = Assets.minMapBlack;
                     else if (tile is ShadowGateTile)
@@ -550,6 +550,8 @@ namespace SharpDungeon.Game.Entities {
                         b = Assets.minMapBack;
                     else if (tile is StoneTile)
                         b = Assets.minMapBack;
+                    else if (tile is PlanksTile)
+                        b = Assets.minMapPlanks;
 
                     g.FillRectangle(b, 20 + j * 8, 20 + i * 8, 8, 8);
                 }
