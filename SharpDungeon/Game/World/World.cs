@@ -142,38 +142,54 @@ namespace SharpDungeon.Game.World {
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                     try {
-                        if (getBackTile(y - 1, x) is StoneWallTile &&
-                            getBackTile(y + 1, x) is StoneWallTile &&
-                            getBackTile(y, x + 1) is StoneTile &&
-                            getBackTile(y, x) is StoneTile &&
-                            getBackTile(y, x - 1) is StoneTile &&
-                            getBackTile(y - 1, x - 1) is StoneTile &&
-                            getBackTile(y + 1, x - 1) is StoneTile)
-                                backTiles[y, x] = Tile.door.getId();
-                        else if (getBackTile(y, x - 1) is StoneWallTile &&
-                            getBackTile(y, x + 1) is StoneWallTile &&
-                            getBackTile(y + 1, x) is StoneTile &&
-                            getBackTile(y, x) is StoneTile &&
-                            getBackTile(y - 1, x) is StoneTile &&
-                            getBackTile(y - 1, x - 1) is StoneTile &&
-                            getBackTile(y - 1, x + 1) is StoneTile)
-                                backTiles[y, x] = Tile.door.getId();
-                        else if (getBackTile(y, x - 1) is StoneWallTile &&
-                            getBackTile(y, x + 1) is StoneWallTile &&
-                            getBackTile(y + 1, x) is StoneTile &&
-                            getBackTile(y, x) is StoneTile &&
-                            getBackTile(y - 1, x) is StoneTile &&
-                            getBackTile(y + 1, x - 1) is StoneTile &&
-                            getBackTile(y + 1, x + 1) is StoneTile)
-                                backTiles[y, x] = Tile.door.getId();
-                        else if (getBackTile(y, x - 1) is StoneWallTile &&
-                            getBackTile(y, x + 1) is StoneWallTile &&
-                            getBackTile(y + 1, x) is StoneTile &&
-                            getBackTile(y, x) is StoneTile &&
-                            getBackTile(y - 1, x) is StoneTile &&
-                            getBackTile(y - 1, x + 1) is StoneTile &&
-                            getBackTile(y + 1, x + 1) is StoneTile)
-                                backTiles[y, x] = Tile.door.getId();
+                        /* O O O
+                         * X - X 
+                         *   O
+                         */
+                        if (getBackTile(x - 1, y).isSolid() &&
+                            getBackTile(x + 1, y).isSolid() &&
+                            !getBackTile(x, y + 1).isSolid() &&
+                            !getBackTile(x, y).isSolid() &&
+                            !getBackTile(x, y - 1).isSolid() &&
+                            !getBackTile(x - 1, y - 1).isSolid() &&
+                            !getBackTile(x + 1, y - 1).isSolid())
+                                backTiles[x, y] = Tile.door.getId();
+                        /* O X 
+                         * O - O  
+                         * O X
+                         */
+                        else if (getBackTile(x, y - 1).isSolid() &&
+                            getBackTile(x, y + 1).isSolid() &&
+                            !getBackTile(x + 1, y).isSolid() &&
+                            !getBackTile(x, y).isSolid() &&
+                            !getBackTile(x - 1, y).isSolid() &&
+                            !getBackTile(x - 1, y - 1).isSolid() &&
+                            !getBackTile(x - 1, y + 1).isSolid())
+                                backTiles[x, y] = Tile.door.getId();
+                        /*   X O
+                         * O - O
+                         *   X O
+                         */
+                        else if (getBackTile(x, y - 1).isSolid() &&
+                            getBackTile(x, y + 1).isSolid() &&
+                            !getBackTile(x + 1, y).isSolid() &&
+                            !getBackTile(x, y).isSolid() &&
+                            !getBackTile(x - 1, y).isSolid() &&
+                            !getBackTile(x + 1, y - 1).isSolid() &&
+                            !getBackTile(x + 1, y + 1).isSolid())
+                                backTiles[x, y] = Tile.door.getId();
+                        /*   O
+                         * X - X
+                         * O O O
+                         */
+                        else if (getBackTile(x - 1, y).isSolid() &&
+                            getBackTile(x + 1, y).isSolid() &&
+                            !getBackTile(x, y + 1).isSolid() &&
+                            !getBackTile(x, y).isSolid() &&
+                            !getBackTile(x, y + 1).isSolid() &&
+                            !getBackTile(x - 1, y + 1).isSolid() &&
+                            !getBackTile(x + 1, y + 1).isSolid())
+                            backTiles[x, y] = Tile.door.getId();
                     } catch (IndexOutOfRangeException e) { }
 
             int planksRoom = rnd.Next(0, rooms.Count - 1);
