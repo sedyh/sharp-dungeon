@@ -18,8 +18,8 @@ namespace SharpDungeon.Game.Entities {
 
         public Slime(Handler handler, int worldX, int worldY) : base(handler, worldX, worldY, defaultWidth, defaultHeight) {
             idleWalk = new Animation(300, Assets.slimeIdleWalk);
-            attackLeft = new Animation(300, Assets.slimeAttackLeft);
-            attackRight = new Animation(300, Assets.slimeAttackRight);
+            attackLeft = new Animation(15, Assets.slimeAttackLeft);
+            attackRight = new Animation(15, Assets.slimeAttackRight);
             
             currentAnimation = idleWalk;
             targetX = (int)x;
@@ -79,6 +79,9 @@ namespace SharpDungeon.Game.Entities {
                     handler.world.entityManager.player.x == x + Tile.tileWidth && handler.world.entityManager.player.y == y + Tile.tileWidth) {
 
                     handler.world.entityManager.player.hurt(20);
+                    currentAnimation = attackLeft;
+                } else {
+                    currentAnimation = idleWalk;
                 }
             }
         }
