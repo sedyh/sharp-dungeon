@@ -21,24 +21,13 @@ namespace SharpDungeon.Game.States {
         }
 
         public override void tick() {
-            if (handler.keyManager.isPressed(System.Windows.Forms.Keys.Enter))
+            if (handler.keyManager.isPressed(System.Windows.Forms.Keys.Enter) ||
+                handler.keyManager.isPressed(System.Windows.Forms.Keys.Space))
                 State.currentState = handler.game.menuState;
         }
 
         public override void render(System.Drawing.Graphics g) {
             g.DrawImage(Assets.backgroundLoading, 0, 0, handler.width, handler.height);
-
-            if (time > b.Width + 50) {
-                for (int i = 0; i < 1400; i++) {
-                    int x = rnd.Next(0, b.Width),
-                        y = rnd.Next(0, b.Height);
-
-                    if (!isBlank(x, y)) {
-                        b.SetPixel(x, y, Color.FromArgb(0, 0, 0));
-                        blackList.Add(new Point(x, y));
-                    }
-                }
-            }
 
             if (time <= b.Width + 3) {
                 time += 16;
