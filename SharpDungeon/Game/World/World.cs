@@ -255,10 +255,13 @@ namespace SharpDungeon.Game.World {
                             x != re.X - 1 && y != re.Y + 1 &&
                             x != re.X && y != re.Y + 1 &&
                             x != re.X + 1 && y != re.Y + 1) {
-                            if (rnd.Next(1, 3) == 1)
+                            int e = rnd.Next(1, 10);
+                            if (e > 0 && e < 3)
                                 entityManager.addEntity(new Cube(handler, x * Tile.tileWidth, y * Tile.tileHeight));
-                            else
+                            else if(e >= 3 && e < 9)
                                 entityManager.addEntity(new Slime(handler, x * Tile.tileWidth, y * Tile.tileHeight));
+                            else if(e == 9)
+                                entityManager.addEntity(new Chest(handler, x * Tile.tileWidth, y * Tile.tileHeight));
                         }
             }
 

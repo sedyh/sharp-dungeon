@@ -46,6 +46,7 @@ namespace SharpDungeon.Game.Graphics {
 
         public static Bitmap[] slimeIdleWalk, slimeAttackLeft, slimeAttackRight;
         public static Bitmap[] cubeWalk, cubeWalkSide;
+        public static Bitmap[] chest;
 
         //Buffs
 
@@ -291,6 +292,11 @@ namespace SharpDungeon.Game.Graphics {
                 playerIdle[3] = entitiesSheet.crop(width * 5, 0, width, height);
                 playerIdle[4] = entitiesSheet.crop(width * 5, height, width, height);
                 playerIdle[5] = entitiesSheet.crop(width * 5, height * 2, width, height);
+
+                chest = new Bitmap[2];
+                chest[0] = entitiesSheet.crop(0, height * 4, width, height);
+                chest[1] = entitiesSheet.crop(width, height * 4, width, height);
+
 
                 redRupy = itemsSheet.crop(0, height, width, height);
                 greenRupy = itemsSheet.crop(width, height, width, height);

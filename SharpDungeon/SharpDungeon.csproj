@@ -95,10 +95,12 @@
     <Compile Include="Game\Display\Display.Designer.cs">
       <DependentUpon>Display.cs</DependentUpon>
     </Compile>
+    <Compile Include="Game\Entities\Chest.cs" />
     <Compile Include="Game\Entities\Entity.cs" />
     <Compile Include="Game\Entities\EntityManager.cs" />
     <Compile Include="Game\Entities\Player.cs" />
     <Compile Include="Game\Entities\Cube.cs" />
+    <Compile Include="Game\Entities\Drop.cs" />
     <Compile Include="Game\Entities\Slime.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\Graphics\Animation.cs" />
