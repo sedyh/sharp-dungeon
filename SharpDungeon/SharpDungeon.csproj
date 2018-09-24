@@ -118,6 +118,7 @@
     <Compile Include="Game\States\RecordState.cs" />
     <Compile Include="Game\States\State.cs" />
     <Compile Include="Game\Tiles\AirTile.cs" />
+    <Compile Include="Game\Tiles\SpikeTile.cs" />
     <Compile Include="Game\Tiles\CraftingTableCoreTile.cs" />
     <Compile Include="Game\Tiles\CraftingTableCellTile.cs" />
     <Compile Include="Game\Tiles\DoorTile.cs" />

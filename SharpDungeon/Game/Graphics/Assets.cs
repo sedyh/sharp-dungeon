@@ -21,7 +21,9 @@ namespace SharpDungeon.Game.Graphics {
         //Tiles
 
         public static Bitmap air, stone, planks;
-        public static Bitmap[] stoneWall, wire, invertor, door, shadowGate, etherGate, craftingTableCore, craftingTableCell;
+        public static Bitmap[] stoneWall, wire, invertor,
+                               door, shadowGate, etherGate,
+                               craftingTableCore, craftingTableCell, spike;
 
         //Items
 
@@ -251,8 +253,12 @@ namespace SharpDungeon.Game.Graphics {
                 door[2] = tileSheet.crop(width, height * 2, width, height);
                 door[3] = tileSheet.crop(width, height * 3, width, height);
 
-                logo = tileSheet.crop(width*9, height*11, width*3, height);
-                
+                spike = new Bitmap[2];
+                spike[0] = tileSheet.crop(width * 7, height * 7, width, height);
+                spike[1] = tileSheet.crop(width * 8, height * 7, width, height);
+
+                logo = new Bitmap("../../Assets/logo.png");
+
                 playerStates = uiSheet.crop(width * 7, 0, width * 5, height);
                 playerInventory = uiSheet.crop(width * 7, height, width * 5, height);
                 playerDrop = uiSheet.crop(width * 7, height * 2, width * 5, height);

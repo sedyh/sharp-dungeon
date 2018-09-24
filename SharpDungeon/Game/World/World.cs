@@ -181,6 +181,13 @@ namespace SharpDungeon.Game.World {
                 if (r == rooms.ElementAt(planksRoom))
                     fillBackTile(Tile.planks.getId(), r.X, r.Y, r.Width, r.Height);
 
+            foreach (Rectangle r in rooms) {
+                int x = r.Left + 1 + (r.Width - 1) / 2 + rnd.Next(-3, 0);
+                int y = r.Top + 1 + (r.Height - 1) / 3 + rnd.Next(-3, 0);
+                if (!getBackTile(x, y).isSolid())
+                    setForeTile(Tile.spike.getId(), x, y);
+            }
+
             Rectangle ree;
             ree = rooms.ElementAt(rooms.Count - 1);
             setForeTile(Tile.shadowGate.getId(), ree.Left+1, ree.Top+2);
@@ -214,9 +221,17 @@ namespace SharpDungeon.Game.World {
             //f.WriteLine(sb.ToString());
             //f.Close();
 
-
             entityManager = new EntityManager(handler, new Player(handler, spawnX, spawnY));
             itemManager = new ItemManager(handler);
+
+            //for (int x = 0; x < width; x++) {
+            //    for (int y = 0; y < height; y++) {
+            //        if(getForeTile(x, y).getId() == Tile.spike.getId()) {
+            //            for(int i=0; i<10; i++)
+            //            itemManager.addItem(Item.items[rnd.Next(20, 22)].createNew(x * Tile.tileWidth, y * Tile.tileHeight));
+            //        }
+            //    }
+            //}
 
             //entityManager.addEntity(new Slime(handler, (int)(re.X * Tile.tileWidth), (int)(re.Y * Tile.tileHeight)));
 
