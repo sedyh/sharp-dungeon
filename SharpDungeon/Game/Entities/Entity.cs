@@ -90,7 +90,7 @@ namespace SharpDungeon.Game.Entities {
 
         public abstract void die();
 
-        public void hurt(int amt) {
+        public virtual void hurt(int amt) {
             health -= amt;
             if (health <= 0) {
                 active = false;
