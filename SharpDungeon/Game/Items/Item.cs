@@ -34,7 +34,7 @@ namespace SharpDungeon.Game.Items {
         public static Item orangePotion = new Item(Assets.orangePotion, "Orange potion", 20);
         public static Item yellowPotion = new Item(Assets.yellowPotion, "Yellow potion", 21);
         public static Item bluePotion = new Item(Assets.bluePotion, "Blue potion", 22);
-        public static Item moon = new Item(Assets.moon, "Moon", 22);
+        public static Item moon = new Item(Assets.moon, "Moon", 23);
 
         public static readonly int itemWidth = 64, itemHeight = 64;
 
