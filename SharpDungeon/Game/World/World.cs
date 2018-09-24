@@ -108,7 +108,6 @@ namespace SharpDungeon.Game.World {
 
             foreach (Rectangle r in rooms) {
                     fillBackTile(Tile.stone.getId(), r.X, r.Y, r.Width, r.Height);
-                    
             }
 
             for (int y = 0; y < height; y++)
